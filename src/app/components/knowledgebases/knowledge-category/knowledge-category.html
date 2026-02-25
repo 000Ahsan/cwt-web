@@ -1,0 +1,33 @@
+<div class="container-fluid faq-section">
+  <div class="row">
+    <div class="col-12">
+      <app-help-board />
+    </div>
+    <app-faq-top-part />
+    <div class="col-sm-12">
+      <div class="header-faq">
+        <h5 class="mb-0">knowledge articles by category</h5>
+      </div>
+      <div class="row browse">
+        @for (category of categories; track category) {
+        <div class="col-xl-4 xl-50 col-md-6">
+          <div class="browse-articles">
+            <h6><span><app-feather-icons [icon]="'archive'" /></span>{{category.title}}</h6>
+            <ul>
+              @for (point of category.points; track point) {
+              <li>
+                <a routerLink="/knowledgebases/knowledge-detail">
+                  <h5>
+                    <app-feather-icons [icon]="'file-text'" />{{point}}
+                  </h5>
+                </a>
+              </li>
+              }
+            </ul>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

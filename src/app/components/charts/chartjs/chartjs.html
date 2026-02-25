@@ -1,0 +1,114 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h5>bar Chart</h5>
+        </div>
+        <div class="card-body chart-block">
+          <canvas
+            baseChart
+            class="chart"
+            [data]="barChart"
+            [datasets]="barChart.datasets"
+            [options]="barChart.barOptions"
+          ></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h5>Line Chart</h5>
+        </div>
+        <div class="card-body chart-block">
+          <canvas
+            baseChart
+            class="chart"
+            id="myGraph"
+            [datasets]="lineGraphData"
+            [labels]="lineGraphLabels"
+            [legend]="lineGraphLegend"
+            [type]="lineGraphType"
+          ></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h5>Radar Graph</h5>
+        </div>
+        <div class="card-body chart-block chartjs-chart">
+          <canvas
+            baseChart
+            class="chart"
+            [datasets]="radarGraphData"
+            [labels]="radarGraphLabels"
+            [options]="radarGraphOptions"
+            [type]="'radar'"
+          >
+          </canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h5>Bar Chart</h5>
+        </div>
+        <div class="card-body chart-block">
+          <canvas
+            baseChart
+            class="chart"
+            [datasets]="lineChartData"
+            [labels]="lineChartLabels"
+            [options]="lineChartOptions"
+            [legend]="lineChartLegend"
+            [type]="'line'"
+          >
+          </canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h5>Doughnut Chart</h5>
+        </div>
+        <div class="card-body chart-block chartjs-chart">
+          <canvas
+            baseChart
+            class="chart"
+            [datasets]="doughnutChartData"
+            [labels]="doughnutChartLabels"
+            [options]="doughnutChartOptions"
+            [legend]="doughnutChartLegend"
+            [type]="'doughnut'"
+          >
+          </canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h5>Polar Chart</h5>
+        </div>
+        <div class="card-body chart-block chartjs-chart">
+          <canvas
+            id="myPolarGraph"
+            baseChart
+            class="chart"
+            [datasets]="polarChartData"
+            [labels]="polarChartLabels"
+            [options]="polarChartOptions"
+            [legend]="polarChartLegend"
+            [type]="'polarArea'"
+          >
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

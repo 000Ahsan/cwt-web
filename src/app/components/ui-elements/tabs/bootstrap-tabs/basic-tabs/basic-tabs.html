@@ -1,0 +1,38 @@
+<div class="card basic-tab-sect">
+   <div class="card-header pb-0">
+     <h5>Basic Tabs</h5>
+   </div>
+   <div class="card-body">
+    <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs">
+      <li [ngbNavItem]="1">
+        <a ngbNavLink>Home</a>
+        <ng-template ngbNavContent>
+          <p>Tabs have long been used to show alternative views of the same group of information tabs in software. Known as “module tabs”, these are still used today in web sites. For instance, airline companies such as Ryanair, easyJet and AirMalta use module tabs to enable the user to switch between bookings for flights, hotels and car hire.</p>
+        </ng-template>
+      </li>
+      <li ngbDropdown class="nav-item">
+         <a href (click)="false" class="nav-link" ngbDropdownToggle>Dropdown</a>
+         <div ngbDropdownMenu>
+           <button ngbDropdownItem>Action</button>
+           <button ngbDropdownItem>Another action</button>
+           <button ngbDropdownItem>Something else here</button>
+           <button ngbDropdownItem>Separated link</button>
+         </div>
+       </li>
+     
+      <li [ngbNavItem]="2">
+        <a ngbNavLink>Profile</a>
+        <ng-template ngbNavContent>
+         <p>Not limited to any states, boundaries. All over India providing cutting-edge design and website development services for over 12 years. We provide end to end digital solutions, right from designing your website/application development: Domain, Web Hosting, Email Hosting Registration, Search Engine Optimization and other Internet Marketing, Renewal of Services timely and effectively.</p>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="3">
+        <a ngbNavLink>Contact</a>
+        <ng-template ngbNavContent>
+         <p>Us Technology offers web & mobile development solutions for all industry verticals.Include a short form using fields that'll help your business understand who's contacting them.</p>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="mt-4"></div>
+   </div>
+ </div>

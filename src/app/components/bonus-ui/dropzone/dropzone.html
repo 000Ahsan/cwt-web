@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h5>Single File Upload</h5>
+        </div>
+        <div class="card-body custom-dropzone">
+          <dropzone
+            [config]="configSingle"
+            [classList]="'custom-dropzone'"
+            [message]="textSignle"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h5>Multi File Upload</h5>
+        </div>
+        <div class="card-body">
+          <dropzone [config]="imageConfig" [classList]="'custom-dropzone'" [message]="textMulti" />
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h5>Default File Upload</h5>
+        </div>
+        <div class="card-body">
+          <dropzone [config]="default" [classList]="'custom-dropzone'" [message]="textDefault" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

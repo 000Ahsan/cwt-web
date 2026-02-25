@@ -1,0 +1,33 @@
+<div class="card">
+   <div class="card-header pb-0">
+     <h5>Tabs Vertical</h5>
+   </div>
+   <div class="card-body">
+     <div class="row">
+      <div class="d-flex tabs-vertical">
+         <ul ngbNav #nav="ngbNav" [(activeId)]="TopActive" class="nav-pills" orientation="vertical">
+           <li ngbNavItem="top">
+             <a ngbNavLink>Top</a>
+             <ng-template ngbNavContent>
+               <p>Not limited to any states, boundaries. All over India providing cutting-edge design and website development services for over 12 years. We provide end to end digital solutions, right from designing your website/application development: Domain, Web Hosting, Email Hosting Registration, Search Engine Optimization and other Internet Marketing, Renewal of Services timely and effectively. </p>
+             </ng-template>
+           </li>
+           <li ngbNavItem="middle">
+             <a ngbNavLink>Middle</a>
+             <ng-template ngbNavContent>
+               <p>Us Technology offers web & mobile development solutions for all industry verticals.Include a short form using fields that'll help your business understand who's contacting them. </p>
+             </ng-template>
+           </li>
+           <li ngbNavItem="bottom">
+             <a ngbNavLink>Bottom</a>
+             <ng-template ngbNavContent>
+               <p>Tabs have long been used to show alternative views of the same group of information tabs in software. Known as “module tabs”, these are still used today in web sites. For instance, airline companies such as Ryanair, easyJet and AirMalta use module tabs to enable the user to switch between bookings for flights, hotels and car hire.</p>
+             </ng-template>
+           </li>
+         </ul>
+       
+         <div [ngbNavOutlet]="nav" class="ms-4"></div>
+       </div>
+     </div>
+   </div>
+ </div>

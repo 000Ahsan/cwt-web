@@ -1,0 +1,28 @@
+<div class="card">
+   <div class="card-header pb-0">
+     <h5>Tabs Right Align</h5>
+   </div>
+   <div class="card-body">
+      <ul ngbNav #nav4="ngbNav" [activeId]="1" class="nav-tabs justify-content-end">
+         <li [ngbNavItem]="1">
+            <a ngbNavLink><i class="icofont icofont-ui-home"></i>Home</a>
+            <ng-template ngbNavContent>
+               <p>We are a small yet highly-skilled group of creative brains with a vast experience. Our team of web designers, online marketing experts, content writers, graphic professionals have completed numerous projects.</p>
+          </ng-template>
+       </li>
+       <li [ngbNavItem]="2">
+          <a ngbNavLink><i class="icofont icofont-man-in-glasses"></i>Profile</a>
+          <ng-template ngbNavContent>
+             <p>Typography: Typography is the art of arranging letters and text in a way that makes the copy legible, clear, and visually appealing to the reader.Tooltip: A tooltip is a brief, informative message that appears when a user interacts with an element in a graphical user interface (GUI).</p>
+          </ng-template>
+       </li>
+       <li [ngbNavItem]="3">
+          <a ngbNavLink><i class="icofont icofont-contacts"></i>Contact</a>
+          <ng-template ngbNavContent>
+             <p>Site purpose Like a mission statement, a website's purpose gives the primary reason for the site's existence in the world. Whether for education, advocacy, service provision, community organizing, etc.Features It's important to figure out as many of these in advance as you can for the sake of a more coherent design. </p>
+          </ng-template>
+       </li>
+    </ul>
+    <div [ngbNavOutlet]="nav4" class="mt-4"></div>
+   </div>
+ </div>

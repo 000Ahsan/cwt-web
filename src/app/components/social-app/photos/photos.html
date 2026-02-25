@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row my-gallery gallery-with-description" itemscope="" gallerize>
+      @for (img of imageData; track img) {
+      <figure class="col-xl-3 col-sm-6" itemprop="associatedMedia">
+        <a itemprop="contentUrl">
+          <img [src]="img.srcUrl" class="img-fluid" alt="images" />
+          <div class="caption">
+            <h4>Portfolio Title</h4>
+            <p>
+              is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+              the industry's standard dummy.
+            </p>
+          </div>
+        </a>
+      </figure>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="container-fluid dashboard-2-main">
+  <div class="row">
+    <div class="col-xl-6 box-col-12 des-xl-100 invoice-sec">
+      <app-invoice-overview />
+    </div>
+    <div class="col-xl-6 box-col-12 des-xl-100 top-dealer-sec">
+      <app-top-dealer />
+    </div>
+    <div class="col-xl-8 col-md- des-xl-100 box-col-12">
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 box-col-3 chart_data_right">
+          <div class="card income-card card-secondary">
+            <div class="card-body align-items-center">
+              <div class="round-progress knob-block text-center">
+                <div class="progress-circle">
+                  <apx-chart
+                    [series]="Annual1.series"
+                    [chart]="Annual1.chart"
+                    [plotOptions]="Annual1.plotOptions"
+                    [labels]="Annual1.labels"
+                    [colors]="Annual1.colors"
+                    [stroke]="Annual1.stroke"
+                  />
+                </div>
+                <h5>$9,84,235</h5>
+                <p>Our Annual Income</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 box-col-3 chart_data_right second">
+          <div class="card income-card card-primary">
+            <div class="card-body">
+              <div class="round-progress knob-block text-center">
+                <div class="progress-circle">
+                  <apx-chart
+                    [series]="Annual2.series"
+                    [chart]="Annual2.chart"
+                    [plotOptions]="Annual2.plotOptions"
+                    [labels]="Annual2.labels"
+                    [colors]="Annual2.colors"
+                    [stroke]="Annual2.stroke"
+                  />
+                </div>
+                <h5>$4,55,462</h5>
+                <p>Our Annual Income</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 box-col-6 top-sell-sec">
+          <app-top-selling />
+        </div>
+        <div class="col-xl-6 box-col-6">
+          <app-top-selling-chart />
+        </div>
+        <div class="col-xl-6 box-col-6">
+          <app-our-target />
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 des-xl-50 box-col-12 activity-sec chart_data_left">
+      <app-activity />
+    </div>
+    <div class="col-xl-12 des-xl-50 yearly-growth-sec">
+      <app-yearly-growth />
+    </div>
+  </div>
+</div>

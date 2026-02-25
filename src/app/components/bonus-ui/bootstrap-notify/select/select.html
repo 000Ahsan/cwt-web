@@ -1,0 +1,60 @@
+<form class="theme-form sm-form">
+  <div class="mb-3">
+    <div class="row">
+      <label class="col-xl-2 col-sm-12 col-md-12 col-form-label">Placement</label>
+      <div class="col-xl-4 col-sm-12 col-md-6 mb-4">
+        <select class="form-select form-control">
+          <option value="top">Top</option>
+          <option value="bottom">Bottom</option>
+        </select>
+      </div>
+      <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+        <select class="form-select form-control">
+          <option value="left">Left</option>
+          <option value="right">Right</option>
+          <option value="center">Center</option>
+        </select>
+      </div>
+    </div>
+    @for (item of Bootstrap; track item) {
+    <div class="row">
+      <label class="col-xl-2 col-sm-12 col-md-12 col-form-label">{{item.title}}</label>
+      <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+        <select class="form-select form-control">
+          @for (g of item.selectOne; track g) {
+          <optgroup label="{{g.optgroup}}">
+            @for (o of g.option; track o) {
+            <option value="o">{{o}}</option>
+            }
+          </optgroup>
+          }
+        </select>
+      </div>
+      <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+        <select class="form-select form-control">
+          @for (g of item.selectTwo; track g) {
+          <optgroup label="{{g.optgroup}}">
+            @for (o of g.option; track o) {
+            <option value="o">{{o}}</option>
+            }
+          </optgroup>
+          }
+        </select>
+      </div>
+    </div>
+    }
+    <div class="row">
+      <label class="col-xl-2 col-sm-12 col-md-12 col-form-label">Icon</label>
+      <div class="col-xl-4 col-md-12 col-sm-12 mb-4">
+        <select class="form-select form-control" id="bootstrap-notify-icon">
+          <option value="">None</option>
+          @for (i of icon; track i) {
+          <option value="{{i}}">{{i}}</option>
+          }
+        </select>
+      </div>
+    </div>
+    <div class="row"></div>
+    <div class="mb-3 row"></div>
+  </div>
+</form>

@@ -1,0 +1,39 @@
+<div class="page-main-header">
+  <div class="main-header-right row m-0">
+    <div class="main-header-left col-auto">
+      <div class="logo-wrapper"><a [routerLink]="['/dashboard/default']">
+        <img class="img-fluid" src="assets/images/logo/logo.png" alt=""></a></div>
+      <div class="dark-logo-wrapper"><a [routerLink]="['/dashboard/default']">
+        <img class="img-fluid"   src="assets/images/logo/dark-logo.png" alt=""></a></div>
+      <div class="toggle-sidebar" (click)="sidebarToggle()"><i class="status_toggle middle" data-feather="align-center" id="sidebar-toggle"></i>
+      </div>
+    </div>
+    <div class="left-menu-header col">
+      <app-search />
+    </div>  
+    <div class="nav-right col pull-right right-menu p-0">
+      <ul class="nav-menus" [class.open]="open">
+      <li class="language-nav" (click)="languageToggle()">
+        <app-languages />
+      </li>
+      <li>
+        <app-maximize />
+      </li>
+      <li class="onhover-dropdown">
+        <app-notification />
+      </li>
+      <li class="onhover-dropdown">
+        <app-mode />
+      </li>
+      <li class="onhover-dropdown">
+        <app-chat />
+      </li>
+        <li class="onhover-dropdown p-0">
+          <button class="btn btn-primary-light" type="button"><a [routerLink]="['/auth/login']"><app-feather-icons [icon]="'log-out'" />Log
+              out</a></button>
+        </li>
+      </ul>
+    </div>
+    <div class="d-lg-none mobile-toggle pull-right w-auto" (click)="openMenu()"><app-feather-icons [icon]="'more-horizontal'" /></div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+@for (button of buttonSize; track button) {
+<div class="col-12">
+  <div class="card">
+    <div class="card-header">
+      <h5>{{ button.title }}</h5>
+    </div>
+    <div class="card-body btn-group-showcase">
+      <div class="row">
+        @for (btn of button.btnGroup; track btn) {
+        <div class="col-xl-6 col-sm-12">
+          @for (b of btn.btnClass; track b) {
+          <div class="btn-group {{ button.btnShape }}" role="group" aria-label="Basic example">
+            <button class="btn btn-{{ b }} {{ button.btnClassSize }}" type="button">
+              Left
+            </button>
+            <button class="btn btn-{{ b }} {{ button.btnClassSize }}" type="button">
+              Middle
+            </button>
+            <button class="btn btn-{{ b }} {{ button.btnClassSize }}" type="button">
+              Right
+            </button>
+          </div>
+          }
+        </div>
+        }
+        <div class="col-xl-6 col-sm-12 button-group-mb-sm">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-dark btn-lg" type="button">
+              Left
+            </button>
+            <button class="btn btn-dark btn-lg" type="button">
+              Middle
+            </button>
+            <button class="btn btn-dark btn-lg" type="button">
+              Right
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}

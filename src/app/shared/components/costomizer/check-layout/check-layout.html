@@ -1,0 +1,20 @@
+<ul class="sidebar-type layout-grid layout-types">
+  <li class="defaul-layout" [routerLink]="['/dashboard/default']" [queryParams]="{ layout: false }">
+    <div class="layout-img">
+      <a href="javascript:void(0)"><img class="img-fluid" src="assets/images/demo/1.jpg" alt=""></a>
+      <h6>Default layout</h6>
+    </div>
+  </li>
+  <li class="compact-layout" [routerLink]="['/dashboard/default']" [queryParams]="{ layout: 'compact-layout' }">
+    <a href="javascript:void(0)"><img class="img-fluid" src="assets/images/demo/2.jpg" alt=""></a>
+    <div class="layout-img">
+      <h6>Compact layout</h6>
+    </div>
+  </li>
+  <li class="modern-layout" [routerLink]="['/dashboard/default']" [queryParams]="{ layout: 'modern-layout' }">
+    <a href="javascript:void(0)"><img class="img-fluid" src="assets/images/demo/3.jpg" alt=""></a>
+    <div class="layout-img">
+      <h6>Modern layout</h6>
+    </div>
+  </li>
+</ul>

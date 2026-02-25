@@ -1,0 +1,28 @@
+<div class="card">
+   <div class="card-header pb-0">
+     <h5>Tabs With Icon </h5>
+   </div>
+   <div class="card-body">
+    <ul ngbNav #nav3="ngbNav" [activeId]="1" class="nav-tabs">
+          <li [ngbNavItem]="1">
+            <a ngbNavLink><i class="icofont icofont-ui-home"></i>Home</a>
+            <ng-template ngbNavContent>
+                <p>Site speed and design are two of the most important ranking factors Google takes into consideration, as they have the biggest effect of customer staying on site as the website respond faster.</p>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <a ngbNavLink><i class="icofont icofont-man-in-glasses"></i>Profile</a>
+          <ng-template ngbNavContent>
+              <p>If you are a business owner, your website is absolutely one of the most important tools you have in your arsenal to get more - and better - clients and customers or a good one from a great one? Here are 10 qualities that a great website will need.</p>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="3">
+          <a ngbNavLink><i class="icofont icofont-contacts"></i>Contact</a>
+          <ng-template ngbNavContent>
+              <p>It was an easy decision.an affordable expense! Absolutely! we got peace of mind. Now, my time is spent on the“Sale” and not on technology. Create product Builder tool is also pre-bundled in this template so that you can let the audience configure the product by themselves before placing the order. </p>
+          </ng-template>
+        </li>
+    </ul>
+    <div [ngbNavOutlet]="nav3" class="mt-4"></div>
+   </div>
+</div>

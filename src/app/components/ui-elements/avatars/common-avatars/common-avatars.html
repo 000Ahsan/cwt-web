@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="card-header pb-0">
+    <h5>{{title()}}</h5>
+  </div>
+  <div class="card-body avatar-showcase">
+    <div class="avatars">
+      @for (item of data(); track item) {
+      <div class="avatar">
+        <img class="{{item.imgClass}}" src="{{item.img}}" alt="#" />
+      </div>
+      }
+    </div>
+  </div>
+</div>
