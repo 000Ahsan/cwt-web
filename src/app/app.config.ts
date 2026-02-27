@@ -1,4 +1,4 @@
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
@@ -13,6 +13,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideToastr } from 'ngx-toastr';
 
 import { routes } from './app.routes';
+import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -23,7 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimations(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([jwtInterceptor])),
     provideAngularSvgIcon(),
     provideToastr(),
     provideCharts(withDefaultRegisterables()),

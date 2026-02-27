@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-6">
+                <h3>My Assigned Projects</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" *ngFor="let project of projects">
+            <div class="card">
+                <div class="card-header">
+                    <h5>{{ project.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ project.description }}</p>
+                    <button class="btn btn-primary btn-lg w-100" (click)="startSession(project.id)">Start Work
+                        Session</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12" *ngIf="projects.length === 0">
+            <div class="card">
+                <div class="card-body text-center">
+                    <p>No projects assigned yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-6">
+                <h3>Work Session</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Active Session Status -->
+        <div class="col-sm-12" *ngIf="!activeSession">
+            <div class="card">
+                <div class="card-body text-center">
+                    <p class="mb-4">You don't have an active session. Select a project to start.</p>
+                    <button class="btn btn-primary btn-lg w-100 py-3" (click)="goToProjects()">Pick a Project</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12" *ngIf="activeSession">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Active Session: {{ activeSession.projectName }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <h2 class="display-4">{{ elapsedTime }}</h2>
+                        <p class="text-muted">Started at: {{ activeSession.startTime | date:'shortTime' }}</p>
+                    </div>
+
+                    <button class="btn btn-danger btn-lg w-100 py-3 mb-3" (click)="endSession()">End Work
+                        Session</button>
+                </div>
+            </div>
+
+            <!-- Add Work Log Form -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Submit Work Log</h5>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="logForm" (ngSubmit)="submitLog()">
+                        <div class="mb-3">
+                            <label class="form-label">Description of work done</label>
+                            <textarea class="form-control" rows="4" formControlName="description"
+                                placeholder="What did you work on?"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Photos (Optional)</label>
+                            <input type="file" class="form-control" (change)="onFileSelect($event)" multiple
+                                accept="image/*">
+
+                            <!-- Preview -->
+                            <div class="row mt-3">
+                                <div class="col-4 mb-2" *ngFor="let preview of photoPreviews">
+                                    <img [src]="preview" class="img-thumbnail"
+                                        style="height: 80px; width: 100%; object-fit: cover;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg w-100 py-3"
+                            [disabled]="logForm.invalid || uploading">
+                            <span *ngIf="uploading">Uploading...</span>
+                            <span *ngIf="!uploading">Submit Work Log</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

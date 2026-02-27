@@ -1,13 +1,12 @@
 import { Routes } from '@angular/router';
-
-import { AdminGuard } from './shared/guard/admin.guard';
-import { content } from './shared/routes/content.routes';
-import { full } from './shared/routes/full.routes';
+import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
+import { UserRole } from './core/models/auth.model';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard/default',
+    redirectTo: 'auth/login',
     pathMatch: 'full',
   },
   {
@@ -15,19 +14,26 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/login/login').then(m => m.Login),
   },
   {
-    path: '',
+    path: 'contractor',
     loadComponent: () => import('./shared/components/layout/content/content').then(m => m.Content),
-    canActivate: [AdminGuard],
-    children: content,
+    canActivate: [authGuard, roleGuard],
+    data: { role: UserRole.CONTRACTOR, breadcrumb: 'Contractor' },
+    loadChildren: () => import('./contractor/contractor.routes').then(m => m.CONTRACTOR_ROUTES)
   },
   {
-    path: '',
+    path: 'worker',
+    loadComponent: () => import('./shared/components/layout/content/content').then(m => m.Content),
+    canActivate: [authGuard, roleGuard],
+    data: { role: UserRole.WORKER, breadcrumb: 'Worker' },
+    loadChildren: () => import('./worker/worker.routes').then(m => m.WORKER_ROUTES)
+  },
+  {
+    path: 'error-page',
     loadComponent: () => import('./shared/components/layout/full/full').then(m => m.Full),
-    canActivate: [AdminGuard],
-    children: full,
+    loadChildren: () => import('./pages/error-pages/error-pages.routes').then(m => m.default)
   },
   {
     path: '**',
-    redirectTo: 'error-page/error1',
+    redirectTo: 'auth/login',
   },
 ];

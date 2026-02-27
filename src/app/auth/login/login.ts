@@ -7,27 +7,35 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { FeatherIcons } from '../../shared/components/feather-icons/feather-icons';
+import { AuthService } from '../../core/services/auth.service';
+import { NavService } from '../../shared/services/nav/nav.service';
+import { UserRole } from '../../core/models/auth.model';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
-  imports: [FormsModule, RouterModule, ReactiveFormsModule, FeatherIcons],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule, FeatherIcons],
 })
 export class Login {
   private fb = inject(FormBuilder);
-  router = inject(Router);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  private navService = inject(NavService);
 
   public show: boolean = false;
   public loginForm: FormGroup;
-  public errorMessage: string;
+  public errorMessage: string = '';
+  public loading: boolean = false;
 
   constructor() {
     this.loginForm = this.fb.group({
-      email: ['Test@gmail.com', [Validators.required, Validators.email]],
-      password: ['test123', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
   }
 
@@ -35,19 +43,26 @@ export class Login {
     this.show = !this.show;
   }
 
-  // Simple Login
   login() {
-    if (
-      this.loginForm.value['email'] == 'Test@gmail.com' &&
-      this.loginForm.value['password'] == 'test123'
-    ) {
-      let user = {
-        email: 'Test@gmail.com',
-        password: 'test123',
-        name: 'test user',
-      };
-      localStorage.setItem('user', JSON.stringify(user));
-      this.router.navigate(['/dashboard/default']);
+    if (this.loginForm.invalid) {
+      return;
     }
+
+    this.loading = true;
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (response) => {
+        this.navService.refreshMenu();
+        if (response.user.role === UserRole.CONTRACTOR) {
+          this.router.navigate(['/contractor']);
+        } else {
+          this.router.navigate(['/worker']);
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Invalid email or password';
+        this.loading = false;
+      }
+    });
   }
 }
