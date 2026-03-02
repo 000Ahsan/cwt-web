@@ -34,8 +34,12 @@ export class ContractorService {
         return this.http.post<any>(`${this.apiUrl}/users/workers`, workerData);
     }
 
-    updateWorker(workerData: any): Observable<any> {
-        return this.http.put<any>(`${this.apiUrl}/users/workers`, workerData);
+    updateWorker(workerData: any, id: any): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/users/workers/${id}`, workerData);
+    }
+
+    deleteWorker(workerId: string): Observable<any> {
+        return this.http.delete<any>(`${this.apiUrl}/users/workers/${workerId}`);
     }
 
     assignWorkerToProject(projectId: string, workerId: string): Observable<any> {

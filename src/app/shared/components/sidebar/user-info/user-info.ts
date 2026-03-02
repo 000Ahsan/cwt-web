@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
 import { FeatherIcons } from '../../feather-icons/feather-icons';
+import { environment } from '../../../../../../public/environments/environment.prod';
 
 @Component({
   selector: 'app-user-info',
@@ -11,6 +12,7 @@ import { FeatherIcons } from '../../feather-icons/feather-icons';
   imports: [CommonModule],
 })
 export class UserInfo {
+  apiUrl = environment.apiBaseUrl;
   private authService = inject(AuthService);
 
   get user() {

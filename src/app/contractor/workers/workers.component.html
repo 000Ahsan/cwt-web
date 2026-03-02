@@ -5,43 +5,56 @@
                 <app-breadcrumb />
             </div>
             <div class="col-md-6 col-sm-12 text-end">
-                <button class="btn btn-primary" (click)="showCreateModal = true">Add New Worker</button>
+                <button class="btn btn-primary" (click)="showCreateModal = true">
+                    <i class="fa fa-plus me-2"></i>Add New Worker
+                </button>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xl-4 col-md-6" *ngFor="let worker of workers">
-            <div class="card shadow-sm h-100">
+        <div class="col-xl-4 col-md-6 mb-4" *ngFor="let worker of workers">
+            <div class="card shadow-sm h-100 mb-0">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3 justify-content-between">
                         <div class="d-flex align-items-center">
-                            <img class="img-40 rounded-circle me-3" src="assets/images/user/7.jpg" alt="">
+                            <img class="img-40 rounded-circle me-3"
+                                [src]="worker.image ? apiUrl + worker.image : 'assets/images/user/user.png'"
+                                style="object-fit: cover; width: 40px; height: 40px;" alt="">
                             <div>
-                                <h5 class="mb-0">{{ worker.name }}</h5>
-                                <p class="mb-0 text-muted small">{{ worker.email }}</p>
+                                <h5 class="mb-0 text-truncate" style="max-width: 150px;">{{ worker.name }}</h5>
+                                <p class="mb-0 text-muted small text-truncate" style="max-width: 150px;">{{ worker.email
+                                    }}</p>
                             </div>
                         </div>
-                        <button class="btn btn-sm btn-outline-info" (click)="editWorker(worker)">Edit</button>
+                        <div class="d-flex gap-3">
+                            <i class="fa fa-edit cursor-pointer txt-primary" (click)="editWorker(worker)"
+                                title="Edit"></i>
+                            <i class="fa fa-trash cursor-pointer text-danger" (click)="deleteWorker(worker)"
+                                title="Delete"></i>
+                        </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small text-muted">Active Assignments</label>
+                        <label class="form-label small text-muted mb-1">Assigned Projects</label>
                         <div class="d-flex flex-wrap gap-1">
-                            <span class="badge bg-primary" *ngFor="let p of worker.assignments">{{ p.project.name
-                                }}</span>
-                            <span class="text-muted small" *ngIf="!worker.assignments?.length">No active projects</span>
+                            <span class="badge bg-primary" *ngFor="let p of worker.assignments">
+                                {{ p.project.name }}
+                            </span>
+                            <span class="badge bg-secondary small" *ngIf="!worker.assignments?.length">No projects
+                                assigned</span>
                         </div>
                     </div>
 
                     <div class="mt-auto pt-3 border-top">
-                        <label class="form-label small text-muted">Assign to Project</label>
-                        <div class="input-group">
-                            <select class="form-select form-select-sm" [(ngModel)]="worker.selectedProjectId">
+                        <label class="form-label small text-muted mb-1">Assign to Project</label>
+                        <div class="input-group input-group-sm">
+                            <select class="form-select" [(ngModel)]="worker.selectedProjectId">
                                 <option value="">Select project...</option>
-                                <option *ngFor="let p of projects" [value]="p.id">{{ p.name }}</option>
+                                <option *ngFor="let p of getUnassignedProjects(worker)" [value]="p.id">{{ p.name }}
+                                </option>
                             </select>
-                            <button class="btn btn-sm btn-primary" [disabled]="!worker.selectedProjectId"
+                            <button class="btn btn-primary" [disabled]="!worker.selectedProjectId"
                                 (click)="assignWorker(worker)">
                                 Assign
                             </button>
@@ -52,7 +65,7 @@
         </div>
         <div class="col-12 text-center py-5" *ngIf="workers.length === 0">
             <div class="text-muted">
-                <i class="fa fa-users fa-3x mb-3"></i>
+                <i class="fa fa-users fa-3x mb-3 text-light"></i>
                 <h5>No workers found</h5>
                 <p>Click "Add New Worker" to get started</p>
             </div>
@@ -61,33 +74,56 @@
 </div>
 
 <!-- Add/Edit Worker Modal -->
-<div class="modal fade show" *ngIf="showCreateModal" style="display: block; background: rgba(0,0,0,0.5);">
-    <div class="modal-dialog">
+<div class="modal fade show" *ngIf="showCreateModal"
+    style="display: block; background: rgba(0,0,0,0.5); z-index: 1050;">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">{{ editingWorker ? 'Update' : 'Add New' }} Worker</h5>
+                <h5 class="modal-title font-white">{{ editingWorker ? 'Update' : 'Add New' }} Worker</h5>
                 <button type="button" class="btn-close btn-close-white" (click)="closeModal()"></button>
             </div>
             <div class="modal-body p-4">
-                <div class="mb-3">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-control" [(ngModel)]="newWorker.email"
-                        placeholder="email@example.com">
+                <div class="mb-4 text-center">
+                    <div class="d-flex flex-column align-items-center gap-3">
+                        <div class="position-relative">
+                            <img [src]="newWorker.image || 'assets/images/user/user.png'" class="worker-avatar-preview">
+                            <button type="button"
+                                class="btn btn-primary position-absolute top-0 end-0 rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+                                (click)="uploadTrigger()" style="width: 24px; height: 24px; padding: 0;">
+                                <i class="fa fa-pencil small"></i>
+                            </button>
+                            <div class="w-100 d-none">
+                                <input type="file" #imageInput class="form-control form-control-sm"
+                                    (change)="onFileSelected($event)" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-control" [(ngModel)]="newWorker.name" placeholder="John Doe">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">{{ editingWorker ? 'New Password (leave blank to keep current)' :
-                        'Password' }}</label>
-                    <input type="password" class="form-control" [(ngModel)]="newWorker.password">
+
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label fw-bold small">Full Name</label>
+                        <input type="text" class="form-control" [(ngModel)]="newWorker.name" placeholder="John Doe">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold small">Email Address</label>
+                        <input type="email" class="form-control" [(ngModel)]="newWorker.email"
+                            placeholder="email@example.com">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold small">
+                            {{ editingWorker ? 'New Password (leave blank to keep current)' : 'Password' }}
+                        </label>
+                        <input type="password" class="form-control" [(ngModel)]="newWorker.password"
+                            placeholder="••••••••">
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer border-top-0">
-                <button type="button" class="btn btn-link text-muted" (click)="closeModal()">Cancel</button>
-                <button type="button" class="btn btn-primary px-4" (click)="saveWorker()">
-                    {{ editingWorker ? 'Update Worker' : 'Create Worker' }}
+            <div class="modal-footer border-top-0 bg-light-brand rounded-bottom">
+                <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary px-4" (click)="saveWorker()"
+                    [disabled]="!newWorker.email || !newWorker.name">
+                    <i class="fa fa-check me-1"></i> {{ editingWorker ? 'Update Worker' : 'Create Worker' }}
                 </button>
             </div>
         </div>
