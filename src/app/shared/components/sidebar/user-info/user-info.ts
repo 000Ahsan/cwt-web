@@ -8,7 +8,7 @@ import { FeatherIcons } from '../../feather-icons/feather-icons';
   templateUrl: './user-info.html',
   styleUrls: ['./user-info.scss'],
   standalone: true,
-  imports: [CommonModule, FeatherIcons],
+  imports: [CommonModule],
 })
 export class UserInfo {
   private authService = inject(AuthService);

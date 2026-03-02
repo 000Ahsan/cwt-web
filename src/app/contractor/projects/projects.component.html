@@ -31,7 +31,7 @@
                                     <td>
                                         <span class="badge"
                                             [ngClass]="project.isActive ? 'bg-success' : 'bg-secondary'">
-                                            {{ project.isActive ? 'Active' : 'Archived' }}
+                                            {{ project.active ? 'Active' : 'Archived' }}
                                         </span>
                                     </td>
                                     <td>{{ project.workerCount || 0 }}</td>
