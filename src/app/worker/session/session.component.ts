@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WorkerService } from '../../core/services/worker.service';
 import { Router } from '@angular/router';
+import { Breadcrumb } from '../../shared/components/breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-worker-session',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, Breadcrumb],
   templateUrl: './session.component.html',
   styles: [`
     .display-4 { font-weight: 600; }

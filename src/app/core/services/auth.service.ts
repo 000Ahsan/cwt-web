@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthResponse, User, UserRole } from '../models/auth.model';
+import { environment } from '../../../../public/environments/environment.prod';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +11,7 @@ import { AuthResponse, User, UserRole } from '../models/auth.model';
 export class AuthService {
     private http = inject(HttpClient);
     private router = inject(Router);
-    private apiUrl = 'http://localhost:3000/auth';
+    private apiUrl = environment.apiBaseUrl + '/auth';
 
     private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromStorage());
     public currentUser$ = this.currentUserSubject.asObservable();

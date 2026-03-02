@@ -2,11 +2,12 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { WorkerService } from '../../core/services/worker.service';
+import { Breadcrumb } from '../../shared/components/breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-worker-projects',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Breadcrumb],
   templateUrl: './projects.component.html',
   styles: []
 })

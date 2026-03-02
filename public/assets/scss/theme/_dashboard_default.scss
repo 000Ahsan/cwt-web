@@ -8,8 +8,10 @@
       margin-bottom: -30px;
     }
   }
+
   .transaction-totalbal {
     padding-left: 30px;
+
     h2 {
       display: flex;
       align-items: center;
@@ -17,55 +19,67 @@
       font-weight: 700;
     }
   }
+
   #chart-3dash {
     margin-left: -15px;
     margin-right: -15px;
   }
 }
+
 // Helper classes page css
 .helper-classes {
   padding: 30px;
   margin-bottom: 0;
   white-space: pre-line;
 }
+
 // box-shadow
 .box-shadow-title {
   .sub-title {
     margin: 30px 0;
   }
+
   .card-body {
     .row.text-center {
       align-items: center;
     }
   }
 }
+
 // list //
 .list-group-item {
   background-color: $light-background;
   border-color: $light-gray;
+
   &.active {
     background-color: var(--theme-default);
+
     &:hover {
       background-color: var(--theme-default);
       color: $white;
     }
   }
 }
+
 .list-group-item-action {
+
   &:hover,
   &:focus {
     background-color: rgba($primary-color, 0.1);
     color: var(--theme-default);
   }
+
   &.active {
     background-color: var(--theme-default);
     color: $white;
+
     &:hover {
       background-color: var(--theme-default);
       color: $white;
     }
   }
 }
+
 // general-widget
 .general-widget {
   .custom-card {
@@ -76,6 +90,7 @@
     }
   }
 }
+
 .dashboard-default-sec,
 .dashboard-2-main {
   .card {
@@ -84,22 +99,26 @@
         display: inline-flex;
         font-size: 14px;
       }
+
       p {
         font-weight: 500;
         color: $light-text;
         margin-bottom: unset;
         font-size: 12px;
       }
+
       h5 {
         font-size: 18px;
         font-weight: 700;
       }
+
       ul.week-date {
         li {
           display: inline-block;
           font-size: 12px;
           color: $light-font;
           font-weight: 500;
+
           &:nth-child(n + 2) {
             margin-left: 10px;
             padding-left: 15px;
@@ -108,11 +127,14 @@
         }
       }
     }
+
     &.income-card {
       overflow: hidden;
+
       .card-header {
         padding-bottom: 0;
       }
+
       .card-body {
         .round-box {
           width: 55px;
@@ -125,6 +147,7 @@
           margin-right: auto;
           margin-bottom: 20px;
           transition: all 0.5s ease;
+
           svg {
             width: auto;
             height: 25px;
@@ -132,31 +155,38 @@
             transition: all 0.5s ease;
           }
         }
+
         .btn-arrow {
           i {
             display: flex;
             justify-content: center;
           }
         }
+
         .knob-block {
           position: relative;
+
           input {
             color: $dark-light !important;
             font-size: 14px !important;
           }
+
           canvas {
             margin-bottom: 12px;
           }
         }
+
         .round-progress {
           .progress-circle {
             position: relative;
           }
         }
+
         .parrten {
           position: absolute;
           top: -25px;
           right: -25px;
+
           svg {
             fill: rgba($primary-color, 0.03);
             width: 100px;
@@ -165,52 +195,69 @@
           }
         }
       }
+
       &.card-primary {
         .round-box {
           background-color: rgba($primary-color, 0.1);
+
           svg {
             fill: var(--theme-default);
           }
         }
+
         &:hover {
           .round-box {
-            background-color: var(--theme-default);
+            transition: all 0.5s ease;
+            transform: scale(1.2);
+
             svg {
-              fill: $white;
+              transition: all 0.5s ease;
+              transform: scale(1.2);
             }
           }
         }
       }
+
       &.card-secondary {
         border-color: $border-secondary;
+
         .round-box {
           background-color: rgba($secondary-color, 0.1);
+
           svg {
             fill: var(--theme-secondary);
           }
         }
+
         &:hover {
           .round-box {
-            background-color: var(--theme-secondary);
+            transition: all 0.5s ease;
+            transform: scale(1.2);
+
             svg {
-              fill: $white;
+              transition: all 0.5s ease;
+              transform: scale(1.2);
             }
           }
         }
       }
+
       .card-body {
         h3 {
           font-weight: 700;
         }
+
         h5 {
           font-size: 22px;
           font-weight: 700;
         }
+
         p {
           font-size: 12px;
           color: $light-text;
           font-weight: 500;
           text-transform: capitalize;
+
           &:last-child {
             font-weight: 700;
           }
@@ -219,13 +266,16 @@
     }
   }
 }
+
 .center-content {
   margin: auto;
   padding-right: 50px;
 }
+
 .dashboard-default-sec {
   #chart-dashbord {
     .apexcharts-legend {
+
       &.position-right,
       &.position-left {
         left: 0 !important;
@@ -237,23 +287,29 @@
     }
   }
 }
+
 .position-unset {
   position: unset;
 }
+
 .profile-greeting {
   border: none;
+
   .card-header {
     padding-bottom: 0 !important;
     background-color: transparent;
+
     .setting-list {
       border-radius: 50%;
     }
   }
+
   h3 {
     color: $white;
     font-weight: 700;
     margin-bottom: 10px;
   }
+
   p {
     font-size: 14px;
     line-height: 25px;
@@ -264,17 +320,21 @@
     padding: 0 15px;
     margin-bottom: 15px;
   }
+
   .btn {
     color: var(--theme-default);
     font-weight: 700;
+
     &:hover {
       background-color: $white !important;
       border-color: $white !important;
     }
   }
+
   .card-body {
     z-index: 2;
   }
+
   .confetti {
     position: absolute;
     top: 0;
@@ -284,6 +344,7 @@
     overflow: hidden;
     z-index: 1;
   }
+
   .confetti-piece {
     position: absolute;
     width: 15px;
@@ -293,100 +354,122 @@
     border-radius: 10px 50px 35px 20px;
     animation: makeItRain 5s infinite ease-out;
   }
+
   .confetti-piece:nth-child(1) {
     left: 7%;
     transform: rotate(-40deg);
     animation: makeItRain 6s infinite ease-out;
   }
+
   .confetti-piece:nth-child(2) {
     left: 14%;
     transform: rotate(4deg);
     animation: makeItRain 7s infinite ease-out;
   }
+
   .confetti-piece:nth-child(3) {
     left: 21%;
     transform: rotate(-51deg);
     animation: makeItRain 5s infinite ease-out;
   }
+
   .confetti-piece:nth-child(4) {
     left: 28%;
     transform: rotate(61deg);
     animation: makeItRain 6s infinite ease-out;
   }
+
   .confetti-piece:nth-child(5) {
     left: 35%;
     transform: rotate(-52deg);
     animation: makeItRain 5s infinite ease-out;
   }
+
   .confetti-piece:nth-child(6) {
     left: 42%;
     transform: rotate(38deg);
     animation: makeItRain 4s infinite ease-out;
   }
+
   .confetti-piece:nth-child(7) {
     left: 49%;
     transform: rotate(11deg);
     animation: makeItRain 8s infinite ease-out;
   }
+
   .confetti-piece:nth-child(8) {
     left: 56%;
     transform: rotate(49deg);
     animation: makeItRain 7s infinite ease-out;
   }
+
   .confetti-piece:nth-child(9) {
     left: 63%;
     transform: rotate(-72deg);
     animation: makeItRain 6s infinite ease-out;
   }
+
   .confetti-piece:nth-child(10) {
     left: 70%;
     transform: rotate(10deg);
     animation: makeItRain 5s infinite ease-out;
   }
+
   .confetti-piece:nth-child(11) {
     left: 77%;
     transform: rotate(4deg);
     animation: makeItRain 8s infinite ease-out;
   }
+
   .confetti-piece:nth-child(12) {
     left: 84%;
     transform: rotate(42deg);
     animation: makeItRain 4s infinite ease-out;
   }
+
   .confetti-piece:nth-child(13) {
     left: 91%;
     transform: rotate(-72deg);
     animation: makeItRain 6s infinite ease-out;
   }
+
   .confetti-piece:nth-child(odd) {
     background-color: #418578;
   }
+
   .confetti-piece:nth-child(even) {
     z-index: 1;
   }
+
   .confetti-piece:nth-child(4n) {
     width: 5px;
     height: 12px;
   }
+
   .confetti-piece:nth-child(3n) {
     width: 3px;
     height: 10px;
   }
+
   .confetti-piece:nth-child(4n-7) {
     background-color: #418578;
   }
+
   @keyframes makeItRain {
     from {
       opacity: 0;
     }
+
     50% {
       opacity: 1;
     }
+
     to {
       -webkit-transform: translateY(-350px);
     }
   }
 }
+
 .latest-update-sec,
 .recent-order-sec {
   .media {
@@ -394,12 +477,14 @@
       margin-left: 20px;
     }
   }
+
   table {
     tbody {
       h6 {
         font-size: 14px;
         font-weight: 600;
       }
+
       tr {
         td {
           a {
@@ -407,9 +492,11 @@
             letter-spacing: 0px;
             line-height: 35px;
             font-weight: 500;
+
             .btn {
               font-size: 12px;
             }
+
             img {
               width: 30px !important;
               margin-right: 1rem !important;
@@ -419,17 +506,20 @@
       }
     }
   }
+
   h3 {
     font-size: 24px;
     line-height: 25px;
     font-weight: 700;
     text-align: center;
   }
+
   span {
     font-size: 14px;
     line-height: 18px;
     font-weight: 600;
   }
+
   .btn {
     font-size: 12px;
     line-height: 25px;
@@ -437,31 +527,37 @@
     font-weight: 700;
     text-align: center;
   }
+
   h5 {
     font-size: 18px;
     font-weight: 700;
   }
+
   h4 {
     font-size: 22px;
     line-height: 30px;
     font-weight: 700;
   }
+
   p {
     font-size: 12px;
     font-weight: 500;
     color: #717171;
     margin-bottom: 0;
   }
+
   .recent-order-sec {
     h5 {
       margin-bottom: 0;
     }
+
     table {
       th {
         font-size: 14px;
         line-height: 36px;
         font-weight: 700;
       }
+
       tr {
         td {
           p {
@@ -475,6 +571,7 @@
       }
     }
   }
+
   .recent-order-sec {
     table {
       th {
@@ -482,6 +579,7 @@
         line-height: 36px;
         font-weight: 700;
       }
+
       tr {
         td {
           p {
@@ -495,6 +593,7 @@
       }
     }
   }
+
   .rate-sec {
     .card {
       .card-header {
@@ -504,11 +603,13 @@
           justify-content: flex-end;
         }
       }
+
       .card-body {
         padding: 15px;
       }
     }
   }
+
   .recent-order-sec {
     .card {
       .card-body {
@@ -517,32 +618,40 @@
     }
   }
 }
+
 .latest-update-sec {
   .media {
     align-items: center;
+
     img,
     svg {
       width: auto;
       height: 20px;
     }
   }
+
   .card-body {
     padding-top: 0;
   }
+
   table {
     tbody {
       tr {
         transition: all 0.5s ease;
+
         &:hover {
           background-color: rgba($secondary-color, 0.1);
+
           td {
             a {
               color: var(--theme-secondary);
             }
+
             .media {
               svg {
                 fill: var(--theme-secondary);
               }
+
               .media-body {
                 span {
                   color: var(--theme-secondary);
@@ -551,6 +660,7 @@
             }
           }
         }
+
         td {
           a {
             color: $theme-font-color;
@@ -560,28 +670,34 @@
     }
   }
 }
+
 .recent-order-sec {
   .table {
     th {
       border-bottom: none;
     }
+
     td {
       padding-top: 15px;
       padding-bottom: 15px;
       vertical-align: middle;
     }
+
     thead,
     tbody {
       tr {
         .media {
           align-items: center;
         }
+
         &:hover {
           background-color: rgba($primary-color, 0.1);
           --bs-table-bg: transparent;
+
           td {
             color: var(--theme-default);
           }
+
           p {
             color: var(--theme-default);
           }
@@ -590,9 +706,11 @@
     }
   }
 }
+
 #chart-dashbord {
   .apexcharts-legend-series {
     text-align: right;
+
     .apexcharts-legend-marker {
       display: none;
       text-align: right;
@@ -600,10 +718,12 @@
     }
   }
 }
+
 #yearly-overview-chart {
   max-width: 650px;
   margin: 35px auto;
 }
+
 .profile-greeting {
   background-image: url(../../images/dashboard/bg.jpg);
   background-size: cover !important;
@@ -611,6 +731,7 @@
   background-position: center center;
   position: relative;
 }
+
 .chart_data_left,
 .chart_data_right {
   .card-body {
@@ -619,14 +740,18 @@
         .hospital-small-chart {
           align-items: center;
           background-color: rgba($primary-color, 0.05);
+
           .small-bar {
             position: relative;
+
             .flot-chart-container {
               height: 74px;
               width: 75px;
+
               .chartist-tooltip {
                 position: absolute;
                 opacity: 0;
+
                 .chartist-tooltip-value {
                   font-size: 10px;
                   padding: 5px;
@@ -634,10 +759,12 @@
                   background-color: rgba(0, 0, 0, 0.5);
                   border-radius: 4px;
                 }
+
                 &.tooltip-show {
                   opacity: 1;
                 }
               }
+
               svg {
                 position: absolute;
                 bottom: 23px;
@@ -645,9 +772,11 @@
                 height: 95%;
               }
             }
+
             .small-chart {
               svg {
                 .ct-series-a {
+
                   .ct-point,
                   .ct-line,
                   .ct-bar,
@@ -655,7 +784,9 @@
                     stroke: var(--theme-default);
                   }
                 }
+
                 .ct-series-b {
+
                   .ct-point,
                   .ct-line,
                   .ct-bar,
@@ -664,6 +795,7 @@
                   }
                 }
               }
+
               .chartist-tooltip {
                 .chartist-tooltip-value {
                   background-color: var(--theme-default);
@@ -671,6 +803,7 @@
                 }
               }
             }
+
             .small-chart1 {
               .chartist-tooltip {
                 .chartist-tooltip-value {
@@ -678,8 +811,10 @@
                   box-shadow: 1px 1.732px 8px 0px rgba($danger-color, 0.5);
                 }
               }
+
               svg {
                 .ct-series-a {
+
                   .ct-point,
                   .ct-line,
                   .ct-bar,
@@ -687,7 +822,9 @@
                     stroke: $danger-color;
                   }
                 }
+
                 .ct-series-b {
+
                   .ct-point,
                   .ct-line,
                   .ct-bar,
@@ -697,6 +834,7 @@
                 }
               }
             }
+
             .small-chart2 {
               .chartist-tooltip {
                 .chartist-tooltip-value {
@@ -704,8 +842,10 @@
                   box-shadow: 1px 1.732px 8px 0px rgba($primary-color, 0.5);
                 }
               }
+
               svg {
                 .ct-series-a {
+
                   .ct-point,
                   .ct-line,
                   .ct-bar,
@@ -713,7 +853,9 @@
                     stroke: var(--theme-default);
                   }
                 }
+
                 .ct-series-b {
+
                   .ct-point,
                   .ct-line,
                   .ct-bar,
@@ -723,9 +865,11 @@
                 }
               }
             }
+
             .small-chart3 {
               svg {
                 .ct-series-a {
+
                   .ct-point,
                   .ct-line,
                   .ct-bar,
@@ -733,7 +877,9 @@
                     stroke: $danger-color;
                   }
                 }
+
                 .ct-series-b {
+
                   .ct-point,
                   .ct-line,
                   .ct-bar,
@@ -742,6 +888,7 @@
                   }
                 }
               }
+
               .chartist-tooltip {
                 .chartist-tooltip-value {
                   background-color: $danger-color;
@@ -751,20 +898,24 @@
             }
           }
         }
+
         .media-body {
           .right-chart-content {
             margin-left: 30px;
+
             h4 {
               line-height: 1;
               color: $dark-light !important;
               font-weight: 500;
             }
+
             span {
               color: rgba(43, 43, 43, 0.7);
               font-weight: 500;
             }
           }
         }
+
         &.border-none {
           border-right: none !important;
         }
@@ -772,9 +923,11 @@
     }
   }
 }
+
 .activity-timeline {
   .media {
     align-items: center;
+
     .activity-line {
       top: 126px;
       height: 57%;
@@ -785,10 +938,10 @@
       left: 36px;
       z-index: 1;
     }
+
     @each $circle-name, $circle-color in (primary, $primary-color), (secondary, $secondary-color),
-      (success, $success-color), (danger, $danger-color), (info, $light-font), (light, $light-gray),
-      (dark, $dark-color), (warning, $warning-color)
-    {
+    (success, $success-color), (danger, $danger-color), (info, $light-font), (light, $light-gray),
+    (dark, $dark-color), (warning, $warning-color) {
       .circle-dot-#{$circle-name} {
         background-color: rgba($circle-color, 0.25);
         border-radius: 100%;
@@ -797,22 +950,27 @@
         color: $circle-color;
       }
     }
-    + .media {
+
+    +.media {
       margin-top: 30px;
     }
+
     .media-body {
       margin-left: 20px;
     }
   }
 }
+
 .twitter-typeahead {
   display: block !important;
 }
+
 span.twitter-typeahead {
   .league-name {
     font-size: 16px;
     padding: 6px 10px 0;
   }
+
   .tt-menu {
     float: left;
     width: 100%;
@@ -829,6 +987,7 @@ span.twitter-typeahead {
     border: none;
     padding: 0;
   }
+
   .tt-suggestion {
     color: $dark-editor-document;
     opacity: 0.6;
@@ -837,12 +996,14 @@ span.twitter-typeahead {
     border-top: 1px solid $light-semi-gray;
     background-color: $light-background;
     cursor: pointer;
+
     &:hover,
     &:focus {
       background-color: var(--theme-default);
       color: $white;
       opacity: 1;
     }
+
     &.active,
     &:active {
       color: $white;
@@ -850,6 +1011,7 @@ span.twitter-typeahead {
     }
   }
 }
+
 // draggable card
 #draggableMultiple {
   .ui-sortable-handle {
@@ -858,37 +1020,45 @@ span.twitter-typeahead {
     }
   }
 }
+
 //index dashboard css ends
 .crm-activity {
-  > li {
+  >li {
     font-weight: 600;
-    + li {
+
+    +li {
       border-top: 1px solid $light-semi-gray;
       margin-top: 14px;
       padding-top: 14px;
+
       h6 {
         font-size: 14px;
         line-height: 1.5;
         margin-bottom: 5px;
       }
     }
+
     h6 {
       font-size: 14px;
     }
   }
+
   span {
     font-size: 40px;
   }
+
   ul.dates {
     h6 {
       color: $theme-body-font-color;
     }
+
     li {
       color: $light-text;
       font-size: 12px;
       display: inline-block;
       line-height: 1;
-      + li {
+
+      +li {
         border-left: 1px solid $light-semi-gray;
         padding-left: 10px;
         margin-left: 10px;
@@ -896,56 +1066,69 @@ span.twitter-typeahead {
     }
   }
 }
+
 //general widget css start
 .ecommerce-widget {
   box-shadow: none;
   border: 1px solid $light-gray !important;
   border-radius: 5px;
+
   h6 {
     color: $light-font;
   }
+
   .total-num {
     color: $theme-body-font-color;
     margin: 0;
     letter-spacing: 1px;
     font-weight: 600;
     font-size: 24px;
+
     span {
       color: $black;
     }
   }
+
   .row {
     align-items: center;
   }
+
   .progress-showcase {
     margin-top: 38px;
+
     .progress {
       height: 20px;
     }
   }
+
   span {
     color: $light-text;
     margin: 0;
     cursor: pointer;
     font-weight: 600;
   }
+
   .icon {
     color: $light-semi-gray;
     font-size: 40px;
   }
+
   .flot-chart-container {
     height: 100px;
     padding: 0;
     margin: 0;
     border: transparent;
   }
+
   .morris-default-style {
     display: none !important;
   }
+
   svg {
     -webkit-filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.3));
     filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.3));
   }
+
   ul {
     li {
       color: $light-text;
@@ -953,6 +1136,7 @@ span.twitter-typeahead {
     }
   }
 }
+
 .static-top-widget {
   &:hover {
     .icon-bg {
@@ -960,34 +1144,41 @@ span.twitter-typeahead {
       transition: all 0.3s ease;
     }
   }
+
   div.align-self-center {
     svg {
       width: 30px;
       height: 30px;
     }
   }
+
   .media-body {
     align-self: center !important;
     padding-left: 30px;
+
     .icon-bg {
       position: absolute;
       right: -14px;
       top: 6px;
       opacity: 0.2;
       transition: all 0.3s ease;
+
       svg {
         width: 100px;
         height: 100px;
       }
     }
   }
+
   span {
     font-weight: 500;
   }
+
   h4 {
     font-weight: 600;
   }
 }
+
 .bg-danger {
   .media.static-top-widget {
     .align-self-center {
@@ -995,6 +1186,7 @@ span.twitter-typeahead {
     }
   }
 }
+
 .widget-joins {
   &:before {
     content: '';
@@ -1004,6 +1196,7 @@ span.twitter-typeahead {
     background-color: $light-semi-gray;
     left: calc(50% - 1px);
   }
+
   &:after {
     content: '';
     position: absolute;
@@ -1013,40 +1206,51 @@ span.twitter-typeahead {
     left: 0;
     top: 50%;
   }
+
   .media {
     padding: 30px;
     text-align: center;
     align-items: center;
+
     span {
       font-weight: 500;
+
       &.widget-t {
         color: $light-text;
       }
     }
+
     h5 {
       font-weight: 600;
       font-size: 18px;
     }
+
     .details {
       border-left: 1px solid $light-gray;
       padding: 1px 0;
     }
+
     .media-body {
       text-align: left;
-      > span {
+
+      >span {
         color: $light-text;
       }
+
       svg {
         width: 40px;
         height: 40px;
       }
+
       h5 {
         span {
           font-weight: 600;
         }
       }
+
       h6 {
         font-weight: 600;
+
         span {
           color: $black;
         }
@@ -1054,6 +1258,7 @@ span.twitter-typeahead {
     }
   }
 }
+
 .redial-social-widget {
   border-radius: 100%;
   width: 100px;
@@ -1077,17 +1282,17 @@ span.twitter-typeahead {
     align-items: center;
     justify-content: center;
   }
+
   &.radial-bar-70 {
     background-image:
       linear-gradient(342deg, $primary-color 50%, transparent 50%, transparent),
-      linear-gradient(
-        270deg,
+      linear-gradient(270deg,
         $primary-color 50%,
         rgba($primary-color, 0.1) 50%,
-        rgba($primary-color, 0.1)
-      );
+        rgba($primary-color, 0.1));
   }
 }
+
 .social-widget-card {
   span {
     color: $light-text;
@@ -1097,6 +1302,7 @@ span.twitter-typeahead {
     font-size: $btn-sm-font-size;
     font-weight: 600;
   }
+
   h5 {
     color: $light-text;
     text-transform: uppercase;
@@ -1106,11 +1312,13 @@ span.twitter-typeahead {
     font-size: 16px;
     font-weight: 700;
   }
+
   h4 {
     font-size: $btn-lg-font-size;
     font-weight: 600;
   }
 }
+
 .browser-widget {
   &:hover {
     img {
@@ -1120,30 +1328,36 @@ span.twitter-typeahead {
       transform: scale(1.1) rotate(5deg);
     }
   }
+
   img {
     height: 80px;
     filter: grayscale(100%);
     transform: scale(1) rotate(0deg);
     transition: all 0.3s ease;
   }
+
   .media-body {
     text-align: center;
     column-count: 3;
     column-rule: 1px solid $light-color;
+
     p {
       margin-bottom: 5px;
       font-weight: 600;
       color: $light-text;
     }
+
     span {
       margin-bottom: 0;
       color: $theme-body-sub-title-color;
     }
+
     h4 {
       color: $theme-body-font-color;
       margin-bottom: 0;
       font-size: $btn-lg-font-size;
       font-weight: 600;
+
       span {
         color: #333333;
         font-weight: 600;
@@ -1151,7 +1365,9 @@ span.twitter-typeahead {
     }
   }
 }
+
 .testimonial {
+
   #owl-carousel-testimonial,
   #owl-carousel-testimonial-rtl {
     .owl-stage-outer {
@@ -1166,6 +1382,7 @@ span.twitter-typeahead {
       }
     }
   }
+
   i {
     font-size: 60px;
     color: rgba(43, 43, 43, 0.7);
@@ -1175,6 +1392,7 @@ span.twitter-typeahead {
     opacity: 0.1;
     z-index: -1;
   }
+
   p {
     color: $light-text;
     font-style: italic;
@@ -1182,19 +1400,23 @@ span.twitter-typeahead {
     margin-top: 30px;
     margin-top: 15px;
   }
+
   h5 {
     color: $theme-body-font-color;
     padding-top: 10px;
     margin-bottom: 0;
     font-weight: 600;
   }
+
   span {
     color: $light-text;
   }
+
   img {
     margin: 0 auto;
   }
 }
+
 %clock-widget {
   position: absolute;
   width: 24px;
@@ -1204,17 +1426,21 @@ span.twitter-typeahead {
   margin-top: -30px;
   margin-left: -25px;
 }
+
 .cal-date-widget {
   span {
     font-weight: 600;
   }
+
   p {
     font-weight: 500;
   }
+
   .cal-info {
     display: flex;
     align-items: center;
     height: 100%;
+
     h2 {
       font-size: 100px;
       color: var(--theme-default);
@@ -1222,49 +1448,60 @@ span.twitter-typeahead {
       margin-bottom: 20px;
       line-height: 0.7;
     }
+
     span {
       font-size: 18px;
     }
+
     p {
       color: $light-text;
       margin-top: 15px;
     }
   }
 }
+
 .weather-widget-two {
   position: relative;
   background-color: var(--theme-default);
   height: 374px;
   overflow: hidden;
+
   p {
     color: $white;
   }
+
   .card-body {
     .media {
       margin-bottom: 10px;
     }
   }
+
   svg {
     path.climacon_component-stroke {
       fill: $white;
     }
   }
+
   .top-bg-whether {
     position: absolute;
     top: -50px;
     right: -28px;
     opacity: 0.1;
+
     svg {
       width: 200px;
       height: 200px;
     }
   }
+
   .num {
     font-weight: 600;
   }
+
   .climacon_component-stroke {
     stroke: $white;
   }
+
   .bottom-whetherinfo {
     svg {
       width: 150px;
@@ -1275,6 +1512,7 @@ span.twitter-typeahead {
       top: 0;
       left: -35px;
     }
+
     .whether-content {
       text-align: right;
       position: relative;
@@ -1283,6 +1521,7 @@ span.twitter-typeahead {
     }
   }
 }
+
 .mobile-clock-widget {
   background: url(../../images/other-images/mobile-clock-wallpaper.jpg);
   background-repeat: no-repeat;
@@ -1296,16 +1535,19 @@ span.twitter-typeahead {
   background-blend-mode: overlay;
   background-color: darken($primary-color, 10%);
   position: relative;
+
   .bg-svg {
     position: absolute;
     top: -4px;
     left: -25px;
+
     svg {
       width: 150px;
       height: 150px;
       opacity: 0.08;
     }
   }
+
   .clock {
     padding: 0;
     position: relative;
@@ -1316,39 +1558,48 @@ span.twitter-typeahead {
     display: block;
     background: url(../../images/other-images/clock-face.png) 5% center no-repeat;
   }
+
   .sec {
     @extend %clock-widget;
     background: url(../../images/sec.svg);
     z-index: 3;
   }
+
   .min {
     background: url(../../images/min.svg);
     z-index: 2;
   }
+
   .hour {
     background: url(../../images/hour.svg);
     z-index: 1;
   }
 }
+
 .min {
   @extend %clock-widget;
 }
+
 .hour {
   @extend %clock-widget;
 }
+
 //general widget css start
 .mobile-clock-widget {
   #date {
     margin-top: 30px;
     font-weight: 700;
   }
+
   p {
     font-weight: 600;
   }
 }
+
 .flot-chart-container {
   height: 250px;
 }
+
 .calender-widget {
   .cal-img {
     background: url(../../images/other-images/calender-bg.png);
@@ -1357,6 +1608,7 @@ span.twitter-typeahead {
     border-top-right-radius: 4px;
     height: 280px;
   }
+
   .cal-date {
     width: 100px;
     height: 100px;
@@ -1369,6 +1621,7 @@ span.twitter-typeahead {
     display: flex;
     align-items: center;
     justify-content: center;
+
     h5 {
       margin-bottom: 0;
       line-height: 1.5;
@@ -1377,26 +1630,31 @@ span.twitter-typeahead {
       font-size: $btn-lg-font-size;
     }
   }
+
   .cal-desc {
     h6 {
       font-size: 20px;
       line-height: 1.5;
       margin-bottom: 10px;
     }
+
     p {
       color: $light-text;
       font-size: 15px;
     }
+
     span {
       line-height: 1.6;
     }
   }
 }
+
 .contact-form {
   .theme-form {
     border: 1px solid $light-gray;
     padding: 30px;
     border-radius: 4px;
+
     .form-icon {
       width: 53px;
       height: 53px;
@@ -1412,30 +1670,37 @@ span.twitter-typeahead {
       margin-top: -55px;
       margin-bottom: 15px;
     }
+
     label {
       font-weight: 600;
     }
   }
+
   .btn {
     padding: 10px 30px;
   }
 }
+
 //chart widget css
 .chart-widget-top {
+
   #chart-widget1,
   #chart-widget2,
   #chart-widget3 {
     margin-bottom: -14px;
+
     .apexcharts-xaxistooltip {
       display: none;
     }
   }
 }
+
 .bar-chart-widget {
   .top-content {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
   }
+
   .earning-details {
     height: 100%;
     align-items: center;
@@ -1443,63 +1708,76 @@ span.twitter-typeahead {
     text-align: center;
     display: flex;
     letter-spacing: 1px;
+
     i {
       font-size: 230px;
       position: absolute;
       opacity: 0.1;
       right: -30px;
       top: 0;
+
       &:hover {
         transform: rotate(-5deg) scale(1.1);
         transition: all 0.3s ease;
       }
     }
   }
+
   .num {
     font-weight: 600;
+
     .color-bottom {
       color: $black;
     }
   }
 }
+
 ngb-datepicker {
   border: 0 !important;
   box-shadow: 0 4px 14px rgba(174, 197, 231, 0.5);
+
   .ngb-dp-header {
     background-color: $white;
     padding: 4px 0 10px;
+
     .ngb-dp-arrow-btn {
       background-color: $primary-color;
       color: $white;
       width: 32px;
       height: 32px;
       margin: 0;
+
       span {
         width: 8px;
         height: 8px;
       }
     }
   }
+
   .ngb-dp-weekday {
     color: $theme-body-font-color;
     font-weight: 600;
     font-style: initial;
   }
+
   .ngb-dp-content {
     .ngb-dp-week {
       .btn-light {
         background-color: $white !important;
         border-color: $white !important;
         color: $theme-body-font-color;
+
         &:hover {
           background-color: $primary-color !important;
           border-color: $primary-color !important;
           color: $white;
           outline: 0;
+
           &.text-muted {
             color: $white !important;
           }
         }
+
         &.text-white {
           background-color: $primary-color !important;
           border: 1px solid $primary-color !important;
@@ -1507,24 +1785,29 @@ ngb-datepicker {
         }
       }
     }
+
     .ngb-dp-today {
       .btn-light {
         color: $theme-body-font-color !important;
+
         &:hover {
           color: $white !important;
         }
       }
     }
   }
+
   .ngb-dp-weekdays {
     background-color: $white;
     border-bottom: 0;
   }
 }
+
 .digits {
   .position-absolute {
     .input-group {
       border: 1px solid transparent;
+
       input {
         border: 0;
         background: unset;
@@ -1532,13 +1815,16 @@ ngb-datepicker {
     }
   }
 }
+
 .cal-date-widget {
   .cal-datepicker {
     ngb-datepicker {
       padding: 20px;
     }
+
     .ngb-dp-month {
       width: 100%;
+
       .ngb-dp-day {
         &.ngb-dp-today {
           border: 2px solid $primary-color;
@@ -1547,9 +1833,11 @@ ngb-datepicker {
           font-weight: bold;
         }
       }
+
       .ngb-dp-weekday {
         font-weight: bold;
       }
+
       .ngb-dp-weekday,
       .ngb-dp-day {
         width: 100%;
@@ -1558,28 +1846,33 @@ ngb-datepicker {
     }
   }
 }
+
 .cal-datepicker {
   ngb-datepicker-navigation-select {
-    > .form-select {
-      + .form-select {
+    >.form-select {
+      +.form-select {
         margin-left: 5px;
       }
     }
   }
 }
+
 .bar-chart-widget {
   .num {
     font-size: 20px;
   }
 }
+
 .bottom-content {
   span {
     color: $theme-body-sub-title-color;
   }
+
   .block-bottom {
     display: block;
   }
 }
+
 .user-status {
   table {
     tbody {
@@ -1587,20 +1880,24 @@ ngb-datepicker {
         td {
           vertical-align: middle;
           font-weight: 500;
+
           .d-inline-block {
             margin-top: 11px;
           }
+
           .image-sm-size {
             img {
               width: 41px;
             }
           }
         }
+
         &:last-child td {
           padding-bottom: 0;
         }
       }
     }
+
     thead {
       tr {
         th {
@@ -1614,43 +1911,53 @@ ngb-datepicker {
     }
   }
 }
+
 @keyframes am-moving-dashes {
   100% {
     stroke-dashoffset: -30px;
   }
 }
+
 @keyframes am-pulsating {
   0% {
     stroke-opacity: 1;
     stroke-width: 0;
   }
+
   100% {
     stroke-opacity: 0;
     stroke-width: 50px;
   }
 }
+
 @keyframes am-draw {
   0% {
     stroke-dashoffset: 500%;
   }
+
   100% {
     stroke-dashoffset: 0;
   }
 }
+
 .serial-chart .chart-container {
   width: 100%;
   height: 500px;
+
   .lastBullet {
     animation: am-pulsating 1s ease-out infinite;
   }
+
   .amcharts-graph-column-front {
     transition: all 0.3s 0.3s ease-out;
+
     &:hover {
       fill: var(--theme-secondary);
       stroke: var(--theme-secondary);
       transition: all 0.3s ease-out;
     }
   }
+
   .amcharts-graph-g3 {
     stroke-linejoin: round;
     stroke-linecap: round;
@@ -1658,6 +1965,7 @@ ngb-datepicker {
     stroke-dashoffset: 0;
     animation: am-draw 40s;
   }
+
   .amcharts-graph-g2 .amcharts-graph-stroke {
     stroke-dasharray: 3px 3px;
     stroke-linejoin: round;
@@ -1665,26 +1973,31 @@ ngb-datepicker {
     animation: am-moving-dashes 1s linear infinite;
   }
 }
+
 .speed-chart {
   .chart-container {
     width: 100%;
     height: 530px;
   }
+
   .content {
     margin-top: -200px;
     margin-bottom: 20px;
+
     h4 {
       font-weight: 600;
       padding-top: 2px;
     }
   }
 }
+
 .status-widget {
   svg {
     width: 20px;
     height: 20px;
     vertical-align: text-top;
   }
+
   .card {
     .card-header {
       h5 {
@@ -1692,18 +2005,21 @@ ngb-datepicker {
       }
     }
   }
+
   .status-chart {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     overflow: hidden;
   }
 }
+
 .small-chart-widget .chart-container {
   height: 311px;
   padding: 0;
   margin: 0;
   border: none;
 }
+
 .small-chart-widget {
   .card {
     .card-body {
@@ -1712,44 +2028,54 @@ ngb-datepicker {
     }
   }
 }
+
 .donut-chart-widget .chart-container {
   height: 300px;
   border: 0;
   margin: 0;
   padding: 0;
 }
+
 .status-details {
   h4 {
     font-weight: 600;
+
     span {
       color: inherit;
     }
   }
+
   span {
     color: $theme-body-sub-title-color;
   }
 }
+
 .status-chart .chart-container {
   height: 200px;
   border: 0;
   padding: 0;
   margin: 0;
 }
+
 .map-chart .chart-container {
   width: 100%;
   height: 500px;
 }
+
 .serial-chart {
   width: 100%;
 }
+
 .live-products,
 .turnover,
 .uses,
 .monthly {
   height: 300px;
 }
+
 .live-products {
   .ct-series-a {
+
     .ct-area,
     .ct-point,
     .ct-line,
@@ -1758,18 +2084,22 @@ ngb-datepicker {
       stroke: rgba(255, 255, 255, 0.77);
     }
   }
+
   .ct-label {
     fill: $white;
     color: $white;
   }
+
   .ct-grid {
     stroke: rgba(255, 255, 255, 0.7);
   }
 }
+
 .turnover,
 .uses,
 .monthly {
   .ct-series-a {
+
     .ct-area,
     .ct-point,
     .ct-line,
@@ -1779,7 +2109,9 @@ ngb-datepicker {
       fill: transparent;
     }
   }
+
   .ct-series-b {
+
     .ct-area,
     .ct-point,
     .ct-line,
@@ -1789,7 +2121,9 @@ ngb-datepicker {
       fill: transparent;
     }
   }
+
   .ct-series-c {
+
     .ct-area,
     .ct-point,
     .ct-line,
@@ -1799,18 +2133,20 @@ ngb-datepicker {
       fill: transparent;
     }
   }
+
   .ct-label {
     fill: $white;
     color: $white;
   }
+
   .ct-grid {
     stroke: rgba(255, 255, 255, 0.7);
   }
 }
+
 @each $activity-dot-name, $activity-dot-color in (primary, $primary-color),
-  (secondary, $secondary-color), (success, $success-color), (danger, $danger-color),
-  (info, $light-font), (light, $light-gray), (dark, $dark-color), (warning, $warning-color)
-{
+(secondary, $secondary-color), (success, $success-color), (danger, $danger-color),
+(info, $light-font), (light, $light-gray), (dark, $dark-color), (warning, $warning-color) {
   .activity-dot-#{$activity-dot-name} {
     width: 16px;
     height: 16px;
@@ -1826,12 +2162,15 @@ ngb-datepicker {
     }
   }
 }
+
 .chart-vertical-center {
+
   #myDoughnutGraph,
   #myPolarGraph {
     width: auto !important;
   }
 }
+
 @media only screen and (max-width: 1800px) {
   .general-widget {
     .custom-card {
@@ -1842,6 +2181,7 @@ ngb-datepicker {
       }
     }
   }
+
   .latest-update-sec {
     table {
       tbody {
@@ -1856,16 +2196,19 @@ ngb-datepicker {
       }
     }
   }
+
   .recent-order-sec {
     .table {
       td {
         min-width: 110px;
+
         &:first-child {
           min-width: 320px;
         }
       }
     }
   }
+
   .user-status {
     table {
       thead {
@@ -1877,6 +2220,7 @@ ngb-datepicker {
           }
         }
       }
+
       tbody {
         tr {
           td {
@@ -1889,6 +2233,7 @@ ngb-datepicker {
     }
   }
 }
+
 @media screen and (min-width: 1200px) and (max-width: 1680px) {
   .activity-timeline {
     .media {
@@ -1897,11 +2242,13 @@ ngb-datepicker {
       }
     }
   }
+
   .dashboard-default-sec,
   .dashboard-2-main {
     .card-header {
       .header-top {
         display: block !important;
+
         .center-content {
           margin-top: 5px;
         }
@@ -1909,23 +2256,28 @@ ngb-datepicker {
     }
   }
 }
+
 @media screen and (min-width: 1200px) and (max-width: 1365px) {
   .des-xl-25 {
     max-width: 25%;
     flex: 0 0 25%;
   }
+
   .des-xl-33 {
     max-width: 33.33333%;
     flex: 33.33333%;
   }
+
   .des-xl-50 {
     max-width: 50%;
     flex: 0 0 50%;
   }
+
   .des-xl-100 {
     max-width: 100%;
     flex: 0 0 100%;
   }
+
   .latest-update-sec {
     table {
       tbody {
@@ -1939,48 +2291,60 @@ ngb-datepicker {
       }
     }
   }
+
   .dashboard-default-sec {
     .card {
+
       .card-header,
       .card-body,
       .card-footer {
         padding: 20px;
       }
+
       .card-header {
         h5 {
           font-size: 16px;
         }
+
         p {
           font-size: 10px;
         }
+
         i {
           font-size: 12px;
         }
       }
+
       &.income-card {
         .card-body {
           &.text-center {
             padding: 29px 20px;
           }
+
           .round-box {
             width: 50px;
             height: 50px;
+
             svg {
               height: 18px;
             }
           }
+
           h5 {
             font-size: 18px;
           }
         }
       }
     }
+
     .setting-list {
       top: 15px;
       right: 15px;
+
       .setting-option {
         width: 25px;
         height: 25px;
+
         li {
           &:first-child {
             i.icon-angle-double-right {
@@ -1989,6 +2353,7 @@ ngb-datepicker {
           }
         }
       }
+
       .setting-primary,
       .setting-secondary,
       .setting-white {
@@ -1996,26 +2361,32 @@ ngb-datepicker {
         height: 25px;
       }
     }
+
     .profile-greeting {
       h3 {
         font-size: 22px;
       }
+
       p {
         line-height: 20px;
       }
+
       .card-header {
         padding-bottom: 5px !important;
       }
     }
   }
+
   #chart-dashbord {
     .apexcharts-legend {
+
       &.position-right,
       &.position-left {
         display: none !important;
       }
     }
   }
+
   .trasaction-sec {
     .transaction-totalbal {
       padding-left: 20px;
@@ -2026,6 +2397,7 @@ ngb-datepicker {
     }
   }
 }
+
 @media only screen and (max-width: 1470px) {
   .bar-chart-widget {
     .num {
@@ -2033,14 +2405,17 @@ ngb-datepicker {
     }
   }
 }
+
 @media only screen and (max-width: 1199px) {
   .apexcharts-legend {
     &.position-right {
       left: 20px !important;
     }
   }
+
   .dashboard-default-sec {
     .card {
+
       .card-header,
       .card-body,
       .card-footer {
@@ -2048,11 +2423,13 @@ ngb-datepicker {
       }
     }
   }
+
   .profile-greeting {
     h3 {
       font-size: 20px;
       margin-top: 5px;
     }
+
     p {
       padding: 0;
       font-size: 13px;
@@ -2060,6 +2437,7 @@ ngb-datepicker {
     }
   }
 }
+
 /**=====================
    Dashboard CSS Ends
 ==========================**/

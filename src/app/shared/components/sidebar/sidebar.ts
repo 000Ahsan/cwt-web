@@ -35,51 +35,69 @@ export class Sidebar {
   constructor() {
     this.navService.items.subscribe(menuItems => {
       this.menuItems = menuItems;
-      this.router.events.subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          menuItems.filter(items => {
-            if (items.path === event.url) {
-              this.setNavActive(items);
-            }
-            if (!items.children) {
-              return false;
-            }
+      this.checkCurrentActive();
+    });
 
-            items.children.filter(subItems => {
-              if (subItems.path === event.url) {
-                this.setNavActive(subItems);
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.checkCurrentActive();
+      }
+    });
+  }
+
+  private checkCurrentActive() {
+    const currentUrl = this.router.url;
+    if (!this.menuItems) return;
+
+    this.menuItems.forEach(item => {
+      if (item.path === currentUrl) {
+        this.setNavActive(item);
+      }
+      if (item.children) {
+        item.children.forEach(subItem => {
+          if (subItem.path === currentUrl) {
+            this.setNavActive(subItem);
+          }
+          if (subItem.children) {
+            subItem.children.forEach(subSubItem => {
+              if (subSubItem.path === currentUrl) {
+                this.setNavActive(subSubItem);
               }
-              if (!subItems.children) {
-                return false;
-              }
-              subItems.children.filter(subSubItems => {
-                if (subSubItems.path === event.url) {
-                  this.setNavActive(subSubItems);
-                }
-              });
-              return;
             });
-            return;
-          });
-        }
-      });
+          }
+        });
+      }
     });
   }
 
   //  Active Nav
   setNavActive(item: Menu) {
-    this.menuItems.filter((menuItem: Menu) => {
+    this.menuItems.forEach((menuItem: Menu) => {
       if (menuItem !== item) {
         menuItem.active = false;
-      }
-      if (menuItem.children && menuItem.children.includes(item)) {
+      } else {
         menuItem.active = true;
       }
+
       if (menuItem.children) {
-        menuItem.children.filter((submenuItems: Menu) => {
-          if (submenuItems.children && submenuItems.children.includes(item)) {
+        menuItem.children.forEach((subItems: Menu) => {
+          if (subItems === item) {
             menuItem.active = true;
-            submenuItems.active = true;
+            subItems.active = true;
+          } else {
+            subItems.active = false;
+          }
+
+          if (subItems.children) {
+            subItems.children.forEach((subSubItems: Menu) => {
+              if (subSubItems === item) {
+                menuItem.active = true;
+                subItems.active = true;
+                subSubItems.active = true;
+              } else {
+                subSubItems.active = false;
+              }
+            });
           }
         });
       }

@@ -105,11 +105,6 @@ export class NavService {
       ],
     },
 
-    // Worker Menus
-    {
-      headTitle1: 'Worker Panel',
-      role: [UserRole.WORKER]
-    },
     {
       level: 1,
       title: 'Assigned Projects',
