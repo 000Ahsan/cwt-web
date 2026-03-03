@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FeatherIcons } from '../feather-icons/feather-icons';
 import { NavService } from '../../services/nav/nav.service';
 import { AuthService } from '../../../core/services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header',
@@ -33,6 +34,15 @@ export class Header {
   }
 
   logout() {
+    if (localStorage.getItem('active_session')) {
+      Swal.fire({
+        title: 'Active Session!',
+        text: 'You have an active work session. Please stop the timer before logging out.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
     this.authService.logout();
   }
 }

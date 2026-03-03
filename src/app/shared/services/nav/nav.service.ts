@@ -115,14 +115,6 @@ export class NavService {
     },
     {
       level: 1,
-      title: 'Work Session',
-      icon: 'clock',
-      type: 'link',
-      path: '/worker/session',
-      role: [UserRole.WORKER]
-    },
-    {
-      level: 1,
       title: 'My Daily History',
       icon: 'calendar',
       type: 'link',

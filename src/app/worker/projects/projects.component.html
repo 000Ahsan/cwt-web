@@ -4,24 +4,49 @@
             <div class="col-md-6 col-sm-12">
                 <app-breadcrumb />
             </div>
-            <div class="col-md-6 col-sm-12 text-end">
-            </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4 col-sm-12" *ngFor="let project of projects">
             <div class="card">
-                <div class="card-header">
-                    <h5>{{ project.name }}</h5>
-                </div>
-                <div class="card-body">
-                    <p>{{ project.description }}</p>
-                    <button class="btn btn-primary btn-lg w-100" (click)="startSession(project.id)">Start Work
-                        Session</button>
+                <div class="product-box learning-box">
+                    <div class="product-img">
+                        <img [src]="apiUrl + project.logo" alt="" class="img-fluid top-radius-blog">
+                    </div>
+                    <div class="details-main text-center">
+                        <h5 class="txt-primary">{{ project.name }}</h5>
+                        <p>{{ project.description }}</p>
+
+                        <div *ngIf="activeSession && activeSession.projectId === project.id"
+                            class="active-session-info">
+                            <hr>
+                            <span class="badge badge-secondary">Active Session</span>
+                            <div class="timer-display txt-primary">{{ elapsedTime }}</div>
+                        </div>
+
+                        <hr>
+
+                        <button *ngIf="!activeSession" class="btn btn-primary w-100" (click)="startSession(project)">
+                            <i class="fa fa-play me-2"></i>
+                            Start Work Session
+                        </button>
+
+                        <button *ngIf="activeSession && activeSession.projectId === project.id"
+                            class="btn btn-danger w-100" (click)="stopSession()">
+                            <i class="fa fa-stop me-2"></i>
+                            Stop Work Session
+                        </button>
+
+                        <button *ngIf="activeSession && activeSession.projectId !== project.id"
+                            class="btn btn-primary w-100" disabled>
+                            <i class="fa fa-play me-2"></i>
+                            Start Work Session
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12" *ngIf="projects.length === 0">
+        <div class="col-12" *ngIf="projects.length === 0">
             <div class="card">
                 <div class="card-body text-center">
                     <p>No projects assigned yet.</p>
@@ -30,3 +55,50 @@
         </div>
     </div>
 </div>
+
+<!-- Work Log Modal -->
+<ng-template #logModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Work Session Details</h4>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-light border text-center mb-4">
+            <small class="text-muted d-block text-uppercase">Total Time Tracked</small>
+            <h3 class="mb-0 txt-primary">{{ elapsedTime }}</h3>
+        </div>
+        <form [formGroup]="logForm">
+            <div class="mb-3">
+                <label class="form-label">Description of work done <span class="text-danger">*</span></label>
+                <textarea class="form-control" rows="4" formControlName="description"
+                    placeholder="Briefly describe what you accomplished during this session..."></textarea>
+                <div *ngIf="logForm.get('description')?.touched && logForm.get('description')?.invalid"
+                    class="text-danger small mt-1">
+                    Description is required (min 100 characters).
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Upload Photos (Optional)</label>
+                <input type="file" class="form-control" (change)="onFileSelect($event)" multiple accept="image/*">
+
+                <!-- Preview Grid -->
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                    @for (preview of photoPreviews; track $index) {
+                    <img [src]="preview" class="img-thumbnail">
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer d-flex justify-content-between bg-light">
+        <button type="button" class="btn btn-outline-danger" (click)="discardSession()">Discard Time</button>
+        <button type="button" class="btn btn-success px-4" [disabled]="logForm.invalid || uploading"
+            (click)="submitLog()">
+            <span *ngIf="uploading">
+                <span class="spinner-border spinner-border-sm me-1"></span>
+                Logging...
+            </span>
+            <span *ngIf="!uploading">Save & Log Time</span>
+        </button>
+    </div>
+</ng-template>
