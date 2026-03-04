@@ -1,0 +1,82 @@
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row justify-content-between align-items-center mb-3 mt-3">
+            <div class="col-md-6 col-sm-12">
+                <app-breadcrumb />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <div class="table-responsive" *ngIf="logs.length > 0">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Project</th>
+                                    <th>Date</th>
+                                    <th>Work Session</th>
+                                    <th>Duration</th>
+                                    <th>Description</th>
+                                    <th>Photos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let log of logs">
+                                    <td class="ps-4">
+                                        <div class="fw-bold text-dark">{{ log.workSession?.project?.name }}</div>
+                                    </td>
+                                    <td>{{ log.workSession?.date | date:'mediumDate' }}</td>
+                                    <td>
+                                        <div class="small text-muted">
+                                            {{ log.workSession?.startTime | date:'shortTime' }} - {{
+                                            log.workSession?.endTime | date:'shortTime' }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-primary text-white px-3 py-2">
+                                            {{ formatDuration(log.workSession?.totalMinutes) }}
+                                        </span>
+                                    </td>
+                                    <td style="max-width: 300px;">
+                                        <div class="text-truncate-2 small" title="{{ log.description }}">
+                                            {{ log.description }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-1" *ngIf="log.photos && log.photos.length > 0">
+                                            <a *ngFor="let photo of log.photos"
+                                                [href]="apiUrl + '/' + photo.filePath + '?token=' + token"
+                                                target="_blank">
+                                                <img [src]="apiUrl + '/' + photo.filePath + '?token=' + token"
+                                                    class="rounded border shadow-xs"
+                                                    style="height: 35px; width: 35px; object-fit: cover;">
+                                            </a>
+                                        </div>
+                                        <span *ngIf="!log.photos || log.photos.length === 0" class="text-muted small">No
+                                            photos</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="card" *ngIf="logs.length === 0">
+                <div class="card-body text-center m-0">
+                    <div class="text-center py-5">
+                        <app-feather-icons [class]="'mb-3 txt-primary'" [icon]="'calendar'" />
+                        <h5 class="text-muted">No work logs found yet.</h5>
+                        <p class="text-muted small">Your submitted logs will appear here once you finish a work
+                            session.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

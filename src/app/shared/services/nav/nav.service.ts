@@ -115,10 +115,10 @@ export class NavService {
     },
     {
       level: 1,
-      title: 'My Daily History',
+      title: 'Work Logs',
       icon: 'calendar',
       type: 'link',
-      path: '/worker/history',
+      path: '/worker/logs',
       role: [UserRole.WORKER]
     },
   ];

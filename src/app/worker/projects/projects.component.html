@@ -49,7 +49,12 @@
         <div class="col-12" *ngIf="projects.length === 0">
             <div class="card">
                 <div class="card-body text-center">
-                    <p>No projects assigned yet.</p>
+                    <div class="text-center py-5">
+                        <app-feather-icons [class]="'mb-3 txt-primary'" [icon]="'box'" />
+                        <h5 class="text-muted">No projects assigned yet.</h5>
+                        <p class="text-muted small">The projects assigned by your contractor will appear here.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

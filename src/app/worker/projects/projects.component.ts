@@ -7,11 +7,12 @@ import { environment } from '../../../../public/environments/environment.prod';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
+import { FeatherIcons } from '../../shared/components/feather-icons/feather-icons';
 
 @Component({
   selector: 'app-worker-projects',
   standalone: true,
-  imports: [CommonModule, Breadcrumb, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, Breadcrumb, FormsModule, ReactiveFormsModule, FeatherIcons],
   templateUrl: './projects.component.html',
   styles: `
     .product-img img {

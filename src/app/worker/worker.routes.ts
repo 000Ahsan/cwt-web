@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { WorkerProjectsComponent } from './projects/projects.component';
-import { WorkerHistoryComponent } from './history/history.component';
+import { WorkerLogsComponent } from './logs/logs.component';
 
 export const WORKER_ROUTES: Routes = [
     {
@@ -12,9 +12,9 @@ export const WORKER_ROUTES: Routes = [
                 data: { title: 'Projects', breadcrumb: 'Projects' }
             },
             {
-                path: 'history',
-                component: WorkerHistoryComponent,
-                data: { title: 'Work History', breadcrumb: 'History' }
+                path: 'logs',
+                component: WorkerLogsComponent,
+                data: { title: 'Work Logs', breadcrumb: 'Work Logs' }
             },
             {
                 path: '',

@@ -26,7 +26,7 @@ export class WorkerService {
         return this.http.post<any>(`${this.apiUrl}/work-logs`, logData);
     }
 
-    getWorkHistory(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl}/my/work-history`);
+    getWorkerLogs(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/work-logs/worker`);
     }
 }
