@@ -4,25 +4,18 @@
             <div class="col-md-6 col-sm-12">
                 <app-breadcrumb />
             </div>
-            <div class="col-md-6 col-sm-12 text-end">
-            </div>
         </div>
     </div>
+
+    <!-- Welcome + Stats Row -->
     <div class="row">
-        <div class="col-xl-5 box-col-12 des-xl-100">
+        <div class="col-xl-12 box-col-12 des-xl-100">
             <div class="row">
-                <div class="col-xl-12 col-md-6 box-col-6 des-xl-50">
+                <div class="col-xl-12 col-md-12 box-col-6 des-xl-50">
                     <div class="card profile-greeting">
                         <div class="card-header">
                             <div class="header-top">
                                 <div class="setting-list bg-primary position-unset">
-                                    <ul class="list-unstyled setting-option">
-                                        <li>
-                                            <div class="setting-white">
-                                                <i class="icon-settings"></i>
-                                            </div>
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -30,7 +23,7 @@
                             <h3 class="font-light">Welcome Back, {{ user?.name }}!!</h3>
                             <p>Welcome to the CrewTrack Dashboard. We are glad to have you on board. On this dashboard
                                 you can track your projects and workers.</p>
-                            <button class="btn btn-light">Update</button>
+                            <button class="btn btn-light">Update Profile</button>
                         </div>
                         <div class="confetti">
                             <div class="confetti-piece"></div>
@@ -49,28 +42,28 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-6 col-md-3 col-sm-6 box-col-3 des-xl-25 rate-sec">
-                    <div class="card income-card card-primary">
+                <div class="col-xl-4 col-md-4 col-sm-6 box-col-3 des-xl-25 rate-sec">
+                    <div class="card income-card card-secondary">
                         <div class="card-body text-center">
                             <div class="round-box">
-                                <app-feather-icons [icon]="'briefcase'" class="txt-primary" />
+                                <app-feather-icons [icon]="'briefcase'" class="txt-secondary" />
                             </div>
                             <h5>{{ stats?.projectsCount || 0 }}</h5>
-                            <p>Total Projects</p>
+                            <p class="txt-primary">Total Projects</p>
                             <div class="parrten">
                                 <svg-icon src="assets/images/svg/dashboard/beg.svg" [svgStyle]="{ 'width.px':90 }" />
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-6 col-md-3 col-sm-6 box-col-3 des-xl-25 rate-sec">
+                <div class="col-xl-4 col-md-4 col-sm-6 box-col-3 des-xl-25 rate-sec">
                     <div class="card income-card card-secondary">
                         <div class="card-body text-center">
                             <div class="round-box">
                                 <app-feather-icons [icon]="'users'" class="txt-secondary" />
                             </div>
                             <h5>{{ stats?.workersCount || 0 }}</h5>
-                            <p>Total Workers</p>
+                            <p class="txt-primary">Total Workers</p>
                             <div class="parrten">
                                 <svg-icon src="assets/images/svg/dashboard/parrten.svg"
                                     [svgStyle]="{ 'width.px':90 }" />
@@ -78,24 +71,97 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-4 col-md-4 col-sm-6 box-col-3 des-xl-25 rate-sec">
+                    <div class="card income-card card-secondary">
+                        <div class="card-body text-center">
+                            <div class="round-box">
+                                <app-feather-icons [icon]="'watch'" class="txt-secondary" />
+                            </div>
+                            <h5>{{ stats?.totalHoursLogged || 0 }}</h5>
+                            <p class="txt-primary">Total Hours Logged</p>
+                            <div class="parrten">
+                                <svg-icon src="assets/images/svg/dashboard/graph.svg" [svgStyle]="{ 'width.px':90 }" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-xl-7 box-col-12 des-xl-100 dashboard-sec">
-            <div class="card income-card">
-                <div class="card-header">
-                    <div class="header-top d-sm-flex align-items-center">
-                        <h5>Sales overview</h5>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row">
+
+        <!-- Projects Chart -->
+        <div class="col-xl-6 box-col-12 des-xl-100 dashboard-sec">
+            <div class="card income-card border-0 shadow-sm">
+                <div class="card-header pb-3 bg-white border-bottom">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <h5 class="mb-0 txt-primary">Hours / Project</h5>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button *ngFor="let p of periods" type="button" class="btn"
+                                [class.btn-primary]="projectsPeriod === p.key"
+                                [class.btn-outline-primary]="projectsPeriod !== p.key"
+                                (click)="setProjectsPeriod(p.key)">
+                                {{ p.label }}
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <div id="chart-timeline-dashbord">
-                        <apx-chart [chart]="sales.chart" [dataLabels]="sales.dataLabels" [series]="sales.series"
-                            [colors]="sales.colors" [xaxis]="sales.xaxis" [tooltip]="sales.tooltip"
-                            [markers]="sales.markers" [annotations]="sales.annotations"
-                            [responsive]="sales.responsive" />
+                    <!-- Loading -->
+                    <div class="text-center py-5" *ngIf="loadingProjects">
+                        <div class="spinner-border txt-primary" role="status"></div>
+                    </div>
+                    <!-- Chart -->
+                    <div *ngIf="!loadingProjects && projectsChartOptions">
+                        <apx-chart [series]="projectsChartOptions.series" [chart]="projectsChartOptions.chart"
+                            [plotOptions]="projectsChartOptions.plotOptions"
+                            [dataLabels]="projectsChartOptions.dataLabels" [stroke]="projectsChartOptions.stroke"
+                            [xaxis]="projectsChartOptions.xaxis" [yaxis]="projectsChartOptions.yaxis"
+                            [tooltip]="projectsChartOptions.tooltip" [fill]="projectsChartOptions.fill"
+                            [legend]="projectsChartOptions.legend" [colors]="projectsChartOptions.colors"
+                            [grid]="projectsChartOptions.grid" [noData]="projectsChartOptions.noData"
+                            [responsive]="projectsChartOptions.responsive" />
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Workers Chart -->
+        <div class="col-xl-6 box-col-12 des-xl-100 dashboard-sec">
+            <div class="card income-card border-0 shadow-sm">
+                <div class="card-header pb-3 bg-white border-bottom">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <h5 class="mb-0 txt-primary">Hours / Worker</h5>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button *ngFor="let p of periods" type="button" class="btn"
+                                [class.btn-primary]="workersPeriod === p.key"
+                                [class.btn-outline-primary]="workersPeriod !== p.key" (click)="setWorkersPeriod(p.key)">
+                                {{ p.label }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Loading -->
+                    <div class="text-center py-5" *ngIf="loadingWorkers">
+                        <div class="spinner-border txt-primary" role="status"></div>
+                    </div>
+                    <!-- Chart -->
+                    <div *ngIf="!loadingWorkers && workersChartOptions">
+                        <apx-chart [series]="workersChartOptions.series" [chart]="workersChartOptions.chart"
+                            [plotOptions]="workersChartOptions.plotOptions"
+                            [dataLabels]="workersChartOptions.dataLabels" [stroke]="workersChartOptions.stroke"
+                            [xaxis]="workersChartOptions.xaxis" [yaxis]="workersChartOptions.yaxis"
+                            [tooltip]="workersChartOptions.tooltip" [fill]="workersChartOptions.fill"
+                            [legend]="workersChartOptions.legend" [colors]="workersChartOptions.colors"
+                            [grid]="workersChartOptions.grid" [noData]="workersChartOptions.noData"
+                            [responsive]="workersChartOptions.responsive" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

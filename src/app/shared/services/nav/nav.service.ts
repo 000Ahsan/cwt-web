@@ -94,15 +94,11 @@ export class NavService {
     },
     {
       level: 1,
-      title: 'Summaries',
-      icon: 'file-text',
-      type: 'sub',
-      active: false,
-      role: [UserRole.CONTRACTOR],
-      children: [
-        { path: '/contractor/reports/daily', title: 'Daily Summary', type: 'link' },
-        { path: '/contractor/reports/weekly', title: 'Weekly Summary', type: 'link' },
-      ],
+      title: 'Work Logs',
+      icon: 'calendar',
+      type: 'link',
+      path: '/contractor/logs',
+      role: [UserRole.CONTRACTOR]
     },
 
     {

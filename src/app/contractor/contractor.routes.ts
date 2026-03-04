@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { ContractorDashboardComponent } from './dashboard/dashboard.component';
 import { ContractorProjectsComponent } from './projects/projects.component';
 import { ContractorWorkersComponent } from './workers/workers.component';
-import { ContractorReportsComponent } from './reports/reports.component';
+import { ContractorLogsComponent } from './logs/logs.component';
 
 export const CONTRACTOR_ROUTES: Routes = [
     {
@@ -24,14 +24,9 @@ export const CONTRACTOR_ROUTES: Routes = [
                 data: { title: 'Workers', breadcrumb: 'Workers' }
             },
             {
-                path: 'reports/daily',
-                component: ContractorReportsComponent,
-                data: { title: 'Reports', breadcrumb: 'Daily Report' }
-            },
-            {
-                path: 'reports/weekly',
-                component: ContractorReportsComponent,
-                data: { title: 'Reports', breadcrumb: 'Weekly Report' }
+                path: 'logs',
+                component: ContractorLogsComponent,
+                data: { title: 'Work Logs', breadcrumb: 'Work Logs' }
             },
             {
                 path: '',
