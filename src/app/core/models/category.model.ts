@@ -1,0 +1,12 @@
+export enum Category {
+    CONSTRUCTION = 'CONSTRUCTION',
+    DRYWALL = 'DRYWALL',
+    CLEANING = 'CLEANING',
+    ROOFING = 'ROOFING',
+    PLUMBING = 'PLUMBING',
+    ELECTRICAL = 'ELECTRICAL',
+    PAINTING = 'PAINTING',
+    LANDSCAPING = 'LANDSCAPING'
+}
+
+export const CATEGORIES_LIST = Object.values(Category);

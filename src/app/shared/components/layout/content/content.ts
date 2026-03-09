@@ -7,8 +7,6 @@ import * as feather from 'feather-icons';
 import { slider } from '../../../data/animation/animation';
 import { LayoutService } from '../../../services/layout/layout.service';
 import { NavService } from '../../../services/nav/nav.service';
-import { Breadcrumb } from '../../breadcrumb/breadcrumb';
-import { Costomizer } from '../../costomizer/costomizer';
 import { Footer } from '../../footer/footer';
 import { Header } from '../../header/header';
 import { Sidebar } from '../../sidebar/sidebar';
@@ -18,7 +16,7 @@ import { Sidebar } from '../../sidebar/sidebar';
   templateUrl: './content.html',
   styleUrls: ['./content.scss'],
   animations: [slider],
-  imports: [NgClass, Header, Sidebar, Breadcrumb, RouterOutlet, Footer, Costomizer],
+  imports: [NgClass, Header, Sidebar, RouterOutlet, Footer],
 })
 export class Content {
   navServices = inject(NavService);

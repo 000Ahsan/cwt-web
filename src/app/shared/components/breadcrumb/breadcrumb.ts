@@ -4,13 +4,11 @@ import { ActivatedRoute, Router, NavigationEnd, PRIMARY_OUTLET, RouterLink } fro
 import { map } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Bookmark } from '../header/bookmark/bookmark';
-
 @Component({
   selector: 'app-breadcrumb',
   templateUrl: './breadcrumb.html',
   styleUrls: ['./breadcrumb.scss'],
-  imports: [RouterLink, Bookmark],
+  imports: [RouterLink],
 })
 export class Breadcrumb {
   public breadcrumbs?: {
@@ -23,28 +21,35 @@ export class Breadcrumb {
   public title: string = '';
 
   constructor() {
+    this.updateBreadcrumbs();
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .pipe(map(() => this.activatedRoute))
-      .pipe(
-        map(route => {
-          while (route.firstChild) {
-            route = route.firstChild;
-          }
-          return route;
-        }),
-      )
-      .pipe(filter(route => route.outlet === PRIMARY_OUTLET))
-      .subscribe(route => {
-        let title = route.snapshot.data['title'];
-        let parent = route.parent?.snapshot.data['breadcrumb'];
-        let child = route.snapshot.data['breadcrumb'];
-        this.breadcrumbs = {};
-        this.title = title;
-        this.breadcrumbs = {
-          parentBreadcrumb: parent,
-          childBreadcrumb: child,
-        };
+      .subscribe(() => {
+        this.updateBreadcrumbs();
       });
+  }
+
+  private updateBreadcrumbs() {
+    let route = this.activatedRoute.root;
+    let breadcrumbData: string[] = [];
+    let title = '';
+
+    let currentRoute: ActivatedRoute | null = route;
+    while (currentRoute) {
+      const data = currentRoute.snapshot.data;
+      if (data['breadcrumb']) {
+        breadcrumbData.push(data['breadcrumb']);
+      }
+      if (data['title']) {
+        title = data['title'];
+      }
+      currentRoute = currentRoute.firstChild;
+    }
+
+    this.title = title;
+    this.breadcrumbs = {
+      parentBreadcrumb: breadcrumbData.length > 1 ? breadcrumbData[breadcrumbData.length - 2] : null,
+      childBreadcrumb: breadcrumbData.length > 0 ? breadcrumbData[breadcrumbData.length - 1] : undefined,
+    };
   }
 }
