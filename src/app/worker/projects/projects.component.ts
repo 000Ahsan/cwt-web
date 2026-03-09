@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { WorkerService } from '../../core/services/worker.service';
 import { Breadcrumb } from '../../shared/components/breadcrumb/breadcrumb';
-import { environment } from '../../../../public/environments/environment.prod';
+import { environment } from '../../../../public/environments/environment';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
@@ -116,15 +116,25 @@ export class WorkerProjectsComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.workerService.startSession(project.id).subscribe(session => {
-          this.activeSession = {
-            ...session,
-            projectName: project.name,
-            startTime: new Date().toISOString(),
-            projectId: project.id
-          };
-          localStorage.setItem('active_session', JSON.stringify(this.activeSession));
-          this.startTimer();
+        this.workerService.startSession(project.id).subscribe({
+          next: (session) => {
+            this.activeSession = {
+              ...session,
+              projectName: project.name,
+              startTime: new Date().toISOString(),
+              projectId: project.id
+            };
+            localStorage.setItem('active_session', JSON.stringify(this.activeSession));
+            this.startTimer();
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Access Denied',
+              text: err.error?.message || 'Failed to start session. Please try again.',
+              confirmButtonColor: '#7366ff'
+            });
+          }
         });
       },
       (error) => {
@@ -214,8 +224,18 @@ export class WorkerProjectsComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#d33'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.clearSession();
-        this.modalRef.close();
+        this.workerService.discardActiveSession().subscribe({
+          next: () => {
+            Swal.fire('Discarded', 'Session discarded successfully', 'success');
+            this.clearSession();
+            this.modalRef.close();
+          },
+          error: (err) => {
+            Swal.fire('Error', err.error?.message || 'Failed to discard session', 'error');
+            this.clearSession();
+            this.modalRef.close();
+          }
+        });
       }
     });
   }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../public/environments/environment.prod';
+import { environment } from '../../../../public/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -75,5 +75,9 @@ export class ContractorService {
 
     getDashboardStats(): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/reports/dashboard-stats`);
+    }
+
+    signOffWorkLog(logId: string, signOffData: { status: string; comment?: string }): Observable<any> {
+        return this.http.patch<any>(`${this.apiUrl}/work-logs/${logId}/sign-off`, signOffData);
     }
 }

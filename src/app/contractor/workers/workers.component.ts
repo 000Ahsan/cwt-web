@@ -5,12 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { Breadcrumb } from '../../shared/components/breadcrumb/breadcrumb';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { environment } from '../../../../public/environments/environment.prod';
+import { environment } from '../../../../public/environments/environment';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { CATEGORIES_LIST } from '../../core/models/category.model';
 
 @Component({
   selector: 'app-contractor-workers',
   standalone: true,
-  imports: [CommonModule, FormsModule, Breadcrumb],
+  imports: [CommonModule, FormsModule, Breadcrumb, NgSelectModule],
   templateUrl: './workers.component.html',
   styles: [`
     .worker-avatar-preview {
@@ -36,8 +38,9 @@ export class ContractorWorkersComponent implements OnInit {
   editingWorker: any = null;
   workers: any[] = [];
   projects: any[] = [];
+  categoriesList = CATEGORIES_LIST;
 
-  newWorker = { email: '', name: '', password: '', image: '' };
+  newWorker: any = { email: '', name: '', password: '', image: '', selectedCategories: [] };
 
   ngOnInit() {
     this.loadData();
@@ -76,6 +79,8 @@ export class ContractorWorkersComponent implements OnInit {
     if (!this.newWorker.email || !this.newWorker.name) return;
 
     const payload = { ...this.newWorker };
+    payload.categories = this.newWorker.selectedCategories ? this.newWorker.selectedCategories.join(',') : '';
+    delete payload.selectedCategories;
 
     if (this.editingWorker) {
       // If editing, only send image if it's new (starts with data:)
@@ -111,7 +116,8 @@ export class ContractorWorkersComponent implements OnInit {
       email: worker.email,
       name: worker.name,
       password: '',
-      image: worker.image ? this.apiUrl + worker.image : ''
+      image: worker.image ? this.apiUrl + worker.image : '',
+      selectedCategories: worker.categories ? worker.categories.split(',') : []
     };
 
     // Patch the file input name if we have an image
@@ -159,7 +165,7 @@ export class ContractorWorkersComponent implements OnInit {
   closeModal() {
     this.showCreateModal = false;
     this.editingWorker = null;
-    this.newWorker = { email: '', name: '', password: '', image: '' };
+    this.newWorker = { email: '', name: '', password: '', image: '', selectedCategories: [] };
     if (this.imageInput) {
       this.imageInput.nativeElement.value = '';
     }

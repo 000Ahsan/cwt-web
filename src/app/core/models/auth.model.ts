@@ -11,6 +11,7 @@ export interface User {
     firstName?: string;
     lastName?: string;
     image?: string;
+    categories?: string;
 }
 
 export interface AuthResponse {

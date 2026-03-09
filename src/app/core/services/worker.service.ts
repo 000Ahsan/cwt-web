@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../public/environments/environment.prod';
+import { environment } from '../../../../public/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -28,5 +28,9 @@ export class WorkerService {
 
     getWorkerLogs(): Observable<any[]> {
         return this.http.get<any[]>(`${this.apiUrl}/work-logs/worker`);
+    }
+
+    discardActiveSession(): Observable<any> {
+        return this.http.delete<any>(`${this.apiUrl}/sessions/discard`);
     }
 }

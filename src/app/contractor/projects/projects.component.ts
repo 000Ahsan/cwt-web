@@ -7,13 +7,15 @@ import { Project } from '../../core/models/project.model';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import * as L from 'leaflet';
 import Swal from 'sweetalert2';
-import { environment } from '../../../../public/environments/environment.prod';
+import { environment } from '../../../../public/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { CATEGORIES_LIST } from '../../core/models/category.model';
 
 @Component({
   selector: 'app-contractor-projects',
   standalone: true,
-  imports: [CommonModule, FormsModule, Breadcrumb, LeafletModule],
+  imports: [CommonModule, FormsModule, Breadcrumb, LeafletModule, NgSelectModule],
   templateUrl: './projects.component.html',
   styles: [`
     .project-map {
@@ -40,16 +42,18 @@ export class ContractorProjectsComponent implements OnInit {
 
   apiUrl = environment.apiBaseUrl;
   projects: Project[] = [];
+  categoriesList = CATEGORIES_LIST;
   showModal = false;
   isEditing = false;
 
-  editingProject: Partial<Project> = {
+  editingProject: Partial<Project> & { selectedCategories?: string[] } = {
     name: '',
     description: '',
     startDate: '',
     logo: '',
     latitude: 40.7128,
-    longitude: -74.006
+    longitude: -74.006,
+    selectedCategories: []
   };
 
   searchQuery = '';
@@ -86,7 +90,8 @@ export class ContractorProjectsComponent implements OnInit {
       startDate: new Date().toISOString().split('T')[0],
       logo: '',
       latitude: 40.7128,
-      longitude: -74.006
+      longitude: -74.006,
+      selectedCategories: []
     };
     this.searchQuery = '';
     this.showModal = true;
@@ -95,7 +100,10 @@ export class ContractorProjectsComponent implements OnInit {
 
   openEditModal(project: Project) {
     this.isEditing = true;
-    this.editingProject = { ...project };
+    this.editingProject = {
+      ...project,
+      selectedCategories: project.categories ? project.categories.split(',') : []
+    };
     if (this.editingProject.startDate) {
       this.editingProject.startDate = new Date(this.editingProject.startDate).toISOString().split('T')[0];
     }
@@ -213,6 +221,10 @@ export class ContractorProjectsComponent implements OnInit {
     if (!this.editingProject.name) return;
 
     const payload = { ...this.editingProject };
+    // Convert selectedCategories back to comma separated string
+    payload.categories = this.editingProject.selectedCategories ? this.editingProject.selectedCategories.join(',') : '';
+    delete (payload as any).selectedCategories;
+
     // Set endDate as null as requested for now
     (payload as any).endDate = null;
 

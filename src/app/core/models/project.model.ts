@@ -9,6 +9,7 @@ export interface Project {
     endDate?: string;
     active: boolean;
     contractorId: string;
+    categories?: string;
     createdAt: string;
     updatedAt: string;
     workers?: Worker[];

@@ -81,8 +81,8 @@
                                     <th>Date</th>
                                     <th>Work Session</th>
                                     <th>Duration</th>
-                                    <th>Description</th>
-                                    <th>Photos</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -110,24 +110,21 @@
                                             {{ formatDuration(log.workSession?.totalMinutes) }}
                                         </span>
                                     </td>
-                                    <td style="max-width: 280px;">
-                                        <div class="small text-truncate" style="max-width:280px;"
-                                            title="{{ log.description }}">
-                                            {{ log.description }}
-                                        </div>
-                                    </td>
                                     <td>
-                                        <div class="d-flex gap-1 flex-wrap" *ngIf="log.photos && log.photos.length > 0">
-                                            <a *ngFor="let photo of log.photos"
-                                                [href]="apiUrl + '/' + photo.filePath + '?token=' + token"
-                                                target="_blank">
-                                                <img [src]="apiUrl + '/' + photo.filePath + '?token=' + token"
-                                                    class="rounded border"
-                                                    style="height: 35px; width: 35px; object-fit: cover;">
-                                            </a>
+                                        <span class="badge shadow-sm px-2 py-1" [ngClass]="{
+                                            'bg-warning text-dark': log.status === 'PENDING',
+                                            'bg-success text-white': log.status === 'APPROVED',
+                                            'bg-danger text-white': log.status === 'REJECTED'
+                                        }">
+                                            {{ log.status }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <button class="btn btn-sm btn-primary" (click)="viewLog(log)">
+                                                <i class="fa fa-eye me-1"></i> View
+                                            </button>
                                         </div>
-                                        <span *ngIf="!log.photos || log.photos.length === 0"
-                                            class="text-muted small">—</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -173,3 +170,106 @@
         </div>
     </div>
 </div>
+
+<!-- Details Modal -->
+<ng-template #detailsModal let-modal>
+    <div class="modal-header bg-primary text-white">
+        <h4 class="modal-title font-white">Work Log Audit</h4>
+        <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body p-4">
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <label class="form-label small text-muted text-uppercase fw-bold mb-1">Worker Information</label>
+                <div class="d-flex align-items-center">
+                    <img [src]="selectedLog?.workSession?.worker?.image ? apiUrl + selectedLog.workSession.worker.image : 'assets/images/user/user.png'"
+                        class="rounded-circle me-3 border" style="width: 50px; height: 50px; object-fit: cover;">
+                    <div>
+                        <div class="fw-bold fs-6">{{ selectedLog?.workSession?.worker?.name }}</div>
+                        <div class="small text-muted">{{ selectedLog?.workSession?.worker?.email }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label small text-muted text-uppercase fw-bold mb-1">Project</label>
+                <div class="fw-bold fs-6 txt-primary">{{ selectedLog?.workSession?.project?.name }}</div>
+            </div>
+        </div>
+
+        <div class="row mb-4 border-top pt-3">
+            <div class="col-6 col-md-3">
+                <label class="form-label small text-muted text-uppercase fw-bold mb-1">Session Date</label>
+                <div class="fw-semibold text-dark">{{ selectedLog?.workSession?.date | date:'mediumDate' }}</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <label class="form-label small text-muted text-uppercase fw-bold mb-1">Total Duration</label>
+                <div>
+                    <span class="badge badge-primary text-white px-2 py-1">
+                        {{ formatDuration(selectedLog?.workSession?.totalMinutes) }}
+                    </span>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mt-3 mt-md-0">
+                <label class="form-label small text-muted text-uppercase fw-bold mb-1">Time Logged</label>
+                <div class="text-muted">
+                    <i class="fa fa-clock-o me-1"></i>
+                    {{ selectedLog?.workSession?.startTime | date:'shortTime' }} –
+                    {{ selectedLog?.workSession?.endTime | date:'shortTime' }}
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4 row">
+            <div class="col-6">
+                <label class="form-label small text-muted text-uppercase fw-bold mb-1">Audit Status</label>
+                <div>
+                    <span class="badge px-3 py-2 shadow-sm" [ngClass]="{
+                    'bg-warning text-dark': selectedLog?.status === 'PENDING',
+                    'bg-success text-white': selectedLog?.status === 'APPROVED',
+                    'bg-danger text-white': selectedLog?.status === 'REJECTED'
+                }">
+                        {{ selectedLog?.status }}
+                    </span>
+                </div>
+            </div>
+            <div class="col-6">
+                <label class="form-label small text-muted text-uppercase fw-bold mb-1">Your Comments</label>
+                <div>{{selectedLog?.contractorComment || 'No comments'}}</div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label small text-muted text-uppercase fw-bold mb-1">Worker's Description</label>
+            <div class="p-3 bg-light rounded border text-dark lh-base">
+                {{ selectedLog?.description }}
+            </div>
+        </div>
+
+        <div *ngIf="selectedLog?.photos && selectedLog?.photos.length > 0" class="mb-0">
+            <label class="form-label small text-muted text-uppercase fw-bold mb-1">Attached Photos</label>
+            <div class="row g-2">
+                <div class="col-3 col-sm-3 col-md-2" *ngFor="let photo of selectedLog?.photos">
+                    <a [href]="apiUrl + '/' + photo.filePath + '?token=' + token" target="_blank">
+                        <img [src]="apiUrl + '/' + photo.filePath + '?token=' + token"
+                            class="img-fluid rounded border shadow-sm" style="aspect-ratio: 1/1; object-fit: cover;">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer border-0 p-4 bg-light d-flex justify-content-end">
+        <div class="d-flex gap-2">
+            <!-- Show Reject button if PENDING or APPROVED -->
+            <button *ngIf="selectedLog?.status === 'PENDING' || selectedLog?.status === 'APPROVED'"
+                class="btn btn-danger px-4 shadow-sm" (click)="auditLog(selectedLog, 'REJECTED')">
+                <i class="fa fa-times me-1"></i> Reject
+            </button>
+
+            <!-- Show Approve button if PENDING or REJECTED -->
+            <button *ngIf="selectedLog?.status === 'PENDING' || selectedLog?.status === 'REJECTED'"
+                class="btn btn-success px-4 shadow-sm" (click)="auditLog(selectedLog, 'APPROVED')">
+                <i class="fa fa-check me-1"></i> Approve
+            </button>
+        </div>
+    </div>
+</ng-template>

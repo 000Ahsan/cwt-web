@@ -1,10 +1,12 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ViewChild, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContractorService } from '../../core/services/contractor.service';
 import { Breadcrumb } from '../../shared/components/breadcrumb/breadcrumb';
 import { FeatherIcons } from '../../shared/components/feather-icons/feather-icons';
-import { environment } from '../../../../public/environments/environment.prod';
+import { environment } from '../../../../public/environments/environment';
+import Swal from 'sweetalert2';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-contractor-logs',
@@ -18,6 +20,7 @@ import { environment } from '../../../../public/environments/environment.prod';
 })
 export class ContractorLogsComponent implements OnInit {
     private contractorService = inject(ContractorService);
+    private modalService = inject(NgbModal);
 
     apiUrl = environment.apiBaseUrl;
     token = localStorage.getItem('access_token');
@@ -42,6 +45,10 @@ export class ContractorLogsComponent implements OnInit {
     };
 
     loading = false;
+    selectedLog: any = null;
+    private modalRef: NgbModalRef;
+
+    @ViewChild('detailsModal') detailsModal: TemplateRef<any>;
 
     ngOnInit() {
         this.loadFiltersData();
@@ -100,5 +107,52 @@ export class ContractorLogsComponent implements OnInit {
         const h = Math.floor(minutes / 60);
         const m = minutes % 60;
         return h > 0 ? `${h}h ${m}m` : `${m}m`;
+    }
+
+    viewLog(log: any) {
+        this.selectedLog = log;
+        this.modalRef = this.modalService.open(this.detailsModal, {
+            centered: true,
+            size: 'lg',
+            scrollable: true
+        });
+    }
+
+    async auditLog(log: any, status: 'APPROVED' | 'REJECTED') {
+        const { value: comment } = await Swal.fire({
+            title: `${status === 'APPROVED' ? 'Approve' : 'Reject'} Work Log`,
+            input: 'textarea',
+            inputValue: log.contractorComment || '',
+            inputLabel: 'Comment (Optional)',
+            inputPlaceholder: 'Enter any notes or feedback...',
+            showCancelButton: true,
+            confirmButtonText: status === 'APPROVED' ? 'Approve' : 'Reject',
+            customClass: {
+                confirmButton: status === 'APPROVED' ? 'btn btn-primary' : 'btn btn-danger',
+                cancelButton: 'btn btn-light'
+            },
+            inputAttributes: {
+                'aria-label': 'Type your comment here'
+            }
+        });
+
+        if (comment !== undefined) {
+            this.contractorService.signOffWorkLog(log.id, { status, comment }).subscribe({
+                next: () => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: `Work log ${status.toLowerCase()} successfully.`,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    if (this.modalRef) this.modalRef.close();
+                    this.loadLogs();
+                },
+                error: (err) => {
+                    Swal.fire('Error', err.error?.message || 'Failed to update work log status', 'error');
+                }
+            });
+        }
     }
 }

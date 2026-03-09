@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'http://localhost:3000',
+  apiBaseUrl: 'https://cwt-backend-production.up.railway.app',
 };

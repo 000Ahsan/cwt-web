@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
-import { FeatherIcons } from '../../feather-icons/feather-icons';
-import { environment } from '../../../../../../public/environments/environment.prod';
+import { environment } from '../../../../../../public/environments/environment';
 
 @Component({
   selector: 'app-user-info',
