@@ -1,3 +1,9 @@
+import { User } from './auth.model';
+
+export interface ProjectWorker extends User {
+    projectHours?: number;
+}
+
 export interface Project {
     id: string;
     name: string;
@@ -7,10 +13,13 @@ export interface Project {
     longitude?: number;
     startDate?: string;
     endDate?: string;
+    targetHours?: number;
+    actualHours?: number;
+    address?: string;
     active: boolean;
     contractorId: string;
     categories?: string;
     createdAt: string;
     updatedAt: string;
-    workers?: Worker[];
+    workers?: ProjectWorker[];
 }

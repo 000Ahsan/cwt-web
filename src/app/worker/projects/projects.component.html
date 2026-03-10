@@ -27,8 +27,9 @@
                         <img [src]="apiUrl + project.logo" alt="" class="img-fluid top-radius-blog">
                     </div>
                     <div class="details-main text-center">
+                        <span class="badge badge-primary mb-2">{{ project.myHours }} hrs worked</span>
                         <h5 class="txt-primary">{{ project.name }}</h5>
-                        <p>{{ project.description }}</p>
+                        <small class="text-muted">{{ project.address }}</small>
 
                         <div *ngIf="activeSession && activeSession.projectId === project.id"
                             class="active-session-info">

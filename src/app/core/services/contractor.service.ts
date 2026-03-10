@@ -19,7 +19,7 @@ export class ContractorService {
     }
 
     updateProject(projectId: string, projectData: any): Observable<any> {
-        return this.http.put<any>(`${this.apiUrl}/projects/${projectId}`, projectData);
+        return this.http.patch<any>(`${this.apiUrl}/projects/${projectId}`, projectData);
     }
 
     deleteProject(projectId: string): Observable<any> {

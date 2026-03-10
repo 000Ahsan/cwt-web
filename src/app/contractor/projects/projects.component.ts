@@ -32,6 +32,11 @@ import { CATEGORIES_LIST } from '../../core/models/category.model';
       border-radius: 4px;
       margin-bottom: 10px;
     }
+    .bg-success-light { background-color: rgba(81, 187, 37, 0.1); }
+    .bg-danger-light { background-color: rgba(220, 53, 69, 0.1); }
+    .table-active { background-color: rgba(var(--primary-rgb), 0.05) !important; }
+    .me-n2 { margin-right: -0.5rem !important; }
+    .txt-primary { color: var(--theme-deafult); }
   `]
 })
 export class ContractorProjectsComponent implements OnInit {
@@ -45,11 +50,14 @@ export class ContractorProjectsComponent implements OnInit {
   categoriesList = CATEGORIES_LIST;
   showModal = false;
   isEditing = false;
+  expandedProjectId: string | null = null;
 
   editingProject: Partial<Project> & { selectedCategories?: string[] } = {
     name: '',
     description: '',
     startDate: '',
+    targetHours: 0,
+    address: '',
     logo: '',
     latitude: 40.7128,
     longitude: -74.006,
@@ -57,6 +65,14 @@ export class ContractorProjectsComponent implements OnInit {
   };
 
   searchQuery = '';
+
+  get ngModelStartDate(): string {
+    return this.editingProject.startDate || '';
+  }
+
+  set ngModelStartDate(value: string) {
+    this.editingProject.startDate = value;
+  }
 
   // Map settings
   map: L.Map;
@@ -82,12 +98,18 @@ export class ContractorProjectsComponent implements OnInit {
     });
   }
 
+  toggleExpand(projectId: string) {
+    this.expandedProjectId = this.expandedProjectId === projectId ? null : projectId;
+  }
+
   openCreateModal() {
     this.isEditing = false;
     this.editingProject = {
       name: '',
       description: '',
       startDate: new Date().toLocaleDateString('en-CA'),
+      targetHours: 0,
+      address: '',
       logo: '',
       latitude: 40.7128,
       longitude: -74.006,
@@ -149,13 +171,26 @@ export class ContractorProjectsComponent implements OnInit {
       const position = this.marker.getLatLng();
       this.editingProject.latitude = position.lat;
       this.editingProject.longitude = position.lng;
+      this.reverseGeocode(position.lat, position.lng);
     });
 
     this.map.on('click', (e: any) => {
       this.marker.setLatLng(e.latlng);
       this.editingProject.latitude = e.latlng.lat;
       this.editingProject.longitude = e.latlng.lng;
+      this.reverseGeocode(e.latlng.lat, e.latlng.lng);
     });
+  }
+
+  reverseGeocode(lat: number, lng: number) {
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.display_name) {
+          this.editingProject.address = data.display_name;
+        }
+      })
+      .catch(err => console.error('Reverse geocoding error:', err));
   }
 
   onFileSelected(event: any) {
@@ -199,6 +234,7 @@ export class ContractorProjectsComponent implements OnInit {
         if (data && data.length > 0) {
           const result = data[0];
           this.updateMapLocation(parseFloat(result.lat), parseFloat(result.lon));
+          this.editingProject.address = result.display_name;
         } else {
           this.toastr.warning('Location not found');
         }
@@ -214,6 +250,7 @@ export class ContractorProjectsComponent implements OnInit {
     if (this.map && this.marker) {
       this.marker.setLatLng([lat, lng]);
       this.map.setView([lat, lng], 13);
+      this.reverseGeocode(lat, lng);
     }
   }
 

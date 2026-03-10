@@ -139,6 +139,12 @@ export class ContractorLogsComponent implements OnInit {
         if (comment !== undefined) {
             this.contractorService.signOffWorkLog(log.id, { status, comment }).subscribe({
                 next: () => {
+                    if (this.modalRef) {
+                        this.modalRef.close();
+                    } else {
+                        this.modalService.dismissAll();
+                    }
+                    this.loadLogs();
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
@@ -146,8 +152,6 @@ export class ContractorLogsComponent implements OnInit {
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    if (this.modalRef) this.modalRef.close();
-                    this.loadLogs();
                 },
                 error: (err) => {
                     Swal.fire('Error', err.error?.message || 'Failed to update work log status', 'error');
