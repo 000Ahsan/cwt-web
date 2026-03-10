@@ -100,6 +100,14 @@ export class NavService {
       path: '/contractor/logs',
       role: [UserRole.CONTRACTOR]
     },
+    {
+      level: 1,
+      title: 'Profile',
+      icon: 'user',
+      type: 'link',
+      path: '/contractor/user/profile',
+      role: [UserRole.CONTRACTOR]
+    },
 
     {
       level: 1,
@@ -115,6 +123,14 @@ export class NavService {
       icon: 'calendar',
       type: 'link',
       path: '/worker/logs',
+      role: [UserRole.WORKER]
+    },
+    {
+      level: 1,
+      title: 'Profile',
+      icon: 'user',
+      type: 'link',
+      path: '/worker/user/profile',
       role: [UserRole.WORKER]
     },
   ];

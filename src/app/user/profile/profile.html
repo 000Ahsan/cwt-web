@@ -1,0 +1,106 @@
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row justify-content-between align-items-center mb-3 mt-3">
+            <div class="col-md-6 col-sm-12">
+                <app-breadcrumb />
+            </div>
+        </div>
+    </div>
+    <div class="edit-profile">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-header pb-0 border-bottom">
+                        <h4 class="card-title mb-0">My Profile</h4>
+                        <p class="text-muted small mt-1">Update your profile information</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="profile-title">
+                                <div class="media align-items-center">
+                                    <div class="position-relative">
+                                        <img class="img-100 rounded-circle border border-5 border-light shadow-sm"
+                                            alt="Profile image" [src]="selectedImage || 'assets/images/user/user.png'">
+                                    </div>
+                                    <div class="media-body ms-3 mt-2">
+                                        <h3 class="mb-0 f-24 txt-primary">{{ user?.name }}</h3>
+                                        <p class="f-14 text-muted mb-0 font-weight-bold">{{ user?.role }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">Change Profile Image</label>
+                            <div class="input-group">
+                                <input class="form-control" type="file" (change)="onFileChange($event)"
+                                    accept="image/*">
+                            </div>
+                            <small class="text-muted mt-1 d-block">Upload a square image for best results.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8">
+                <form class="card shadow-sm" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                    <div class="card-header pb-0 border-bottom bg-white">
+                        <h4 class="card-title mb-0">Edit Profile</h4>
+                        <p class="text-muted small mt-1">Configure your personal information and login credentials</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-4">
+                                    <label class="form-label font-weight-bold">Full Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-primary"><i class="fa fa-user"></i></span>
+                                        <input class="form-control" type="text" formControlName="name"
+                                            placeholder="Full Name">
+                                    </div>
+                                    <div *ngIf="profileForm.get('name')?.touched && profileForm.get('name')?.invalid"
+                                        class="text-danger small mt-1 ms-1">
+                                        <i class="fa fa-exclamation-circle me-1"></i>Full name is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="mb-4">
+                                    <label class="form-label font-weight-bold">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-primary"><i class="fa fa-envelope"></i></span>
+                                        <input class="form-control" type="email" formControlName="email"
+                                            placeholder="Email">
+                                    </div>
+                                    <div *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.invalid"
+                                        class="text-danger small mt-1 ms-1">
+                                        <i class="fa fa-exclamation-circle me-1"></i>Enter a valid email address.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="mb-4">
+                                    <label class="form-label font-weight-bold">New Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-primary w-10"><i class="fa fa-lock"></i></span>
+                                        <input class="form-control" type="password" formControlName="password"
+                                            placeholder="Leave blank to keep current password">
+                                    </div>
+                                    <small class="text-muted mt-1 d-block"><i class="fa fa-info-circle me-1"></i>Only
+                                        fill this if you want to change your password.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end bg-light">
+                        <button class="btn btn-primary px-4 py-2" type="submit"
+                            [disabled]="profileForm.invalid || loading">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                            <i *ngIf="!loading" class="fa fa-save me-2"></i>
+                            {{ loading ? 'Saving Changes...' : 'Save Changes' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

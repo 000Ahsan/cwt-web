@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { Breadcrumb } from '../../shared/components/breadcrumb/breadcrumb';
 import { AuthService } from '../../core/services/auth.service';
 import { User } from '../../core/models/auth.model';
@@ -12,7 +13,7 @@ import { FeatherIcons } from '../../shared/components/feather-icons/feather-icon
 @Component({
   selector: 'app-contractor-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, Breadcrumb, SvgIconComponent, NgApexchartsModule, FeatherIcons],
+  imports: [CommonModule, FormsModule, Breadcrumb, SvgIconComponent, NgApexchartsModule, FeatherIcons, RouterModule],
   templateUrl: './dashboard.component.html',
   styles: []
 })

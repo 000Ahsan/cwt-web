@@ -28,7 +28,7 @@
                                     <td>
                                         <div class="fw-bold text-dark">{{ log.workSession?.project?.name }}</div>
                                     </td>
-                                    <td>{{ log.workSession?.date | date:'mediumDate' }}</td>
+                                    <td>{{ log.workSession?.date | date:'mediumDate':'UTC' }}</td>
                                     <td>
                                         <div class="small text-muted">
                                             {{ log.workSession?.startTime | date:'shortTime' }} - {{
@@ -91,7 +91,7 @@
             </div>
             <div class="col-6">
                 <label class="form-label small text-muted text-uppercase fw-bold mb-1">Date</label>
-                <div>{{ selectedLog?.workSession?.date | date:'longDate' }}</div>
+                <div>{{ selectedLog?.workSession?.date | date:'longDate':'UTC' }}</div>
             </div>
         </div>
 

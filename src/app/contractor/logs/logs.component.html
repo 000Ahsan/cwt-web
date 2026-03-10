@@ -86,7 +86,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let log of logs">
+                                <tr *ngFor="let log of logs" class="cursor-pointer" (click)="viewLog(log)">
                                     <td class="ps-4">
                                         <div class="fw-semibold text-dark">{{ log.workSession?.worker?.name }}</div>
                                         <small class="text-muted">{{ log.workSession?.worker?.email }}</small>
@@ -97,7 +97,7 @@
                                         </span>
                                     </td>
                                     <td class="small text-muted">
-                                        {{ log.workSession?.date | date:'mediumDate' }}
+                                        {{ log.workSession?.date | date:'mediumDate':'UTC' }}
                                     </td>
                                     <td>
                                         <div class="small text-muted">
@@ -199,7 +199,7 @@
         <div class="row mb-4 border-top pt-3">
             <div class="col-6 col-md-3">
                 <label class="form-label small text-muted text-uppercase fw-bold mb-1">Session Date</label>
-                <div class="fw-semibold text-dark">{{ selectedLog?.workSession?.date | date:'mediumDate' }}</div>
+                <div class="fw-semibold text-dark">{{ selectedLog?.workSession?.date | date:'mediumDate':'UTC' }}</div>
             </div>
             <div class="col-6 col-md-3">
                 <label class="form-label small text-muted text-uppercase fw-bold mb-1">Total Duration</label>

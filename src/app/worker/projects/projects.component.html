@@ -6,6 +6,19 @@
             </div>
         </div>
     </div>
+    <!-- Welcome Greeting -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card profile-greeting h-auto py-4">
+                <div class="card-body text-center p-t-0 p-b-0">
+                    <h3 class="font-light">Welcome Back, {{ user?.name }}!!</h3>
+                    <p class="mb-3">Manage your assigned projects and track your work sessions below.</p>
+                    <button class="btn btn-light" [routerLink]="['/worker/user/profile']">Update Profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-4 col-sm-12" *ngFor="let project of projects">
             <div class="card">

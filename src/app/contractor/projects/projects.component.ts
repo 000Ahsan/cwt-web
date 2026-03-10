@@ -87,7 +87,7 @@ export class ContractorProjectsComponent implements OnInit {
     this.editingProject = {
       name: '',
       description: '',
-      startDate: new Date().toISOString().split('T')[0],
+      startDate: new Date().toLocaleDateString('en-CA'),
       logo: '',
       latitude: 40.7128,
       longitude: -74.006,
@@ -105,7 +105,7 @@ export class ContractorProjectsComponent implements OnInit {
       selectedCategories: project.categories ? project.categories.split(',') : []
     };
     if (this.editingProject.startDate) {
-      this.editingProject.startDate = new Date(this.editingProject.startDate).toISOString().split('T')[0];
+      this.editingProject.startDate = this.editingProject.startDate.substring(0, 10);
     }
     if (this.editingProject.logo) {
       const relativePath = this.editingProject.logo;

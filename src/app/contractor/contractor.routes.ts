@@ -29,6 +29,10 @@ export const CONTRACTOR_ROUTES: Routes = [
                 data: { title: 'Work Logs', breadcrumb: 'Work Logs' }
             },
             {
+                path: 'user',
+                loadChildren: () => import('../user/user.routes').then(m => m.USER_ROUTES)
+            },
+            {
                 path: '',
                 redirectTo: 'dashboard',
                 pathMatch: 'full'

@@ -8,11 +8,14 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { FeatherIcons } from '../../shared/components/feather-icons/feather-icons';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
+import { User } from '../../core/models/auth.model';
 
 @Component({
   selector: 'app-worker-projects',
   standalone: true,
-  imports: [CommonModule, Breadcrumb, FormsModule, ReactiveFormsModule, FeatherIcons],
+  imports: [CommonModule, Breadcrumb, FormsModule, ReactiveFormsModule, FeatherIcons, RouterModule],
   templateUrl: './projects.component.html',
   styles: `
     .product-img img {
@@ -37,9 +40,14 @@ export class WorkerProjectsComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private modalService = inject(NgbModal);
+  private authService = inject(AuthService);
 
   projects: any[] = [];
   apiUrl = environment.apiBaseUrl;
+
+  get user(): User | null {
+    return this.authService.currentUserValue;
+  }
 
   activeSession: any = null;
   elapsedTime: string = '00:00:00';

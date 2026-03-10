@@ -55,6 +55,25 @@ export class AuthService {
         this.router.navigate(['/auth/login']);
     }
 
+    updateUserProfile(profileData: FormData): Observable<any> {
+        return this.http.patch<any>(`${this.apiUrl}/profile`, profileData).pipe(
+            tap(response => {
+                this.updateCurrentUser(response);
+            })
+        );
+    }
+
+    updateCurrentUser(user: User) {
+        if (user.name) {
+            const parts = user.name.split(' ');
+            user.firstName = parts[0];
+            user.lastName = parts.slice(1).join(' ');
+        }
+        const currentUser = { ...this.currentUserValue, ...user };
+        localStorage.setItem('user', JSON.stringify(currentUser));
+        this.currentUserSubject.next(currentUser);
+    }
+
     isLoggedIn(): boolean {
         const token = localStorage.getItem('access_token');
         return !!token && token !== 'undefined' && token !== 'null';

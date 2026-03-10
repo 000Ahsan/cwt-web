@@ -40,7 +40,7 @@
                                         }
                                     </td>
                                     <td class="fw-bold">{{ project.name }}</td>
-                                    <td>{{ project.startDate | date:'mediumDate' }}</td>
+                                    <td>{{ project.startDate | date:'mediumDate':'UTC' }}</td>
                                     <td>{{ project.workers?.length }}</td>
                                     <td>
                                         <span class="badge" [ngClass]="project.active ? 'bg-success' : 'bg-secondary'">

@@ -17,6 +17,10 @@ export const WORKER_ROUTES: Routes = [
                 data: { title: 'Work Logs', breadcrumb: 'Work Logs' }
             },
             {
+                path: 'user',
+                loadChildren: () => import('../user/user.routes').then(m => m.USER_ROUTES)
+            },
+            {
                 path: '',
                 redirectTo: 'projects',
                 pathMatch: 'full'
