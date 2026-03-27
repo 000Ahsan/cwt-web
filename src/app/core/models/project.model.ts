@@ -17,6 +17,7 @@ export interface Project {
     actualHours?: number;
     address?: string;
     active: boolean;
+    isLocationBound: boolean;
     contractorId: string;
     categories?: string;
     createdAt: string;

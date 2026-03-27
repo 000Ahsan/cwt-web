@@ -61,6 +61,7 @@ export class ContractorProjectsComponent implements OnInit {
     logo: '',
     latitude: 40.7128,
     longitude: -74.006,
+    isLocationBound: false,
     selectedCategories: []
   };
 
@@ -113,6 +114,7 @@ export class ContractorProjectsComponent implements OnInit {
       logo: '',
       latitude: 40.7128,
       longitude: -74.006,
+      isLocationBound: false,
       selectedCategories: []
     };
     this.searchQuery = '';

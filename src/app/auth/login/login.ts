@@ -34,7 +34,7 @@ export class Login {
 
   constructor() {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      identifier: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
@@ -60,7 +60,7 @@ export class Login {
         this.loading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Invalid email or password';
+        this.errorMessage = 'Invalid email/phone or password';
         this.loading = false;
       }
     });

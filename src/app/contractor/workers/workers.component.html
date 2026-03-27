@@ -23,8 +23,9 @@
                                 style="object-fit: cover; width: 40px; height: 40px;" alt="">
                             <div>
                                 <h5 class="mb-0 text-truncate" style="max-width: 150px;">{{ worker.name }}</h5>
-                                <p class="mb-0 text-muted small text-truncate" style="max-width: 150px;">{{ worker.email
-                                    }}</p>
+                                <p class="mb-0 text-muted small text-truncate" style="max-width: 150px;">
+                                    {{ worker.email || worker.phone }}
+                                </p>
                             </div>
                         </div>
                         <div class="d-flex gap-3">
@@ -111,6 +112,11 @@
                             placeholder="email@example.com">
                     </div>
                     <div class="col-12">
+                        <label class="form-label fw-bold small">Phone Number</label>
+                        <input type="text" class="form-control" [(ngModel)]="newWorker.phone"
+                            placeholder="1234567890">
+                    </div>
+                    <div class="col-12">
                         <label class="form-label fw-bold small">
                             {{ editingWorker ? 'New Password (leave blank to keep current)' : 'Password' }}
                         </label>
@@ -129,7 +135,7 @@
             <div class="modal-footer border-top-0 bg-light-brand rounded-bottom">
                 <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cancel</button>
                 <button type="button" class="btn btn-primary px-4" (click)="saveWorker()"
-                    [disabled]="!newWorker.email || !newWorker.name">
+                    [disabled]="(!newWorker.email && !newWorker.phone) || !newWorker.name">
                     <i class="fa fa-check me-1"></i> {{ editingWorker ? 'Update Worker' : 'Create Worker' }}
                 </button>
             </div>

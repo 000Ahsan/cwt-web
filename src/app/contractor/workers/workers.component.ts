@@ -40,7 +40,7 @@ export class ContractorWorkersComponent implements OnInit {
   projects: any[] = [];
   categoriesList = CATEGORIES_LIST;
 
-  newWorker: any = { email: '', name: '', password: '', image: '', selectedCategories: [] };
+  newWorker: any = { email: '', phone: '', name: '', password: '', image: '', selectedCategories: [] };
 
   ngOnInit() {
     this.loadData();
@@ -76,7 +76,7 @@ export class ContractorWorkersComponent implements OnInit {
   }
 
   saveWorker() {
-    if (!this.newWorker.email || !this.newWorker.name) return;
+    if ((!this.newWorker.email && !this.newWorker.phone) || !this.newWorker.name) return;
 
     const payload = { ...this.newWorker };
     payload.categories = this.newWorker.selectedCategories ? this.newWorker.selectedCategories.join(',') : '';
@@ -114,6 +114,7 @@ export class ContractorWorkersComponent implements OnInit {
     this.editingWorker = worker;
     this.newWorker = {
       email: worker.email,
+      phone: worker.phone,
       name: worker.name,
       password: '',
       image: worker.image ? this.apiUrl + worker.image : '',
@@ -165,7 +166,7 @@ export class ContractorWorkersComponent implements OnInit {
   closeModal() {
     this.showCreateModal = false;
     this.editingWorker = null;
-    this.newWorker = { email: '', name: '', password: '', image: '', selectedCategories: [] };
+    this.newWorker = { email: '', phone: '', name: '', password: '', image: '', selectedCategories: [] };
     if (this.imageInput) {
       this.imageInput.nativeElement.value = '';
     }
