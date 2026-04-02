@@ -45,6 +45,7 @@ export class ContractorLogsComponent implements OnInit {
     };
 
     loading = false;
+    submittingAudit = false;
     selectedLog: any = null;
     private modalRef: NgbModalRef;
 
@@ -137,6 +138,7 @@ export class ContractorLogsComponent implements OnInit {
         });
 
         if (comment !== undefined) {
+            this.submittingAudit = true;
             this.contractorService.signOffWorkLog(log.id, { status, comment }).subscribe({
                 next: () => {
                     if (this.modalRef) {
@@ -145,6 +147,7 @@ export class ContractorLogsComponent implements OnInit {
                         this.modalService.dismissAll();
                     }
                     this.loadLogs();
+                    this.submittingAudit = false;
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
@@ -155,6 +158,7 @@ export class ContractorLogsComponent implements OnInit {
                 },
                 error: (err) => {
                     Swal.fire('Error', err.error?.message || 'Failed to update work log status', 'error');
+                    this.submittingAudit = false;
                 }
             });
         }

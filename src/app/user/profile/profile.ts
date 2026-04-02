@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit {
             password: [''],
         });
         if (this.user?.image) {
-            this.selectedImage = this.apiUrl + this.user.image;
+            this.selectedImage = this.user.image;
         }
     }
 

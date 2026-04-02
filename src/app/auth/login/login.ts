@@ -51,6 +51,12 @@ export class Login {
     this.loading = true;
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
+        if (response.user.role === UserRole.WORKER) {
+          this.errorMessage = 'Web access is disabled for workers. Please use the mobile app to log your time.';
+          this.authService.logout();
+          this.loading = false;
+          return;
+        }
         this.navService.refreshMenu();
         if (response.user.role === UserRole.CONTRACTOR) {
           this.router.navigate(['/contractor']);

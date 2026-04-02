@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, inject, ViewChild, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContractorService } from '../../core/services/contractor.service';
 import { FormsModule } from '@angular/forms';
@@ -27,18 +27,31 @@ import { CATEGORIES_LIST } from '../../core/models/category.model';
     }
   `]
 })
-export class ContractorWorkersComponent implements OnInit {
+export class ContractorWorkersComponent implements OnInit, OnDestroy {
   private contractorService = inject(ContractorService);
   private toastr = inject(ToastrService);
+  private renderer = inject(Renderer2);
 
   @ViewChild('imageInput') imageInput!: ElementRef;
 
   apiUrl = environment.apiBaseUrl;
-  showCreateModal = false;
+  private _showCreateModal = false;
+  get showCreateModal() { return this._showCreateModal; }
+  set showCreateModal(value: boolean) {
+    this._showCreateModal = value;
+    if (value) {
+      this.renderer.addClass(document.body, 'modal-open');
+    } else {
+      this.renderer.removeClass(document.body, 'modal-open');
+    }
+  }
+
   editingWorker: any = null;
   workers: any[] = [];
   projects: any[] = [];
   categoriesList = CATEGORIES_LIST;
+  loading = false;
+  submitting = false;
 
   newWorker: any = { email: '', phone: '', name: '', password: '', image: '', selectedCategories: [] };
 
@@ -46,11 +59,26 @@ export class ContractorWorkersComponent implements OnInit {
     this.loadData();
   }
 
+  ngOnDestroy() {
+    this.renderer.removeClass(document.body, 'modal-open');
+  }
+
   loadData() {
-    this.contractorService.getWorkers().subscribe(workers => {
-      this.workers = workers.map(w => ({ ...w, selectedProjectId: '' }));
+    this.loading = true;
+    this.contractorService.getWorkers().subscribe({
+      next: (workers) => {
+        this.workers = workers.map(w => ({ ...w, selectedProjectId: '', isAssigning: false }));
+        // Only stop loading when projects are also loaded
+      },
+      error: () => this.loading = false
     });
-    this.contractorService.getProjects().subscribe(projects => this.projects = projects);
+    this.contractorService.getProjects().subscribe({
+      next: (projects) => {
+        this.projects = projects;
+        this.loading = false;
+      },
+      error: () => this.loading = false
+    });
   }
 
   onFileSelected(event: any) {
@@ -78,6 +106,7 @@ export class ContractorWorkersComponent implements OnInit {
   saveWorker() {
     if ((!this.newWorker.email && !this.newWorker.phone) || !this.newWorker.name) return;
 
+    this.submitting = true;
     const payload = { ...this.newWorker };
     payload.categories = this.newWorker.selectedCategories ? this.newWorker.selectedCategories.join(',') : '';
     delete payload.selectedCategories;
@@ -95,8 +124,12 @@ export class ContractorWorkersComponent implements OnInit {
           this.toastr.success('Worker updated successfully');
           this.closeModal();
           this.loadData();
+          this.submitting = false;
         },
-        error: (err) => this.toastr.error(err.error?.message || 'Failed to update worker')
+        error: (err) => {
+          this.toastr.error(err.error?.message || 'Failed to update worker');
+          this.submitting = false;
+        }
       });
     } else {
       this.contractorService.createWorker(payload).subscribe({
@@ -104,8 +137,12 @@ export class ContractorWorkersComponent implements OnInit {
           this.toastr.success('Worker created successfully');
           this.closeModal();
           this.loadData();
+          this.submitting = false;
         },
-        error: (err) => this.toastr.error(err.error?.message || 'Failed to create worker')
+        error: (err) => {
+          this.toastr.error(err.error?.message || 'Failed to create worker');
+          this.submitting = false;
+        }
       });
     }
   }
@@ -117,7 +154,7 @@ export class ContractorWorkersComponent implements OnInit {
       phone: worker.phone,
       name: worker.name,
       password: '',
-      image: worker.image ? this.apiUrl + worker.image : '',
+      image: worker.image ? worker.image : '',
       selectedCategories: worker.categories ? worker.categories.split(',') : []
     };
 
@@ -175,18 +212,22 @@ export class ContractorWorkersComponent implements OnInit {
   assignWorker(worker: any) {
     if (!worker.selectedProjectId) return;
 
+    worker.isAssigning = true;
     this.contractorService.assignWorkerToProject(worker.selectedProjectId, worker.id).subscribe({
       next: () => {
         this.toastr.success(`Project assigned to worker successfully!`);
         this.loadData();
       },
-      error: (err) => this.toastr.error(err.error?.message || 'Failed to assign project')
+      error: (err) => {
+        this.toastr.error(err.error?.message || 'Failed to assign project');
+        worker.isAssigning = false;
+      }
     });
   }
 
   getUnassignedProjects(worker: any): any[] {
     const assignments = worker.assignments;
     const assignedProjectIds = assignments.map((assignment: any) => assignment.projectId);
-    return this.projects.filter(p => !assignedProjectIds.includes(p.id));
+    return this.projects.filter((p: any) => !assignedProjectIds.includes(p.id));
   }
 }
