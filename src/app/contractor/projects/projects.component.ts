@@ -9,7 +9,8 @@ import Swal from 'sweetalert2';
 import { environment } from '../../../../public/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { CATEGORIES_LIST } from '../../core/models/category.model';
+import { WorkCategoryService } from '../../core/services/work-category.service';
+import { WorkCategory } from '../../core/models/work-category.model';
 
 @Component({
   selector: 'app-contractor-projects',
@@ -43,12 +44,13 @@ export class ContractorProjectsComponent implements OnInit, OnDestroy {
   private toastr = inject(ToastrService);
   private ngZone = inject(NgZone);
   private renderer = inject(Renderer2);
+  private workCategoryService = inject(WorkCategoryService);
 
   @ViewChild('logoInput') logoInput!: ElementRef;
 
   apiUrl = environment.apiBaseUrl;
   projects: Project[] = [];
-  categoriesList = CATEGORIES_LIST;
+  categoriesList: WorkCategory[] = [];
   private _showModal = false;
   get showModal() { return this._showModal; }
   set showModal(value: boolean) {
@@ -105,6 +107,14 @@ export class ContractorProjectsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadProjects();
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.workCategoryService.getAll().subscribe({
+      next: (data) => this.categoriesList = data,
+      error: () => this.toastr.error('Failed to load categories')
+    });
   }
 
   ngOnDestroy() {
@@ -151,7 +161,7 @@ export class ContractorProjectsComponent implements OnInit, OnDestroy {
     this.isEditing = true;
     this.editingProject = {
       ...project,
-      selectedCategories: project.categories ? project.categories.split(',') : []
+      selectedCategories: project.categories ? project.categories.map(c => c.id) : []
     };
     if (this.editingProject.startDate) {
       this.editingProject.startDate = this.editingProject.startDate.substring(0, 10);
@@ -285,9 +295,10 @@ export class ContractorProjectsComponent implements OnInit, OnDestroy {
 
     this.submitting = true;
     const payload = { ...this.editingProject };
-    // Convert selectedCategories back to comma separated string
-    payload.categories = this.editingProject.selectedCategories ? this.editingProject.selectedCategories.join(',') : '';
+    // Convert selectedCategories to workCategoryIds for backend
+    payload.workCategoryIds = this.editingProject.selectedCategories || [];
     delete (payload as any).selectedCategories;
+    delete (payload as any).categories;
 
     // Set endDate as null as requested for now
     (payload as any).endDate = null;

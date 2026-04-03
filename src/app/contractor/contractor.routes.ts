@@ -3,6 +3,8 @@ import { ContractorDashboardComponent } from './dashboard/dashboard.component';
 import { ContractorProjectsComponent } from './projects/projects.component';
 import { ContractorWorkersComponent } from './workers/workers.component';
 import { ContractorLogsComponent } from './logs/logs.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { AttendanceComponent } from './attendance/attendance.component';
 
 export const CONTRACTOR_ROUTES: Routes = [
     {
@@ -27,6 +29,16 @@ export const CONTRACTOR_ROUTES: Routes = [
                 path: 'logs',
                 component: ContractorLogsComponent,
                 data: { title: 'Work Logs', breadcrumb: 'Work Logs' }
+            },
+            {
+                path: 'categories',
+                component: CategoriesComponent,
+                data: { title: 'Work Categories', breadcrumb: 'Categories' }
+            },
+            {
+                path: 'attendance',
+                component: AttendanceComponent,
+                data: { title: 'Attendance', breadcrumb: 'Attendance' }
             },
             {
                 path: 'user',

@@ -1,4 +1,5 @@
 import { User } from './auth.model';
+import { WorkCategory } from './work-category.model';
 
 export interface ProjectWorker extends User {
     projectHours?: number;
@@ -19,7 +20,8 @@ export interface Project {
     active: boolean;
     isLocationBound: boolean;
     contractorId: string;
-    categories?: string;
+    categories?: WorkCategory[];
+    workCategoryIds?: string[];
     createdAt: string;
     updatedAt: string;
     workers?: ProjectWorker[];

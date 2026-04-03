@@ -7,7 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../public/environments/environment';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { CATEGORIES_LIST } from '../../core/models/category.model';
+import { WorkCategoryService } from '../../core/services/work-category.service';
+import { WorkCategory } from '../../core/models/work-category.model';
 
 @Component({
   selector: 'app-contractor-workers',
@@ -31,6 +32,7 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
   private contractorService = inject(ContractorService);
   private toastr = inject(ToastrService);
   private renderer = inject(Renderer2);
+  private workCategoryService = inject(WorkCategoryService);
 
   @ViewChild('imageInput') imageInput!: ElementRef;
 
@@ -49,7 +51,7 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
   editingWorker: any = null;
   workers: any[] = [];
   projects: any[] = [];
-  categoriesList = CATEGORIES_LIST;
+  categoriesList: WorkCategory[] = [];
   loading = false;
   submitting = false;
 
@@ -57,6 +59,14 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadData();
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.workCategoryService.getAll().subscribe({
+      next: (data) => this.categoriesList = data,
+      error: () => this.toastr.error('Failed to load categories')
+    });
   }
 
   ngOnDestroy() {
@@ -108,8 +118,9 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
 
     this.submitting = true;
     const payload = { ...this.newWorker };
-    payload.categories = this.newWorker.selectedCategories ? this.newWorker.selectedCategories.join(',') : '';
-    delete payload.selectedCategories;
+    payload.workCategoryIds = this.newWorker.selectedCategories || [];
+    delete (payload as any).selectedCategories;
+    delete (payload as any).categories;
 
     if (this.editingWorker) {
       // If editing, only send image if it's new (starts with data:)
@@ -155,7 +166,7 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
       name: worker.name,
       password: '',
       image: worker.image ? worker.image : '',
-      selectedCategories: worker.categories ? worker.categories.split(',') : []
+      selectedCategories: worker.categories ? worker.categories.map((c: any) => c.id) : []
     };
 
     // Patch the file input name if we have an image

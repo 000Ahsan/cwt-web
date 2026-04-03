@@ -35,6 +35,14 @@
                                 <p class="mb-0 text-muted small text-truncate" style="max-width: 150px;">
                                     {{ worker.email || worker.phone }}
                                 </p>
+                                <div class="mt-1 d-flex flex-wrap gap-1">
+                                    @for (cat of worker.categories; track cat.id) {
+                                    <span class="badge bg-light txt-primary border border-primary-light"
+                                        style="font-size: 9px; font-weight: 500; padding: 2px 5px;">
+                                        {{ cat.name }}
+                                    </span>
+                                    }
+                                </div>
                             </div>
                         </div>
                         <div class="d-flex gap-3">
@@ -138,7 +146,7 @@
                     <div class="col-12">
                         <label class="form-label fw-bold small">Categories</label>
                         <ng-select [items]="categoriesList" [multiple]="true" [closeOnSelect]="false"
-                            [searchable]="true" placeholder="Select categories"
+                            [searchable]="true" placeholder="Select categories" bindValue="id" bindLabel="name"
                             [(ngModel)]="newWorker.selectedCategories">
                         </ng-select>
                     </div>

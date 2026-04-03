@@ -1,0 +1,148 @@
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row justify-content-between align-items-center mb-3 mt-3">
+            <div class="col-md-6 col-sm-12">
+                <app-breadcrumb />
+            </div>
+            <div class="col-md-6 col-sm-12 text-end">
+                <button class="btn btn-primary shadow-sm" (click)="openCreateModal()">
+                    <i class="fa fa-plus me-2"></i>New Work Category
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Category Name</th>
+                                    <th>Hourly Rate</th>
+                                    <th>Usage</th>
+                                    <th class="text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="loading">
+                                    <td colspan="4" class="text-center py-5">
+                                        <div class="loader-box">
+                                            <div class="loader-3"></div>
+                                        </div>
+                                        <p class="mt-2 text-muted">Loading categories...</p>
+                                    </td>
+                                </tr>
+                                <ng-container *ngIf="!loading">
+                                    <tr *ngFor="let category of categories" class="category-row">
+                                        <td class="ps-4">
+                                            <div class="d-flex align-items-center">
+                                                <span class="fw-bold">{{ category.name }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="fw-bold txt-primary">${{ category.hourlyRate | number:'1.2-2'
+                                                }}/hr</span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-3">
+                                                <span class="badge bg-primary-light txt-primary border-primary"
+                                                    [title]="'Linked to ' + category._count?.projectLinks + ' projects'">
+                                                    <i class="fa fa-building me-1"></i> {{ category._count?.projectLinks
+                                                    || 0 }} Projects
+                                                </span>
+                                                <span class="badge bg-primary-light txt-primary border-primary"
+                                                    [title]="'Assigned to ' + category._count?.workerLinks + ' workers'">
+                                                    <i class="fa fa-users me-1"></i> {{ category._count?.workerLinks ||
+                                                    0 }} Workers
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                    (click)="openEditModal(category)" title="Edit Category">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger"
+                                                    (click)="onDelete(category)" title="Delete Category">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="categories.length === 0">
+                                        <td colspan="4" class="text-center py-5">
+                                            <div class="empty-state">
+                                                <img src="assets/images/dashboard/product-1.png"
+                                                    style="width: 80px; opacity: 0.3; filter: grayscale(1);"
+                                                    alt="No categories">
+                                                <p class="mt-3 text-muted">You haven't defined any categories yet.</p>
+                                                <button class="btn btn-sm btn-primary mt-2"
+                                                    (click)="openCreateModal()">Create Your First Category</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Category Modal -->
+<div class="modal fade show" *ngIf="showModal" style="display: block; background: rgba(0,0,0,0.5); z-index: 1050;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white border-bottom-0">
+                <h5 class="modal-title font-white">{{ isEditing ? 'Edit Category' :
+                    'New Work Category' }}</h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeModal()"></button>
+            </div>
+            <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Category Name</label>
+                        <input type="text" class="form-control" formControlName="name"
+                            placeholder="e.g. Drywall, Plumbing, Cleaning"
+                            [class.is-invalid]="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched">
+                        <div class="invalid-feedback">
+                            Category name is required (max 50 chars).
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label fw-bold">Hourly Billing Rate (USD)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" formControlName="hourlyRate" step="0.01" min="0"
+                                placeholder="0.00"
+                                [class.is-invalid]="categoryForm.get('hourlyRate')?.invalid && categoryForm.get('hourlyRate')?.touched">
+                        </div>
+                        <div class="invalid-feedback d-block"
+                            *ngIf="categoryForm.get('hourlyRate')?.invalid && categoryForm.get('hourlyRate')?.touched">
+                            Please enter a valid hourly rate.
+                        </div>
+                        <small class="text-muted d-block mt-2">
+                            <i class="fa fa-info-circle me-1"></i> This rate will be used for billing reports.
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 p-4 pt-0">
+                    <button type="button" class="btn btn-light" (click)="closeModal()"
+                        [disabled]="submitting">Cancel</button>
+                    <button type="submit" class="btn btn-primary d-flex align-items-center gap-2"
+                        [disabled]="categoryForm.invalid || submitting">
+                        <span *ngIf="submitting" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true"></span>
+                        {{ submitting ? 'Saving...' : (isEditing ? 'Update Category' : 'Create Category') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

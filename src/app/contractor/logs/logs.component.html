@@ -12,7 +12,7 @@
         <div class="card-body">
             <div class="row g-3 align-items-end">
                 <!-- Worker Filter -->
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-2 col-sm-6">
                     <label class="form-label small fw-semibold text-muted text-uppercase">Worker</label>
                     <select class="form-select" [(ngModel)]="filters.workerId">
                         <option value="">All Workers</option>
@@ -21,11 +21,20 @@
                 </div>
 
                 <!-- Project Filter -->
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-2 col-sm-6">
                     <label class="form-label small fw-semibold text-muted text-uppercase">Project</label>
                     <select class="form-select" [(ngModel)]="filters.projectId">
                         <option value="">All Projects</option>
                         <option *ngFor="let p of projects" [value]="p.id">{{ p.name }}</option>
+                    </select>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-semibold text-muted text-uppercase">Category</label>
+                    <select class="form-select" [(ngModel)]="filters.category">
+                        <option value="">All Categories</option>
+                        <option *ngFor="let c of categories" [value]="c.name">{{ c.name }}</option>
                     </select>
                 </div>
 
@@ -77,8 +86,7 @@
                             <thead class="bg-light">
                                 <tr>
                                     <th class="ps-4">Worker</th>
-                                    <th>Project</th>
-                                    <th>Date</th>
+                                    <th>Project & Category</th>
                                     <th>Work Session</th>
                                     <th>Duration</th>
                                     <th>Status</th>
@@ -93,13 +101,14 @@
                                     </td>
                                     <td>
                                         <span class="badge badge-primary text-white px-2 py-1">
-                                            {{ log.workSession?.project?.name }}
+                                            {{ log.workSession?.project?.name }} |
+                                            {{ log.workSession?.workCategory?.name }}
                                         </span>
                                     </td>
-                                    <td class="small text-muted">
-                                        {{ log.workSession?.date | date:'mediumDate':'UTC' }}
-                                    </td>
                                     <td>
+                                        <div class="small text-muted">
+                                            {{ log.workSession?.date | date:'mediumDate':'UTC' }}
+                                        </div>
                                         <div class="small text-muted">
                                             {{ log.workSession?.startTime | date:'shortTime' }} –
                                             {{ log.workSession?.endTime | date:'shortTime' }}
@@ -113,7 +122,7 @@
                                     <td>
                                         <span class="badge shadow-sm px-2 py-1" [ngClass]="{
                                             'bg-warning text-dark': log.status === 'PENDING',
-                                            'bg-success text-white': log.status === 'APPROVED',
+                                            'bg-primary text-white': log.status === 'APPROVED',
                                             'bg-danger text-white': log.status === 'REJECTED'
                                         }">
                                             {{ log.status }}
@@ -195,6 +204,7 @@
                 <label class="form-label small text-muted text-uppercase fw-bold mb-1">Project</label>
                 <div class="fw-bold fs-6 txt-primary">{{ selectedLog?.workSession?.project?.name }}</div>
                 <div class="small text-muted">{{ selectedLog?.workSession?.project?.address }}</div>
+                <div class="small text-muted fw-bold">{{ selectedLog?.workSession?.workCategory?.name }}</div>
             </div>
         </div>
 
@@ -204,9 +214,9 @@
                 <div class="fw-semibold text-dark">{{ selectedLog?.workSession?.date | date:'mediumDate':'UTC' }}</div>
             </div>
             <div class="col-6 col-md-3">
-                <label class="form-label small text-muted text-uppercase fw-bold mb-1">Total Duration</label>
+                <label class="form-label small text-muted text-uppercase fw-bold mb-1">Duration</label>
                 <div>
-                    <span class="badge badge-primary text-white px-2 py-1">
+                    <span class="badge badge-primary text-white px-2 py-1 me-2">
                         {{ formatDuration(selectedLog?.workSession?.totalMinutes) }}
                     </span>
                 </div>
@@ -263,16 +273,16 @@
         <div class="d-flex gap-2">
             <!-- Show Reject button if PENDING or APPROVED -->
             <button *ngIf="selectedLog?.status === 'PENDING' || selectedLog?.status === 'APPROVED'"
-                class="btn btn-danger px-4 shadow-sm d-flex align-items-center gap-2" (click)="auditLog(selectedLog, 'REJECTED')"
-                [disabled]="submittingAudit">
+                class="btn btn-danger px-4 shadow-sm d-flex align-items-center gap-2"
+                (click)="auditLog(selectedLog, 'REJECTED')" [disabled]="submittingAudit">
                 <span *ngIf="submittingAudit" class="spinner-border spinner-border-sm"></span>
                 <i *ngIf="!submittingAudit" class="fa fa-times"></i> Reject
             </button>
 
             <!-- Show Approve button if PENDING or REJECTED -->
             <button *ngIf="selectedLog?.status === 'PENDING' || selectedLog?.status === 'REJECTED'"
-                class="btn btn-success px-4 shadow-sm d-flex align-items-center gap-2" (click)="auditLog(selectedLog, 'APPROVED')"
-                [disabled]="submittingAudit">
+                class="btn btn-success px-4 shadow-sm d-flex align-items-center gap-2"
+                (click)="auditLog(selectedLog, 'APPROVED')" [disabled]="submittingAudit">
                 <span *ngIf="submittingAudit" class="spinner-border spinner-border-sm"></span>
                 <i *ngIf="!submittingAudit" class="fa fa-check"></i> Approve
             </button>

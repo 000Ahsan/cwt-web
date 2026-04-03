@@ -49,6 +49,7 @@ export class ContractorService {
     getContractorLogs(filters: {
         workerId?: string;
         projectId?: string;
+        category?: string;
         startDate?: string;
         endDate?: string;
         page?: number;
@@ -57,6 +58,7 @@ export class ContractorService {
         let params = new URLSearchParams();
         if (filters.workerId) params.set('workerId', filters.workerId);
         if (filters.projectId) params.set('projectId', filters.projectId);
+        if (filters.category) params.set('category', filters.category);
         if (filters.startDate) params.set('startDate', filters.startDate);
         if (filters.endDate) params.set('endDate', filters.endDate);
         if (filters.page) params.set('page', String(filters.page));
@@ -79,5 +81,34 @@ export class ContractorService {
 
     signOffWorkLog(logId: string, signOffData: { status: string; comment?: string }): Observable<any> {
         return this.http.patch<any>(`${this.apiUrl}/work-logs/${logId}/sign-off`, signOffData);
+    }
+
+    getWorkCategories(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/work-categories`);
+    }
+
+    deleteWorkCategory(id: string): Observable<any> {
+        return this.http.delete<any>(`${this.apiUrl}/work-categories/${id}`);
+    }
+
+    createWorkCategory(data: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/work-categories`, data);
+    }
+
+    updateWorkCategory(id: string, data: any): Observable<any> {
+        return this.http.patch<any>(`${this.apiUrl}/work-categories/${id}`, data);
+    }
+
+    getAttendanceLogs(filters: {
+        workerId?: string;
+        startDate?: string;
+        endDate?: string;
+    } = {}): Observable<any[]> {
+        let params = new URLSearchParams();
+        if (filters.workerId) params.set('workerId', filters.workerId);
+        if (filters.startDate) params.set('startDate', filters.startDate);
+        if (filters.endDate) params.set('endDate', filters.endDate);
+        const query = params.toString() ? `?${params.toString()}` : '';
+        return this.http.get<any[]>(`${this.apiUrl}/attendance${query}`);
     }
 }

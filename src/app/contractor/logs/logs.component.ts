@@ -29,6 +29,7 @@ export class ContractorLogsComponent implements OnInit {
     logs: any[] = [];
     workers: any[] = [];
     projects: any[] = [];
+    categories: any[] = [];
 
     // Pagination
     total = 0;
@@ -40,6 +41,7 @@ export class ContractorLogsComponent implements OnInit {
     filters = {
         workerId: '',
         projectId: '',
+        category: '',
         startDate: '',
         endDate: ''
     };
@@ -59,6 +61,7 @@ export class ContractorLogsComponent implements OnInit {
     loadFiltersData() {
         this.contractorService.getWorkers().subscribe(w => this.workers = w);
         this.contractorService.getProjects().subscribe(p => this.projects = p);
+        this.contractorService.getWorkCategories().subscribe(c => this.categories = c);
     }
 
     loadLogs() {
@@ -84,7 +87,7 @@ export class ContractorLogsComponent implements OnInit {
     }
 
     clearFilters() {
-        this.filters = { workerId: '', projectId: '', startDate: '', endDate: '' };
+        this.filters = { workerId: '', projectId: '', category: '', startDate: '', endDate: '' };
         this.page = 1;
         this.loadLogs();
     }

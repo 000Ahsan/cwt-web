@@ -78,6 +78,14 @@ export class NavService {
     },
     {
       level: 1,
+      title: 'Categories',
+      icon: 'briefcase',
+      type: 'link',
+      path: '/contractor/categories',
+      role: [UserRole.CONTRACTOR]
+    },
+    {
+      level: 1,
       title: 'Projects',
       icon: 'box',
       type: 'link',
@@ -98,6 +106,14 @@ export class NavService {
       icon: 'calendar',
       type: 'link',
       path: '/contractor/logs',
+      role: [UserRole.CONTRACTOR]
+    },
+    {
+      level: 1,
+      title: 'Attendance',
+      icon: 'clock',
+      type: 'link',
+      path: '/contractor/attendance',
       role: [UserRole.CONTRACTOR]
     },
     {
@@ -148,7 +164,6 @@ export class NavService {
     const filteredItems = this.MENUITEMS.filter(item => {
       return !item.role || item.role.includes(user.role);
     });
-
     this.items.next(filteredItems);
   }
 }

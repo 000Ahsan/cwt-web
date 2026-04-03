@@ -1,3 +1,5 @@
+import { WorkCategory } from './work-category.model';
+
 export enum UserRole {
     CONTRACTOR = 'CONTRACTOR',
     WORKER = 'WORKER'
@@ -11,7 +13,8 @@ export interface User {
     firstName?: string;
     lastName?: string;
     image?: string;
-    categories?: string;
+    categories?: WorkCategory[];
+    workCategoryIds?: string[];
 }
 
 export interface AuthResponse {

@@ -35,10 +35,10 @@ export class AuthService {
 
     private setSession(authResult: AuthResponse) {
         const user = authResult.user;
-        if (user.name) {
+        if (user && typeof user.name === 'string') {
             const parts = user.name.split(' ');
-            user.firstName = parts[0];
-            user.lastName = parts.slice(1).join(' ');
+            user.firstName = parts[0] || '';
+            user.lastName = parts.slice(1).join(' ') || '';
         }
 
         localStorage.setItem('access_token', authResult.access_token);
@@ -64,10 +64,10 @@ export class AuthService {
     }
 
     updateCurrentUser(user: User) {
-        if (user.name) {
+        if (user && user.name && typeof user.name === 'string') {
             const parts = user.name.split(' ');
-            user.firstName = parts[0];
-            user.lastName = parts.slice(1).join(' ');
+            user.firstName = parts[0] || '';
+            user.lastName = parts.slice(1).join(' ') || '';
         }
         const currentUser = { ...this.currentUserValue, ...user };
         localStorage.setItem('user', JSON.stringify(currentUser));
