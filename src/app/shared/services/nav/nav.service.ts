@@ -118,6 +118,14 @@ export class NavService {
     },
     {
       level: 1,
+      title: 'Billing',
+      icon: 'dollar-sign',
+      type: 'link',
+      path: '/contractor/billing',
+      role: [UserRole.CONTRACTOR]
+    },
+    {
+      level: 1,
       title: 'Profile',
       icon: 'user',
       type: 'link',

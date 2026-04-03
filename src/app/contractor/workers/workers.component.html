@@ -150,6 +150,10 @@
                             [(ngModel)]="newWorker.selectedCategories">
                         </ng-select>
                     </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold small">Default Hourly Rate ($)</label>
+                        <input type="number" class="form-control" [(ngModel)]="newWorker.defaultHourlyRate" placeholder="0.00">
+                    </div>
                 </div>
             </div>
             <div class="modal-footer border-top-0 bg-light-brand rounded-bottom">

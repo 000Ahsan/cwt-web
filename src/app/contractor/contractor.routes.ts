@@ -5,6 +5,7 @@ import { ContractorWorkersComponent } from './workers/workers.component';
 import { ContractorLogsComponent } from './logs/logs.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AttendanceComponent } from './attendance/attendance.component';
+import { BillingComponent } from './billing/billing.component';
 
 export const CONTRACTOR_ROUTES: Routes = [
     {
@@ -39,6 +40,11 @@ export const CONTRACTOR_ROUTES: Routes = [
                 path: 'attendance',
                 component: AttendanceComponent,
                 data: { title: 'Attendance', breadcrumb: 'Attendance' }
+            },
+            {
+                path: 'billing',
+                component: BillingComponent,
+                data: { title: 'Billing', breadcrumb: 'Billing' }
             },
             {
                 path: 'user',

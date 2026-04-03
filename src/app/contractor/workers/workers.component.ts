@@ -55,7 +55,7 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
   loading = false;
   submitting = false;
 
-  newWorker: any = { email: '', phone: '', name: '', password: '', image: '', selectedCategories: [] };
+  newWorker: any = { email: '', phone: '', name: '', password: '', image: '', selectedCategories: [], defaultHourlyRate: null };
 
   ngOnInit() {
     this.loadData();
@@ -166,7 +166,8 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
       name: worker.name,
       password: '',
       image: worker.image ? worker.image : '',
-      selectedCategories: worker.categories ? worker.categories.map((c: any) => c.id) : []
+      selectedCategories: worker.categories ? worker.categories.map((c: any) => c.id) : [],
+      defaultHourlyRate: worker.defaultHourlyRate
     };
 
     // Patch the file input name if we have an image
@@ -214,7 +215,7 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
   closeModal() {
     this.showCreateModal = false;
     this.editingWorker = null;
-    this.newWorker = { email: '', phone: '', name: '', password: '', image: '', selectedCategories: [] };
+    this.newWorker = { email: '', phone: '', name: '', password: '', image: '', selectedCategories: [], defaultHourlyRate: null };
     if (this.imageInput) {
       this.imageInput.nativeElement.value = '';
     }
