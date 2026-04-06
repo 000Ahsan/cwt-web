@@ -81,7 +81,13 @@ export class BillingComponent implements OnInit {
 
   loadStats() {
     this.loadingStats = true;
-    this.http.get<any>(`${this.apiUrl}/billing/stats`).subscribe({
+
+    const cleanFilters: any = {};
+    for (const [key, value] of Object.entries(this.filters)) {
+      if (value) cleanFilters[key] = value;
+    }
+
+    this.http.get<any>(`${this.apiUrl}/billing/stats`, { params: cleanFilters }).subscribe({
       next: (data) => {
         this.stats = data;
         this.loadingStats = false;
@@ -110,6 +116,7 @@ export class BillingComponent implements OnInit {
 
   applyFilters() {
     this.loadData();
+    this.loadStats();
   }
 
   clearFilters() {
@@ -122,12 +129,13 @@ export class BillingComponent implements OnInit {
       endDate: ''
     };
     this.loadData();
+    this.loadStats();
   }
 
   markPaid(record: any) {
     Swal.fire({
       title: 'Mark as Paid?',
-      text: `Are you sure you want to mark this amount of $${record.amount} as paid?`,
+      text: `Are you sure you want to mark this amount of $${record.amount.toFixed(2)} as paid?`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Yes, mark paid'
@@ -207,5 +215,6 @@ export class BillingComponent implements OnInit {
       endDate: ''
     };
     this.loadData();
+    this.loadStats();
   }
 }
