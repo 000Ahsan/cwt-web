@@ -7,6 +7,7 @@ import { ContractorService } from '../../core/services/contractor.service';
 import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../public/environments/environment';
+import { CurrencyService } from '../../core/services/currency.service';
 
 @Component({
   selector: 'app-contractor-billing',
@@ -19,6 +20,7 @@ export class BillingComponent implements OnInit {
   private toastr = inject(ToastrService);
   private renderer = inject(Renderer2);
   private contractorService = inject(ContractorService);
+  public currencyService = inject(CurrencyService);
 
   apiUrl = environment.apiBaseUrl;
 

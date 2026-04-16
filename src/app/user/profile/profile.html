@@ -77,16 +77,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <!-- Currency Selection for Contractors -->
+                            <div class="col-md-12" *ngIf="isContractor">
                                 <div class="mb-4">
-                                    <label class="form-label font-weight-bold">New Password</label>
+                                    <label class="form-label font-weight-bold">Preferred Currency</label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-primary w-10"><i class="fa fa-lock"></i></span>
-                                        <input class="form-control" type="password" formControlName="password"
-                                            placeholder="Leave blank to keep current password">
+                                        <span class="input-group-text bg-primary"><i class="fa fa-money"></i></span>
+                                        <select class="form-select" formControlName="currency">
+                                            <option *ngFor="let option of currencyOptions" [value]="option.code">
+                                                {{ option.label }} ({{ option.symbol }})
+                                            </option>
+                                        </select>
                                     </div>
-                                    <small class="text-muted mt-1 d-block"><i class="fa fa-info-circle me-1"></i>Only
-                                        fill this if you want to change your password.</small>
+                                    <small class="text-muted mt-1 d-block"><i class="fa fa-info-circle me-1"></i>
+                                        This currency will be used for all billing and reports.
+                                    </small>
                                 </div>
                             </div>
                         </div>

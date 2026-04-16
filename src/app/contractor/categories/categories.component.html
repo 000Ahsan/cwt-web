@@ -116,9 +116,9 @@
                         </div>
                     </div>
                     <div class="mb-1">
-                        <label class="form-label fw-bold">Hourly Billing Rate (USD)</label>
+                        <label class="form-label fw-bold">Hourly Billing Rate</label>
                         <div class="input-group">
-                            <span class="input-group-text">$</span>
+                            <span class="input-group-text">{{ user?.currency }}</span>
                             <input type="number" class="form-control" formControlName="hourlyRate" step="0.01" min="0"
                                 placeholder="0.00"
                                 [class.is-invalid]="categoryForm.get('hourlyRate')?.invalid && categoryForm.get('hourlyRate')?.touched">

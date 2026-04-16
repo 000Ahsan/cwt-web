@@ -5,6 +5,14 @@ export enum UserRole {
     WORKER = 'WORKER'
 }
 
+export enum Currency {
+    USD = 'USD',
+    EUR = 'EUR',
+    GBP = 'GBP',
+    PKR = 'PKR',
+    CAD = 'CAD'
+}
+
 export interface User {
     id: string;
     email: string;
@@ -13,6 +21,7 @@ export interface User {
     firstName?: string;
     lastName?: string;
     image?: string;
+    currency?: Currency;
     categories?: WorkCategory[];
     workCategoryIds?: string[];
 }

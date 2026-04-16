@@ -1,12 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../core/services/auth.service';
-import { User } from '../../core/models/auth.model';
+import { User, UserRole, Currency } from '../../core/models/auth.model';
 import { environment } from '../../../../public/environments/environment';
 import { Breadcrumb } from '../../shared/components/breadcrumb/breadcrumb';
 import Swal from 'sweetalert2';
+import { CURRENCY_OPTIONS, CurrencyMeta } from '../../core/services/currency.service';
 
 @Component({
     selector: 'app-profile',
@@ -19,14 +19,20 @@ export class ProfileComponent implements OnInit {
     private authService = inject(AuthService);
     private apiUrl = environment.apiBaseUrl;
 
-    public profileForm: FormGroup;
+    public profileForm!: FormGroup;
     public user: User | null = null;
     public selectedImage: string | ArrayBuffer | null = null;
     public imageFile: File | null = null;
     public loading: boolean = false;
 
+    // Currency
+    public isContractor = false;
+    public currencyOptions: CurrencyMeta[] = CURRENCY_OPTIONS;
+    public UserRole = UserRole;
+
     ngOnInit() {
         this.user = this.authService.currentUserValue;
+        this.isContractor = this.user?.role === UserRole.CONTRACTOR;
         this.initForm();
     }
 
@@ -35,6 +41,7 @@ export class ProfileComponent implements OnInit {
             name: [this.user?.name || '', [Validators.required]],
             email: [this.user?.email || '', [Validators.required, Validators.email]],
             password: [''],
+            currency: [this.user?.currency || Currency.USD],
         });
         if (this.user?.image) {
             this.selectedImage = this.user.image;
@@ -64,6 +71,10 @@ export class ProfileComponent implements OnInit {
         }
         if (this.imageFile) {
             formData.append('image', this.imageFile);
+        }
+        // Append currency if contractor
+        if (this.isContractor) {
+            formData.append('currency', this.profileForm.get('currency')?.value);
         }
 
         this.authService.updateUserProfile(formData).subscribe({

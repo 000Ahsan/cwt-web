@@ -6,6 +6,8 @@ import { WorkCategory } from '../../core/models/work-category.model';
 import { finalize } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Breadcrumb } from '../../shared/components/breadcrumb/breadcrumb';
+import { User } from '../../core/models/auth.model';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
     selector: 'app-categories',
@@ -17,6 +19,7 @@ export class CategoriesComponent implements OnInit {
     private fb = inject(FormBuilder);
     private categoryService = inject(WorkCategoryService);
     private toastr = inject(ToastrService);
+    private authService = inject(AuthService);
 
     categories: WorkCategory[] = [];
     loading = false;
@@ -35,6 +38,10 @@ export class CategoriesComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadCategories();
+    }
+
+    get user(): User | null {
+        return this.authService.currentUserValue;
     }
 
     loadCategories(): void {
