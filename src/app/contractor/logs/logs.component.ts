@@ -52,6 +52,16 @@ export class ContractorLogsComponent implements OnInit {
     private modalRef: NgbModalRef;
 
     @ViewChild('detailsModal') detailsModal: TemplateRef<any>;
+    @ViewChild('editTimeModal') editTimeModal: TemplateRef<any>;
+
+    // Editing
+    editingLog: any = null;
+    editTimes = {
+        startTime: '',
+        endTime: '',
+        date: ''
+    };
+    savingTime = false;
 
     ngOnInit() {
         this.loadFiltersData();
@@ -165,5 +175,71 @@ export class ContractorLogsComponent implements OnInit {
                 }
             });
         }
+    }
+
+    openEditTimeModal(log: any) {
+        this.editingLog = log;
+        // Format dates for input[type="datetime-local"] and input[type="date"]
+        const start = new Date(log.workSession.startTime);
+        const end = new Date(log.workSession.endTime);
+        const date = new Date(log.workSession.date);
+
+        this.editTimes = {
+            startTime: this.formatDateForInput(start),
+            endTime: this.formatDateForInput(end),
+            date: date.toISOString().split('T')[0]
+        };
+
+        this.modalService.open(this.editTimeModal, {
+            centered: true,
+            size: 'md'
+        });
+    }
+
+    private formatDateForInput(date: Date): string {
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        const y = date.getFullYear();
+        const mo = pad(date.getMonth() + 1);
+        const d = pad(date.getDate());
+        const h = pad(date.getHours());
+        const mi = pad(date.getMinutes());
+        return `${y}-${mo}-${d}T${h}:${mi}`;
+    }
+
+    calculateMinutes(startStr: string, endStr: string): number {
+        if (!startStr || !endStr) return 0;
+        const start = new Date(startStr);
+        const end = new Date(endStr);
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) return 0;
+        const diffMs = end.getTime() - start.getTime();
+        return Math.max(0, Math.round(diffMs / (1000 * 60)));
+    }
+
+    saveTime() {
+        if (!this.editingLog) return;
+
+        this.savingTime = true;
+        this.contractorService.updateWorkLogTime(this.editingLog.id, {
+            startTime: new Date(this.editTimes.startTime).toISOString(),
+            endTime: new Date(this.editTimes.endTime).toISOString(),
+            date: this.editTimes.date
+        }).subscribe({
+            next: () => {
+                this.savingTime = false;
+                this.modalService.dismissAll();
+                this.loadLogs();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Updated',
+                    text: 'Work log time updated successfully.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            },
+            error: (err: any) => {
+                this.savingTime = false;
+                Swal.fire('Error', err.error?.message || 'Failed to update time', 'error');
+            }
+        });
     }
 }

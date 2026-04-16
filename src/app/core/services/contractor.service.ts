@@ -83,6 +83,10 @@ export class ContractorService {
         return this.http.patch<any>(`${this.apiUrl}/work-logs/${logId}/sign-off`, signOffData);
     }
 
+    updateWorkLogTime(logId: string, timeData: { startTime: string; endTime: string; date?: string }): Observable<any> {
+        return this.http.patch<any>(`${this.apiUrl}/work-logs/${logId}/time`, timeData);
+    }
+
     getWorkCategories(): Observable<any[]> {
         return this.http.get<any[]>(`${this.apiUrl}/work-categories`);
     }
