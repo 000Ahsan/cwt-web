@@ -230,27 +230,27 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Project Name</label>
+                            <label class="form-label fw-bold">Project Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" [(ngModel)]="editingProject.name"
                                 placeholder="Enter project name">
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Start Date</label>
+                                    <label class="form-label fw-bold">Start Date <span class="text-danger">*</span></label>
                                     <input type="date" class="form-control" [(ngModel)]="ngModelStartDate">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Target Hours</label>
+                                    <label class="form-label fw-bold">Target Hours <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" [(ngModel)]="editingProject.targetHours"
-                                        placeholder="Target hours">
+                                        placeholder="Target hours" min="1">
                                 </div>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Site Address</label>
+                            <label class="form-label fw-bold">Site Address <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="fa fa-map-marker"></i></span>
                                 <input type="text" class="form-control" [(ngModel)]="editingProject.address"
@@ -259,22 +259,22 @@
                             <small class="text-muted italic">Address is auto-filled by clicking on the map</small>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Description</label>
+                            <label class="form-label fw-bold">Description <span class="text-danger">*</span></label>
                             <textarea class="form-control" [(ngModel)]="editingProject.description" rows="2"
                                 placeholder="Project details..."></textarea>
                         </div>
                         <div class="mb-3">
                             <div class="form-check form-switch mt-2">
-                                <input class="form-check-input" type="checkbox" id="locationBoundSwitch"
+                                <input class="form-check-input green-switch" type="checkbox" id="locationBoundSwitch"
                                     [(ngModel)]="editingProject.isLocationBound">
                                 <label class="form-label fw-bold" for="locationBoundSwitch">Is Site Location
-                                    Bound?</label>
+                                    Bound? <span class="text-danger">*</span></label>
                             </div>
                             <small class="text-muted italic">If enabled, workers must be on-site to start the
                                 timer.</small>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Categories</label>
+                            <label class="form-label fw-bold">Categories <span class="text-danger">*</span></label>
                             <ng-select [items]="categoriesList" [multiple]="true" [closeOnSelect]="false"
                                 [searchable]="true" placeholder="Select categories" bindValue="id" bindLabel="name"
                                 [(ngModel)]="editingProject.selectedCategories">
@@ -297,7 +297,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <label class="form-label fw-bold mb-0">Project Location</label>
+                            <label class="form-label fw-bold mb-0">Project Location <span class="text-danger">*</span></label>
                             <button type="button" class="btn btn-xs btn-outline-primary" (click)="getCurrentLocation()">
                                 <i class="fa fa-map-marker me-1"></i> My Location
                             </button>
@@ -322,10 +322,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="closeModal()"
+                <button type="button" class="btn btn-light" (click)="closeModal()"
                     [disabled]="submitting">Cancel</button>
-                <button type="button" class="btn btn-primary d-flex align-items-center gap-2" (click)="saveProject()"
-                    [disabled]="!editingProject.name || submitting">
+                <button type="button" class="btn btn-primary d-flex align-items-center gap-2" (click)="$event.stopPropagation(); saveProject()"
+                    [disabled]="isFormInvalid || submitting">
                     <span *ngIf="submitting" class="spinner-border spinner-border-sm" role="status"
                         aria-hidden="true"></span>
                     {{ submitting ? (isEditing ? 'Updating...' : 'Saving...') : (isEditing ? 'Update Project' : 'Save

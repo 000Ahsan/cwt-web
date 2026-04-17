@@ -21,9 +21,8 @@
                             <thead class="bg-light">
                                 <tr>
                                     <th class="ps-4">Category Name</th>
-                                    <th>Hourly Rate</th>
                                     <th>Usage</th>
-                                    <th class="text-end pe-4">Actions</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,10 +42,6 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span class="fw-bold txt-primary">${{ category.hourlyRate | number:'1.2-2'
-                                                }}/hr</span>
-                                        </td>
-                                        <td>
                                             <div class="d-flex gap-3">
                                                 <span class="badge bg-primary-light txt-primary border-primary"
                                                     [title]="'Linked to ' + category._count?.projectLinks + ' projects'">
@@ -61,15 +56,12 @@
                                             </div>
                                         </td>
                                         <td class="text-end pe-4">
-                                            <div class="d-flex justify-content-end gap-2">
-                                                <button class="btn btn-sm btn-outline-primary"
-                                                    (click)="openEditModal(category)" title="Edit Category">
-                                                    <i class="fa fa-pencil"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger"
-                                                    (click)="onDelete(category)" title="Delete Category">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
+                                            <div class="d-flex gap-4">
+                                                <span class="text-muted cursor-pointer"
+                                                    (click)="openEditModal(category)" title="Edit Category"><i
+                                                        class="fa fa-pencil"></i></span>
+                                                <span class="text-danger cursor-pointer" (click)="onDelete(category)"
+                                                    title="Delete Category"><i class="fa fa-trash"></i></span>
                                             </div>
                                         </td>
                                     </tr>
@@ -114,22 +106,6 @@
                         <div class="invalid-feedback">
                             Category name is required (max 50 chars).
                         </div>
-                    </div>
-                    <div class="mb-1">
-                        <label class="form-label fw-bold">Hourly Billing Rate</label>
-                        <div class="input-group">
-                            <span class="input-group-text">{{ user?.currency }}</span>
-                            <input type="number" class="form-control" formControlName="hourlyRate" step="0.01" min="0"
-                                placeholder="0.00"
-                                [class.is-invalid]="categoryForm.get('hourlyRate')?.invalid && categoryForm.get('hourlyRate')?.touched">
-                        </div>
-                        <div class="invalid-feedback d-block"
-                            *ngIf="categoryForm.get('hourlyRate')?.invalid && categoryForm.get('hourlyRate')?.touched">
-                            Please enter a valid hourly rate.
-                        </div>
-                        <small class="text-muted d-block mt-2">
-                            <i class="fa fa-info-circle me-1"></i> This rate will be used for billing reports.
-                        </small>
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 p-4 pt-0">

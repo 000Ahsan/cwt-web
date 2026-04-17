@@ -42,9 +42,14 @@ export class ContractorService {
         return this.http.delete<any>(`${this.apiUrl}/users/workers/${workerId}`);
     }
 
-    assignWorkerToProject(projectId: string, workerId: string): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/projects/${projectId}/assign-worker`, { workerId });
+    assignWorkerToProject(projectId: string, workerId: string, workCategoryId: string, hourlyRate: number): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/projects/${projectId}/assign-worker`, { workerId, workCategoryId, hourlyRate });
     }
+
+    unassignWorker(projectId: string, workerId: string, workCategoryId: string): Observable<any> {
+        return this.http.delete<any>(`${this.apiUrl}/projects/${projectId}/assignments/${workerId}/${workCategoryId}`);
+    }
+
 
     getContractorLogs(filters: {
         workerId?: string;

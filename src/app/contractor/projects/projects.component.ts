@@ -37,6 +37,10 @@ import { WorkCategory } from '../../core/models/work-category.model';
     .table-active { background-color: rgba(var(--primary-rgb), 0.05) !important; }
     .me-n2 { margin-right: -0.5rem !important; }
     .txt-primary { color: var(--theme-deafult); }
+    .green-switch:checked {
+        background-color: #24695C !important;
+        border-color: #24695C !important;
+    }
   `]
 })
 export class ContractorProjectsComponent implements OnInit, OnDestroy {
@@ -88,6 +92,19 @@ export class ContractorProjectsComponent implements OnInit, OnDestroy {
 
   set ngModelStartDate(value: string) {
     this.editingProject.startDate = value;
+  }
+
+  get isFormInvalid(): boolean {
+    const p = this.editingProject;
+    return !p.name ||
+      !p.startDate ||
+      (p.targetHours || 0) <= 0 ||
+      !p.address ||
+      !p.description ||
+      !p.selectedCategories ||
+      p.selectedCategories.length === 0 ||
+      p.latitude === undefined ||
+      p.longitude === undefined;
   }
 
   // Map settings
@@ -291,7 +308,7 @@ export class ContractorProjectsComponent implements OnInit, OnDestroy {
   }
 
   saveProject() {
-    if (!this.editingProject.name) return;
+    if (this.isFormInvalid) return;
 
     this.submitting = true;
     const payload = { ...this.editingProject };

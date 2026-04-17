@@ -32,7 +32,6 @@ export class CategoriesComponent implements OnInit {
     constructor() {
         this.categoryForm = this.fb.group({
             name: ['', [Validators.required, Validators.maxLength(50)]],
-            hourlyRate: [0, [Validators.required, Validators.min(0)]],
         });
     }
 
@@ -57,7 +56,7 @@ export class CategoriesComponent implements OnInit {
     openCreateModal(): void {
         this.isEditing = false;
         this.selectedId = null;
-        this.categoryForm.reset({ name: '', hourlyRate: 0 });
+        this.categoryForm.reset({ name: '' });
         this.showModal = true;
     }
 
@@ -66,7 +65,6 @@ export class CategoriesComponent implements OnInit {
         this.selectedId = category.id;
         this.categoryForm.patchValue({
             name: category.name,
-            hourlyRate: category.hourlyRate
         });
         this.showModal = true;
     }

@@ -56,6 +56,14 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
   submitting = false;
 
   newWorker: any = { email: '', phone: '', name: '', password: '', image: '', selectedCategories: [], defaultHourlyRate: null };
+  
+  showAssignModal = false;
+  assigningWorker: any = null;
+  assignmentData = {
+    projectId: '',
+    workCategoryId: '',
+    hourlyRate: 0
+  };
 
   ngOnInit() {
     this.loadData();
@@ -221,18 +229,77 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
     }
   }
 
-  assignWorker(worker: any) {
-    if (!worker.selectedProjectId) return;
+  openAssignModal(worker: any) {
+    this.assigningWorker = worker;
+    this.assignmentData = {
+      projectId: '',
+      workCategoryId: '',
+      hourlyRate: worker.defaultHourlyRate || 0
+    };
+    this.showAssignModal = true;
+    this.renderer.addClass(document.body, 'modal-open');
+  }
 
-    worker.isAssigning = true;
-    this.contractorService.assignWorkerToProject(worker.selectedProjectId, worker.id).subscribe({
+  closeAssignModal() {
+    this.showAssignModal = false;
+    this.assigningWorker = null;
+    this.renderer.removeClass(document.body, 'modal-open');
+  }
+
+  confirmAssignment() {
+    if (!this.assignmentData.projectId || !this.assignmentData.workCategoryId || this.assignmentData.hourlyRate < 0) {
+      this.toastr.error('Please fill all assignment details correctly');
+      return;
+    }
+
+    // Check if duplicate assignment exists locally
+    const isAlreadyAssigned = this.assigningWorker.assignments?.some(
+      (a: any) => a.projectId === this.assignmentData.projectId && a.workCategoryId === this.assignmentData.workCategoryId
+    );
+
+    if (isAlreadyAssigned) {
+      this.toastr.warning('Worker is already assigned to this project in this category');
+      return;
+    }
+
+    this.submitting = true;
+    this.contractorService.assignWorkerToProject(
+      this.assignmentData.projectId,
+      this.assigningWorker.id,
+      this.assignmentData.workCategoryId,
+      this.assignmentData.hourlyRate
+    ).subscribe({
       next: () => {
-        this.toastr.success(`Project assigned to worker successfully!`);
+        this.toastr.success(`Worker assigned successfully!`);
+        this.closeAssignModal();
         this.loadData();
+        this.submitting = false;
       },
       error: (err) => {
-        this.toastr.error(err.error?.message || 'Failed to assign project');
-        worker.isAssigning = false;
+        this.toastr.error(err.error?.message || 'Failed to assign worker');
+        this.submitting = false;
+      }
+    });
+  }
+
+  removeAssignment(workerId: string, projectId: string, workCategoryId: string) {
+    Swal.fire({
+      title: 'Remove Assignment?',
+      text: "Are you sure you want to remove this role from the worker?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.contractorService.unassignWorker(projectId, workerId, workCategoryId).subscribe({
+          next: () => {
+            this.toastr.success('Assignment removed successfully');
+            this.loadData();
+          },
+          error: (err) => {
+            this.toastr.error(err.error?.message || 'Failed to remove assignment');
+          }
+        });
       }
     });
   }
