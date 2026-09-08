@@ -22,12 +22,24 @@ export class AuthService {
 
     private getUserFromStorage(): User | null {
         const userJson = localStorage.getItem('user');
-        return userJson ? JSON.parse(userJson) : null;
+        if (!userJson || userJson === 'undefined' || userJson === 'null') {
+            localStorage.removeItem('user');
+            return null;
+        }
+        try {
+            return JSON.parse(userJson);
+        } catch {
+            localStorage.removeItem('user');
+            return null;
+        }
     }
 
     login(credentials: any): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
             tap(response => {
+                if (!response?.user || !response?.access_token) {
+                    throw new Error(response?.['message'] || 'Invalid login response');
+                }
                 this.setSession(response);
             })
         );
@@ -35,7 +47,10 @@ export class AuthService {
 
     private setSession(authResult: AuthResponse) {
         const user = authResult.user;
-        if (user && typeof user.name === 'string') {
+        if (!user) {
+            return;
+        }
+        if (typeof user.name === 'string') {
             const parts = user.name.split(' ');
             user.firstName = parts[0] || '';
             user.lastName = parts.slice(1).join(' ') || '';
