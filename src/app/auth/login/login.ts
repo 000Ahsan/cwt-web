@@ -51,6 +51,11 @@ export class Login {
     this.loading = true;
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
+        if (!response?.user?.role) {
+          this.errorMessage = 'Invalid email/phone or password';
+          this.loading = false;
+          return;
+        }
         if (response.user.role === UserRole.WORKER) {
           this.errorMessage = 'Web access is disabled for workers. Please use the mobile app to log your time.';
           this.authService.logout();
@@ -66,7 +71,7 @@ export class Login {
         this.loading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Invalid email/phone or password';
+        this.errorMessage = err?.error?.message || 'Invalid email/phone or password';
         this.loading = false;
       }
     });
