@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://cwt-backend.thebombaychef.com',
+  apiBaseUrl: 'https://api.fieldhqapp.com',
 };

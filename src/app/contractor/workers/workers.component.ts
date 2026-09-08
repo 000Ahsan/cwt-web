@@ -254,7 +254,7 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
 
     // Check if duplicate assignment exists locally
     const isAlreadyAssigned = this.assigningWorker.assignments?.some(
-      (a: any) => a.projectId === this.assignmentData.projectId && a.workCategoryId === this.assignmentData.workCategoryId
+      (p: any) => p.id === this.assignmentData.projectId && p.categories?.some((cat: any) => cat.id === this.assignmentData.workCategoryId)
     );
 
     if (isAlreadyAssigned) {
@@ -305,8 +305,18 @@ export class ContractorWorkersComponent implements OnInit, OnDestroy {
   }
 
   getUnassignedProjects(worker: any): any[] {
-    const assignments = worker.assignments;
-    const assignedProjectIds = assignments.map((assignment: any) => assignment.projectId);
+    const assignments = worker.assignments || [];
+    const assignedProjectIds = assignments.map((assignment: any) => assignment.id);
     return this.projects.filter((p: any) => !assignedProjectIds.includes(p.id));
+  }
+
+  get filteredCategories(): WorkCategory[] {
+    if (!this.assigningWorker || !this.assignmentData.projectId) return [];
+
+    const workerCatIds = new Set(this.assigningWorker.categories?.map((c: any) => c.id) || []);
+    const project = this.projects.find(p => p.id === this.assignmentData.projectId);
+    const projectCatIds = new Set(project?.categories?.map((c: any) => c.id) || []);
+
+    return this.categoriesList.filter(c => workerCatIds.has(c.id) && projectCatIds.has(c.id));
   }
 }

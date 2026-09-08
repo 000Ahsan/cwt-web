@@ -166,6 +166,7 @@
                                                                     <thead class="bg-light small text-muted">
                                                                         <tr>
                                                                             <th>Worker</th>
+                                                                            <th>Categories</th>
                                                                             <th class="text-end">Hours Logged</th>
                                                                         </tr>
                                                                     </thead>
@@ -180,6 +181,15 @@
                                                                                     <span
                                                                                         class="small font-weight-bold">{{
                                                                                         worker.name }}</span>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="d-flex flex-wrap gap-1">
+                                                                                    @for (cat of worker.categories; track cat.id) {
+                                                                                    <span class="badge bg-light txt-secondary border" style="font-size: 9px;">
+                                                                                        {{ cat.name }}
+                                                                                    </span>
+                                                                                    }
                                                                                 </div>
                                                                             </td>
                                                                             <td class="text-end fw-bold">{{

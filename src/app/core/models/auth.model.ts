@@ -21,6 +21,10 @@ export interface User {
     firstName?: string;
     lastName?: string;
     image?: string;
+    phone?: string;
+    companyName?: string;
+    companyLogo?: string;
+    companyAddress?: string;
     currency?: Currency;
     categories?: WorkCategory[];
     workCategoryIds?: string[];

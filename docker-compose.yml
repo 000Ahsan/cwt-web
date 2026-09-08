@@ -1,0 +1,14 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fieldhq-web
+    restart: unless-stopped
+    ports:
+      # Loopback only — host Nginx (TLS) proxies to this
+      - "127.0.0.1:8080:80"
+
+networks:
+  default:
+    name: fieldhq-web-net

@@ -25,7 +25,7 @@ L.Marker.prototype.options.icon = iconDefault;
 })
 export class App implements OnInit {
   private navService = inject(NavService);
-  title = 'crewtrack';
+  title = 'FieldHQ';
 
   ngOnInit() {
     this.navService.refreshMenu();

@@ -49,6 +49,7 @@
               }
             ],
             "styles": [
+              "src/assets/styles.scss",
               "src/styles.scss",
               "node_modules/@kolkov/angular-editor/themes/default.scss",
               "node_modules/flatpickr/dist/flatpickr.css",

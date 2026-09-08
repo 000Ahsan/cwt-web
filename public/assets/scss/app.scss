@@ -1,6 +1,15 @@
 /* ---------------------
 	*** Theme Scss ***
 -----------------------*/
+
+// FieldHQ brand → Bootstrap 5 primary (before Bootstrap so utilities use brand orange)
+$primary: #f5591a;
+$secondary: #ba895d;
+$success: #12b76a;
+$info: #3c93f7;
+$warning: #fdbe12;
+$danger: #f03d3d;
+
 //bootstrap
 @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
 

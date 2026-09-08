@@ -1,10 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+/* Viho admin theme + Bootstrap + vendor styles (FieldHQ master loads separately) */
 @import "../public/assets/scss/app.scss";
 
+/* ---------------------------------------------------------------------------
+   App bridge: keep admin layout working with brand tokens
+--------------------------------------------------------------------------- */
+
+/* Brand .logo is a text lockup; image logos in header/login need a clean reset */
+img.logo {
+  display: block;
+  padding: 0;
+  letter-spacing: normal;
+  font-weight: inherit;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 .cursor-pointer {
-    cursor: pointer !important;
+  cursor: pointer !important;
 }
 
 .bg-primary-light {
-    background-color: #f5f7ff !important;
+  background-color: var(--color-brand-subtle) !important;
 }

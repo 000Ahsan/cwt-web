@@ -15,7 +15,109 @@ import { FeatherIcons } from '../../shared/components/feather-icons/feather-icon
   standalone: true,
   imports: [CommonModule, FormsModule, Breadcrumb, SvgIconComponent, NgApexchartsModule, FeatherIcons, RouterModule],
   templateUrl: './dashboard.component.html',
-  styles: []
+  styles: [`
+    .contractor-dashboard .dashboard-welcome {
+      min-height: 280px;
+    }
+    .contractor-dashboard .welcome-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+    .contractor-dashboard .welcome-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .contractor-dashboard .welcome-desc {
+      max-width: 340px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .contractor-dashboard .quick-links .btn-light {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+    }
+    .contractor-dashboard .stat-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .contractor-dashboard .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(36, 105, 92, 0.12);
+    }
+    .contractor-dashboard .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #2c323f;
+    }
+    .contractor-dashboard .chart-card {
+      border: 0;
+      box-shadow: 0 2px 12px rgba(36, 105, 92, 0.08);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .contractor-dashboard .chart-card-header {
+      background: #fff;
+      border-bottom: 1px solid rgba(36, 105, 92, 0.08);
+      padding: 1.1rem 1.25rem;
+    }
+    .contractor-dashboard .chart-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .contractor-dashboard .chart-icon-wrap {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contractor-dashboard .chart-icon-primary {
+      background: rgba(36, 105, 92, 0.1);
+      color: var(--theme-default, #24695c);
+    }
+    .contractor-dashboard .chart-icon-secondary {
+      background: rgba(186, 137, 93, 0.12);
+      color: var(--theme-secondary, #ba895d);
+    }
+    .contractor-dashboard .chart-subtitle {
+      font-size: 12px;
+    }
+    .contractor-dashboard .period-pills .btn {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+    }
+    .contractor-dashboard .chart-card-body {
+      padding: 0.5rem 0.75rem 1rem;
+    }
+    .contractor-dashboard .chart-wrap {
+      min-height: 320px;
+    }
+    @media (max-width: 1199px) {
+      .contractor-dashboard .dashboard-hero-row .stat-card {
+        min-height: 160px;
+      }
+    }
+  `]
 })
 export class ContractorDashboardComponent implements OnInit {
   private contractorService = inject(ContractorService);
@@ -33,6 +135,8 @@ export class ContractorDashboardComponent implements OnInit {
     { key: 'week', label: 'This Week' },
     { key: 'month', label: 'This Month' },
   ];
+
+  readonly confettiPieces = Array(13).fill(0);
 
   projectsPeriod = 'month';
   workersPeriod = 'month';
@@ -53,6 +157,26 @@ export class ContractorDashboardComponent implements OnInit {
 
   get user(): User | null {
     return this.authService.currentUserValue;
+  }
+
+  get userInitials(): string {
+    const name = this.user?.name?.trim();
+    if (!name) return '?';
+    const parts = name.split(/\s+/).filter(Boolean);
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  }
+
+  get greeting(): string {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  }
+
+  getPeriodLabel(period: string): string {
+    const match = this.periods.find(p => p.key === period);
+    return match ? `Showing data for ${match.label.toLowerCase()}` : '';
   }
 
   setProjectsPeriod(key: string) {

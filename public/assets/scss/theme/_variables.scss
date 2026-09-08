@@ -1,34 +1,34 @@
-// General variables
-$theme-font-color: #2b2b2b;
-$theme-body-font-color: #242934;
+// General variables — aligned to FieldHQ brand master (app-landing styles.scss)
+$theme-font-color: #121212;
+$theme-body-font-color: #242424;
 $theme-body-sub-title-color: rgba($theme-body-font-color, 0.7);
 
-// Theme colors variables
-$primary-color: #24695c;
-$secondary-color: #ba895d;
-$success-color: #1b4c43;
-$warning-color: #e2c636;
-$danger-color: #d22d3d;
+// Theme colors variables (Burning Orange brand)
+$primary-color: #f5591a;
+$secondary-color: #e64010;
+$success-color: #12b76a;
+$warning-color: #fdbe12;
+$danger-color: #f03d3d;
 $light-color : #f4f4f4;
-$light-gray : #e6edef;
+$light-gray : #ececec;
 $light-semi-gray :#efefef;
 $dark-light :$theme-font-color;
 $dark-gray : #898989;
 $dark-color : #2c323f;
 $gray-60 :#cccccc;
-$card-body-color : #f9f9fa;
+$card-body-color : #ffffff;
 $transparent-color: transparent;
-$auth-bg-color: #fafafa;
+$auth-bg-color: #fbfbfb;
 $light : #fdfeff;
 $semi-dark :#59667a;
 $light-text: #999;
-$light-background: #f5f7fb;
-$light-font: #717171;
-$light-bg: #f6f6f6;
+$light-background: #fbfbfb;
+$light-font: #595959;
+$light-bg: #f8f8f8;
 $light-semi-font: $semi-dark;
 $light-chartist-grid-color: #f6f9fd;
-$off-white: #ffebce;
-$dark-primary: #448aff;
+$off-white: #fff9eb;
+$dark-primary: #bf2d0f;
 $pitch-color: #fe8a7d;
 $light-pitch: #fecf8b;
 $flower-pink: #fb6d9d;
@@ -41,11 +41,11 @@ $white: #fff;
 $yellow: #f4c705;
 $btn-bhome-bg-c: #ff6060;
 $btn-search-bg-c: #ffd042;
-$btn-opacity-down-primary: #F7F0FF;
+$btn-opacity-down-primary: #fff5ed;
 // error page color end
 
 // gradient colors
-$gradient-primary: linear-gradient(#1693f8, #0d67e9);
+$gradient-primary: linear-gradient(#f77332, #f5591a);
 
 //social colors
 $fb: #50598e;
@@ -56,12 +56,13 @@ $linkedin: #0077B5;
 //error input color start
 $light-body-bg-color: #fafdff;
 
-//fonts
-$font-montserrat: 'Montserrat', sans-serif;
-$font-roboto: 'Roboto', sans-serif;
-$font-rubik: 'Rubik', sans-serif;
-$font-nunito: Nunito;
-$font-raleway: Raleway;
+//fonts — Figtree via FieldHQ master sheet (self-hosted)
+$font-figtree: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+$font-montserrat: $font-figtree;
+$font-roboto: $font-figtree;
+$font-rubik: $font-figtree;
+$font-nunito: $font-figtree;
+$font-raleway: $font-figtree;
 $font-serif: sans-serif;
 $font-themify: themify;
 $font-awesome: FontAwesome;

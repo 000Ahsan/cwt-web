@@ -1,0 +1,63 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: production-web-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy Web to VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          command_timeout: 25m
+          script: |
+            set -euo pipefail
+
+            echo "==> Web deploy started at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            cd /opt/fieldhq-web
+
+            echo "==> Pulling latest master"
+            git fetch origin master
+            git checkout master
+            git pull --ff-only origin master
+
+            echo "==> Building web image"
+            docker compose build web
+
+            echo "==> Starting/recreating web container"
+            docker compose up -d --force-recreate web
+
+            echo "==> Pruning unused images (volumes preserved)"
+            docker image prune -f
+
+            echo "==> Container status"
+            docker compose ps
+
+            echo "==> Verifying web on loopback"
+            for i in $(seq 1 20); do
+              if curl -fsS --max-time 5 "http://127.0.0.1:8080/" >/dev/null; then
+                echo "Web responded successfully"
+                echo "==> Web deploy finished at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+                exit 0
+              fi
+              echo "Waiting for web... (attempt ${i}/20)"
+              sleep 3
+            done
+
+            echo "Web did not become ready after deploy"
+            docker compose logs --tail=150 web
+            exit 1

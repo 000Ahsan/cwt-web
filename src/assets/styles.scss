@@ -1,0 +1,614 @@
+// =============================================================================
+// FieldHQ — MASTER STYLE SHEET
+// Source: FieldHQ Brand Guidelines
+// Use as the single styles.scss across web app / landing page / all digital products
+//
+// Color values below are exact hex codes from the brand guidelines PDF.
+// Typeface: Figtree (self-hosted .ttf files, SIL Open Font License).
+// =============================================================================
+
+
+// -----------------------------------------------------------------------------
+// 1. TYPOGRAPHY
+// -----------------------------------------------------------------------------
+
+$font-family-base: 'Figtree', -apple-system, BlinkMacSystemFont,
+  'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+// -----------------------------------------------------------------------------
+// Figtree — self-hosted from /public/fonts (SIL Open Font License).
+// -----------------------------------------------------------------------------
+
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree-BlackItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+$font-weight-light:       300;
+$font-weight-regular:     400;
+$font-weight-medium:      500;
+$font-weight-semibold:    600;
+$font-weight-bold:        700;
+$font-weight-extrabold:   800;
+$font-weight-black:       900;
+
+$font-weights: (
+  "light":      $font-weight-light,
+  "regular":    $font-weight-regular,
+  "medium":     $font-weight-medium,
+  "semibold":   $font-weight-semibold,
+  "bold":       $font-weight-bold,
+  "extrabold":  $font-weight-extrabold,
+  "black":      $font-weight-black,
+);
+
+// Logo wordmark uses tight tracking
+$logo-letter-spacing: -2px;
+$logo-clear-space: 32px; // minimum clear space around logo, per brand kit
+
+
+// -----------------------------------------------------------------------------
+// 2. PRIMARY COLOR — Burning Orange
+// -----------------------------------------------------------------------------
+
+$orange-50:  #fff5ed;
+$orange-100: #fee8d6;
+$orange-200: #fccdac;
+$orange-300: #fbaa76;
+$orange-400: #f77332;
+$orange-500: #f5591a; // primary brand orange
+$orange-600: #e64010;
+$orange-700: #bf2d0f;
+$orange-800: #982514;
+$orange-900: #7a2214;
+$orange-950: #420e08;
+
+$color-primary: $orange-500;
+
+$orange: (
+  50:  $orange-50,  100: $orange-100, 200: $orange-200, 300: $orange-300,
+  400: $orange-400, 500: $orange-500, 600: $orange-600, 700: $orange-700,
+  800: $orange-800, 900: $orange-900, 950: $orange-950,
+);
+
+
+// -----------------------------------------------------------------------------
+// 3. NEUTRAL COLORS
+// -----------------------------------------------------------------------------
+
+// Surface — Light grey
+$grey-0:   #ffffff;
+$grey-25:  #fdfdfd;
+$grey-50:  #fbfbfb;
+$grey-100: #f8f8f8;
+$grey-200: #f3f3f3;
+$grey-300: #ececec;
+$grey-400: #e4e4e4;
+$grey-500: #dadada;
+$grey-600: #d0d0d0;
+$grey-700: #c5c5c5;
+$grey-800: #bdbdbd;
+$grey-900: #b5b5b5;
+$grey-950: #afafaf;
+
+$grey: (
+  0:   $grey-0,   25:  $grey-25,  50:  $grey-50,  100: $grey-100,
+  200: $grey-200, 300: $grey-300, 400: $grey-400, 500: $grey-500,
+  600: $grey-600, 700: $grey-700, 800: $grey-800, 900: $grey-900,
+  950: $grey-950,
+);
+
+// Text — Dark grey (0 = darkest/near-black, 950 = lightest)
+$text-0:   #121212;
+$text-25:  #181818;
+$text-50:  #1e1e1e;
+$text-100: #242424;
+$text-200: #2b2b2b;
+$text-300: #333333;
+$text-400: #3b3b3b;
+$text-500: #454545;
+$text-600: #4f4f4f;
+$text-700: #595959;
+$text-800: #636363;
+$text-900: #6d6d6d;
+$text-950: #767676;
+
+$text-grey: (
+  0:   $text-0,   25:  $text-25,  50:  $text-50,  100: $text-100,
+  200: $text-200, 300: $text-300, 400: $text-400, 500: $text-500,
+  600: $text-600, 700: $text-700, 800: $text-800, 900: $text-900,
+  950: $text-950,
+);
+
+// Cream
+$cream-50: #fff9eb;
+
+
+// -----------------------------------------------------------------------------
+// 4. FUNCTIONAL COLORS
+// -----------------------------------------------------------------------------
+
+// Info (blue)
+$info-50:  #e4f2fe;
+$info-100: #bdddfd;
+$info-200: #94c9fc;
+$info-300: #6cb3fa;
+$info-400: #50a3f9;
+$info-500: #3c93f7;
+$info-600: #3a85e8;
+$info-700: #3673d5;
+$info-800: #3362c2;
+$info-900: #2c43a3;
+
+// Success (green)
+$success-50:  #ecfdf3;
+$success-100: #d1fadf;
+$success-200: #a6f4c5;
+$success-300: #6ce9a6;
+$success-400: #32d583;
+$success-500: #12b76a;
+$success-600: #039855;
+$success-700: #027a48;
+$success-800: #05603a;
+$success-900: #054f31;
+
+// Warning (amber)
+$warning-50:  #fff8e1;
+$warning-100: #ffebb3;
+$warning-200: #fede82;
+$warning-300: #fed350;
+$warning-400: #fdc82c;
+$warning-500: #fdbe12;
+$warning-600: #fdb10c;
+$warning-700: #fc9e0b;
+$warning-800: #fc8d0b;
+$warning-900: #fb6e0a;
+
+// Danger (red)
+$danger-50:  #fef2f2;
+$danger-100: #ffe1e1;
+$danger-200: #ffe0e0;
+$danger-300: #ffa9a9;
+$danger-400: #ff7373;
+$danger-500: #f03d3d;
+$danger-600: #de2424;
+$danger-700: #ba1b1b;
+$danger-800: #751d1d;
+$danger-900: #3f1e1e;
+
+$functional: (
+  info:    (50: $info-50,    100: $info-100,    200: $info-200,    300: $info-300,    400: $info-400,    500: $info-500,    600: $info-600,    700: $info-700,    800: $info-800,    900: $info-900),
+  success: (50: $success-50, 100: $success-100, 200: $success-200, 300: $success-300, 400: $success-400, 500: $success-500, 600: $success-600, 700: $success-700, 800: $success-800, 900: $success-900),
+  warning: (50: $warning-50, 100: $warning-100, 200: $warning-200, 300: $warning-300, 400: $warning-400, 500: $warning-500, 600: $warning-600, 700: $warning-700, 800: $warning-800, 900: $warning-900),
+  danger:  (50: $danger-50,  100: $danger-100,  200: $danger-200,  300: $danger-300,  400: $danger-400,  500: $danger-500,  600: $danger-600,  700: $danger-700,  800: $danger-800,  900: $danger-900),
+);
+
+
+// -----------------------------------------------------------------------------
+// 5. SEMANTIC ALIASES — use these in components, not raw color vars
+// -----------------------------------------------------------------------------
+
+$color-brand:            $orange-500;
+$color-brand-hover:      $orange-600;
+$color-brand-active:     $orange-700;
+$color-brand-subtle:     $orange-50;
+
+$color-bg-page:          $grey-50;
+$color-bg-surface:       #ffffff;
+$color-bg-surface-alt:   $cream-50;
+$color-bg-inverse:       $orange-950;
+
+$color-border:           $grey-300;
+$color-border-strong:    $grey-500;
+
+$color-text-primary:     $text-0;
+$color-text-secondary:   $text-500;
+$color-text-muted:       $text-700;
+$color-text-on-brand:    #ffffff;
+$color-text-inverse:     #ffffff;
+
+$color-info:              $info-500;
+$color-success:           $success-500;
+$color-warning:           $warning-500;
+$color-danger:            $danger-500;
+
+
+// -----------------------------------------------------------------------------
+// 6. CSS CUSTOM PROPERTIES (for runtime theming / non-Sass consumers)
+// -----------------------------------------------------------------------------
+
+:root {
+  // Brand
+  --color-brand: #{$color-brand};
+  --color-brand-hover: #{$color-brand-hover};
+  --color-brand-active: #{$color-brand-active};
+  --color-brand-subtle: #{$color-brand-subtle};
+
+  // Surfaces
+  --color-bg-page: #{$color-bg-page};
+  --color-bg-surface: #{$color-bg-surface};
+  --color-bg-surface-alt: #{$color-bg-surface-alt};
+  --color-bg-inverse: #{$color-bg-inverse};
+
+  // Borders
+  --color-border: #{$color-border};
+  --color-border-strong: #{$color-border-strong};
+
+  // Text
+  --color-text-primary: #{$color-text-primary};
+  --color-text-secondary: #{$color-text-secondary};
+  --color-text-muted: #{$color-text-muted};
+  --color-text-on-brand: #{$color-text-on-brand};
+
+  // Functional
+  --color-info: #{$color-info};
+  --color-success: #{$color-success};
+  --color-warning: #{$color-warning};
+  --color-danger: #{$color-danger};
+
+  // Typography
+  --font-family-base: #{$font-family-base};
+  --font-weight-light: #{$font-weight-light};
+  --font-weight-regular: #{$font-weight-regular};
+  --font-weight-medium: #{$font-weight-medium};
+  --font-weight-semibold: #{$font-weight-semibold};
+  --font-weight-bold: #{$font-weight-bold};
+  --font-weight-extrabold: #{$font-weight-extrabold};
+  --font-weight-black: #{$font-weight-black};
+
+  // Spacing scale (4px base, extend as needed)
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;   // matches logo clear space
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  // Radii
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  // Shadows
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+
+// -----------------------------------------------------------------------------
+// 7. TYPE SCALE
+// -----------------------------------------------------------------------------
+
+$font-size-xs:    12px;
+$font-size-sm:    14px;
+$font-size-base:  16px;
+$font-size-lg:    18px;
+$font-size-xl:    20px;
+$font-size-2xl:   24px;
+$font-size-3xl:   30px;
+$font-size-4xl:   36px;
+$font-size-5xl:   48px;
+$font-size-6xl:   64px;
+
+$line-height-tight:  1.1;
+$line-height-snug:   1.3;
+$line-height-normal: 1.5;
+$line-height-loose:  1.7;
+
+
+// -----------------------------------------------------------------------------
+// 8. BASE ELEMENT STYLES
+// Loaded before main.css in app-landing so template rules can override sizes
+// and link colors without losing the brand font/color defaults on body.
+// -----------------------------------------------------------------------------
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-regular);
+  font-size: $font-size-base;
+  line-height: $line-height-normal;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-page);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 var(--space-4);
+  font-weight: var(--font-weight-bold);
+  line-height: $line-height-tight;
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+}
+
+h1 { font-size: $font-size-5xl; }
+h2 { font-size: $font-size-4xl; }
+h3 { font-size: $font-size-3xl; }
+h4 { font-size: $font-size-2xl; }
+h5 { font-size: $font-size-xl; }
+h6 { font-size: $font-size-lg; }
+
+p {
+  margin: 0 0 var(--space-4);
+  color: var(--color-text-secondary);
+}
+
+a {
+  color: var(--color-brand);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--color-brand-hover);
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 9. LOGO
+// -----------------------------------------------------------------------------
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  letter-spacing: $logo-letter-spacing;
+  font-weight: var(--font-weight-bold);
+
+  // enforce minimum clear space per brand kit
+  padding: $logo-clear-space;
+
+  &__mark {
+    color: $orange-500;
+  }
+
+  &__wordmark-primary {
+    color: $text-0; // "Field" in dark text
+  }
+
+  &__wordmark-accent {
+    color: $orange-500; // "HQ" in brand orange
+  }
+
+  // Reversed / on-dark version
+  &--on-dark {
+    .logo__wordmark-primary { color: #ffffff; }
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 10. BUTTONS
+// Prefixed (fhq-) to avoid colliding with Bootstrap .btn in app-landing.
+// -----------------------------------------------------------------------------
+
+.fhq-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-semibold);
+  font-size: $font-size-base;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  &--primary {
+    background-color: var(--color-brand);
+    color: var(--color-text-on-brand);
+
+    &:hover  { background-color: var(--color-brand-hover); }
+    &:active { background-color: var(--color-brand-active); }
+  }
+
+  &--secondary {
+    background-color: transparent;
+    color: var(--color-brand);
+    border-color: var(--color-brand);
+
+    &:hover {
+      background-color: var(--color-brand-subtle);
+    }
+  }
+
+  &--ghost {
+    background-color: transparent;
+    color: var(--color-text-primary);
+
+    &:hover {
+      background-color: $grey-100;
+    }
+  }
+
+  &--danger {
+    background-color: var(--color-danger);
+    color: #ffffff;
+
+    &:hover {
+      background-color: $danger-600;
+    }
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 11. CARDS / SURFACES
+// Prefixed to avoid colliding with Bootstrap .card.
+// -----------------------------------------------------------------------------
+
+.fhq-card {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+
+// -----------------------------------------------------------------------------
+// 12. STATUS / BADGE UTILITIES (functional colors)
+// -----------------------------------------------------------------------------
+
+@each $name, $color in (
+  info: $color-info,
+  success: $color-success,
+  warning: $color-warning,
+  danger: $color-danger
+) {
+  .badge--#{$name} {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: $font-size-xs;
+    font-weight: var(--font-weight-semibold);
+    background-color: rgba($color, 0.12);
+    color: $color;
+  }
+
+  .text--#{$name} { color: $color; }
+  .bg--#{$name}   { background-color: $color; }
+}
+
+
+// -----------------------------------------------------------------------------
+// 13. TEXT UTILITIES
+// -----------------------------------------------------------------------------
+
+@each $name, $weight in $font-weights {
+  .font-#{$name} { font-weight: $weight; }
+}
+
+.text-primary   { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted     { color: var(--color-text-muted); }
+.text-brand     { color: var(--color-brand); }
+.text-on-brand  { color: var(--color-text-on-brand); }
+
+
+// -----------------------------------------------------------------------------
+// 14. LAYOUT HELPERS
+// Prefixed to avoid colliding with Bootstrap .container.
+// -----------------------------------------------------------------------------
+
+.fhq-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+.fhq-section {
+  padding-block: var(--space-16);
+}
