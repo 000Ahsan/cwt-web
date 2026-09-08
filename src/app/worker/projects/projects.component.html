@@ -6,16 +6,30 @@
             </div>
         </div>
     </div>
+    <!-- Welcome Greeting -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card profile-greeting h-auto py-4">
+                <div class="card-body text-center p-t-0 p-b-0">
+                    <h3 class="font-light">Welcome Back, {{ user?.name }}!!</h3>
+                    <p class="mb-3">Manage your assigned projects and track your work sessions below.</p>
+                    <button class="btn btn-light" [routerLink]="['/worker/user/profile']">Update Profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-4 col-sm-12" *ngFor="let project of projects">
             <div class="card">
                 <div class="product-box learning-box">
                     <div class="product-img">
-                        <img [src]="apiUrl + project.logo" alt="" class="img-fluid top-radius-blog">
+                        <img [src]="project.logo" alt="" class="img-fluid top-radius-blog">
                     </div>
                     <div class="details-main text-center">
+                        <span class="badge badge-primary mb-2">{{ project.myHours }} hrs worked</span>
                         <h5 class="txt-primary">{{ project.name }}</h5>
-                        <p>{{ project.description }}</p>
+                        <small class="text-muted">{{ project.address }}</small>
 
                         <div *ngIf="activeSession && activeSession.projectId === project.id"
                             class="active-session-info">

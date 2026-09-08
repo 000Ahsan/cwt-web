@@ -1,6 +1,16 @@
+import { WorkCategory } from './work-category.model';
+
 export enum UserRole {
     CONTRACTOR = 'CONTRACTOR',
     WORKER = 'WORKER'
+}
+
+export enum Currency {
+    USD = 'USD',
+    EUR = 'EUR',
+    GBP = 'GBP',
+    PKR = 'PKR',
+    CAD = 'CAD'
 }
 
 export interface User {
@@ -11,7 +21,13 @@ export interface User {
     firstName?: string;
     lastName?: string;
     image?: string;
-    categories?: string;
+    phone?: string;
+    companyName?: string;
+    companyLogo?: string;
+    companyAddress?: string;
+    currency?: Currency;
+    categories?: WorkCategory[];
+    workCategoryIds?: string[];
 }
 
 export interface AuthResponse {

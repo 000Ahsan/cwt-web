@@ -19,7 +19,7 @@ export class ContractorService {
     }
 
     updateProject(projectId: string, projectData: any): Observable<any> {
-        return this.http.put<any>(`${this.apiUrl}/projects/${projectId}`, projectData);
+        return this.http.patch<any>(`${this.apiUrl}/projects/${projectId}`, projectData);
     }
 
     deleteProject(projectId: string): Observable<any> {
@@ -42,13 +42,19 @@ export class ContractorService {
         return this.http.delete<any>(`${this.apiUrl}/users/workers/${workerId}`);
     }
 
-    assignWorkerToProject(projectId: string, workerId: string): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/projects/${projectId}/assign-worker`, { workerId });
+    assignWorkerToProject(projectId: string, workerId: string, workCategoryId: string, hourlyRate: number): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/projects/${projectId}/assign-worker`, { workerId, workCategoryId, hourlyRate });
     }
+
+    unassignWorker(projectId: string, workerId: string, workCategoryId: string): Observable<any> {
+        return this.http.delete<any>(`${this.apiUrl}/projects/${projectId}/assignments/${workerId}/${workCategoryId}`);
+    }
+
 
     getContractorLogs(filters: {
         workerId?: string;
         projectId?: string;
+        category?: string;
         startDate?: string;
         endDate?: string;
         page?: number;
@@ -57,6 +63,7 @@ export class ContractorService {
         let params = new URLSearchParams();
         if (filters.workerId) params.set('workerId', filters.workerId);
         if (filters.projectId) params.set('projectId', filters.projectId);
+        if (filters.category) params.set('category', filters.category);
         if (filters.startDate) params.set('startDate', filters.startDate);
         if (filters.endDate) params.set('endDate', filters.endDate);
         if (filters.page) params.set('page', String(filters.page));
@@ -79,5 +86,38 @@ export class ContractorService {
 
     signOffWorkLog(logId: string, signOffData: { status: string; comment?: string }): Observable<any> {
         return this.http.patch<any>(`${this.apiUrl}/work-logs/${logId}/sign-off`, signOffData);
+    }
+
+    updateWorkLogTime(logId: string, timeData: { startTime: string; endTime: string; date?: string }): Observable<any> {
+        return this.http.patch<any>(`${this.apiUrl}/work-logs/${logId}/time`, timeData);
+    }
+
+    getWorkCategories(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/work-categories`);
+    }
+
+    deleteWorkCategory(id: string): Observable<any> {
+        return this.http.delete<any>(`${this.apiUrl}/work-categories/${id}`);
+    }
+
+    createWorkCategory(data: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/work-categories`, data);
+    }
+
+    updateWorkCategory(id: string, data: any): Observable<any> {
+        return this.http.patch<any>(`${this.apiUrl}/work-categories/${id}`, data);
+    }
+
+    getAttendanceLogs(filters: {
+        workerId?: string;
+        startDate?: string;
+        endDate?: string;
+    } = {}): Observable<any[]> {
+        let params = new URLSearchParams();
+        if (filters.workerId) params.set('workerId', filters.workerId);
+        if (filters.startDate) params.set('startDate', filters.startDate);
+        if (filters.endDate) params.set('endDate', filters.endDate);
+        const query = params.toString() ? `?${params.toString()}` : '';
+        return this.http.get<any[]>(`${this.apiUrl}/attendance${query}`);
     }
 }

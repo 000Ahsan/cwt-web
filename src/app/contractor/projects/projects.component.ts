@@ -1,21 +1,21 @@
-import { Component, OnInit, inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, inject, ViewChild, ElementRef, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContractorService } from '../../core/services/contractor.service';
 import { FormsModule } from '@angular/forms';
 import { Breadcrumb } from '../../shared/components/breadcrumb/breadcrumb';
 import { Project } from '../../core/models/project.model';
-import { LeafletModule } from '@bluehalo/ngx-leaflet';
-import * as L from 'leaflet';
+import { GoogleMapsModule, GoogleMap, MapMarker } from '@angular/google-maps';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../public/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { CATEGORIES_LIST } from '../../core/models/category.model';
+import { WorkCategoryService } from '../../core/services/work-category.service';
+import { WorkCategory } from '../../core/models/work-category.model';
 
 @Component({
   selector: 'app-contractor-projects',
   standalone: true,
-  imports: [CommonModule, FormsModule, Breadcrumb, LeafletModule, NgSelectModule],
+  imports: [CommonModule, FormsModule, Breadcrumb, GoogleMapsModule, NgSelectModule],
   templateUrl: './projects.component.html',
   styles: [`
     .project-map {
@@ -32,54 +32,127 @@ import { CATEGORIES_LIST } from '../../core/models/category.model';
       border-radius: 4px;
       margin-bottom: 10px;
     }
+    .bg-success-light { background-color: rgba(81, 187, 37, 0.1); }
+    .bg-danger-light { background-color: rgba(220, 53, 69, 0.1); }
+    .table-active { background-color: rgba(var(--primary-rgb), 0.05) !important; }
+    .me-n2 { margin-right: -0.5rem !important; }
+    .txt-primary { color: var(--theme-deafult); }
+    .green-switch:checked {
+        background-color: #24695C !important;
+        border-color: #24695C !important;
+    }
   `]
 })
-export class ContractorProjectsComponent implements OnInit {
+export class ContractorProjectsComponent implements OnInit, OnDestroy {
   private contractorService = inject(ContractorService);
   private toastr = inject(ToastrService);
+  private ngZone = inject(NgZone);
+  private renderer = inject(Renderer2);
+  private workCategoryService = inject(WorkCategoryService);
 
   @ViewChild('logoInput') logoInput!: ElementRef;
 
   apiUrl = environment.apiBaseUrl;
   projects: Project[] = [];
-  categoriesList = CATEGORIES_LIST;
-  showModal = false;
+  categoriesList: WorkCategory[] = [];
+  private _showModal = false;
+  get showModal() { return this._showModal; }
+  set showModal(value: boolean) {
+    this._showModal = value;
+    if (value) {
+      this.renderer.addClass(document.body, 'modal-open');
+    } else {
+      this.renderer.removeClass(document.body, 'modal-open');
+    }
+  }
+
   isEditing = false;
+  loading = false;
+  submitting = false;
+  expandedProjectId: string | null = null;
 
   editingProject: Partial<Project> & { selectedCategories?: string[] } = {
     name: '',
     description: '',
     startDate: '',
+    targetHours: 0,
+    address: '',
     logo: '',
     latitude: 40.7128,
     longitude: -74.006,
+    isLocationBound: false,
     selectedCategories: []
   };
 
   searchQuery = '';
 
+  get ngModelStartDate(): string {
+    return this.editingProject.startDate || '';
+  }
+
+  set ngModelStartDate(value: string) {
+    this.editingProject.startDate = value;
+  }
+
+  get isFormInvalid(): boolean {
+    const p = this.editingProject;
+    return !p.name ||
+      !p.startDate ||
+      (p.targetHours || 0) <= 0 ||
+      !p.address ||
+      !p.description ||
+      !p.selectedCategories ||
+      p.selectedCategories.length === 0 ||
+      p.latitude === undefined ||
+      p.longitude === undefined;
+  }
+
   // Map settings
-  map: L.Map;
-  marker: L.Marker;
-  options = {
-    layers: [
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: 'OpenStreetMap'
-      })
-    ],
+  @ViewChild(GoogleMap, { static: false }) googleMap: GoogleMap;
+
+  mapOptions: google.maps.MapOptions = {
     zoom: 13,
-    center: L.latLng(40.7128, -74.006)
+    center: { lat: 40.7128, lng: -74.006 },
+    mapTypeId: 'roadmap',
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: false
   };
+
+  markerPosition: google.maps.LatLngLiteral = { lat: 40.7128, lng: -74.006 };
+  markerOptions: google.maps.MarkerOptions = { draggable: true };
 
   ngOnInit() {
     this.loadProjects();
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.workCategoryService.getAll().subscribe({
+      next: (data) => this.categoriesList = data,
+      error: () => this.toastr.error('Failed to load categories')
+    });
+  }
+
+  ngOnDestroy() {
+    this.renderer.removeClass(document.body, 'modal-open');
   }
 
   loadProjects() {
-    this.contractorService.getProjects().subscribe(data => {
-      this.projects = data;
+    this.loading = true;
+    this.contractorService.getProjects().subscribe({
+      next: (data) => {
+        this.projects = data;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+      }
     });
+  }
+
+  toggleExpand(projectId: string) {
+    this.expandedProjectId = this.expandedProjectId === projectId ? null : projectId;
   }
 
   openCreateModal() {
@@ -87,29 +160,32 @@ export class ContractorProjectsComponent implements OnInit {
     this.editingProject = {
       name: '',
       description: '',
-      startDate: new Date().toISOString().split('T')[0],
+      startDate: new Date().toLocaleDateString('en-CA'),
+      targetHours: 0,
+      address: '',
       logo: '',
       latitude: 40.7128,
       longitude: -74.006,
+      isLocationBound: false,
       selectedCategories: []
     };
     this.searchQuery = '';
     this.showModal = true;
-    setTimeout(() => this.initMap(), 100);
+    this.getCurrentLocation();
   }
 
   openEditModal(project: Project) {
     this.isEditing = true;
     this.editingProject = {
       ...project,
-      selectedCategories: project.categories ? project.categories.split(',') : []
+      selectedCategories: project.categories ? project.categories.map(c => c.id) : []
     };
     if (this.editingProject.startDate) {
-      this.editingProject.startDate = new Date(this.editingProject.startDate).toISOString().split('T')[0];
+      this.editingProject.startDate = this.editingProject.startDate.substring(0, 10);
     }
     if (this.editingProject.logo) {
       const relativePath = this.editingProject.logo;
-      this.editingProject.logo = this.apiUrl + relativePath;
+      this.editingProject.logo = relativePath;
 
       // Patch the file input name
       setTimeout(() => {
@@ -129,32 +205,45 @@ export class ContractorProjectsComponent implements OnInit {
     }
     this.searchQuery = '';
     this.showModal = true;
-    setTimeout(() => this.initMap(), 100);
+    this.updateMarkerPosition(this.editingProject.latitude!, this.editingProject.longitude!);
   }
 
-  initMap() {
-    if (this.map) {
-      this.map.remove();
+  private updateMarkerPosition(lat: number, lng: number, updateCenter: boolean = true) {
+    this.markerPosition = { lat, lng };
+    if (updateCenter) {
+      this.mapOptions = { ...this.mapOptions, center: { lat, lng } };
     }
+  }
 
-    const lat = this.editingProject.latitude || 40.7128;
-    const lng = this.editingProject.longitude || -74.006;
+  onMapClick(event: google.maps.MapMouseEvent) {
+    if (event.latLng) {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      this.updateMarkerPosition(lat, lng, false); // Don't move the map center
+      this.editingProject.latitude = lat;
+      this.editingProject.longitude = lng;
+      this.reverseGeocode(lat, lng);
+    }
+  }
 
-    this.map = L.map('map').setView([lat, lng], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+  onMarkerDragEnd(event: google.maps.MapMouseEvent) {
+    if (event.latLng) {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      this.editingProject.latitude = lat;
+      this.editingProject.longitude = lng;
+      this.reverseGeocode(lat, lng);
+    }
+  }
 
-    this.marker = L.marker([lat, lng], { draggable: true }).addTo(this.map);
-
-    this.marker.on('dragend', () => {
-      const position = this.marker.getLatLng();
-      this.editingProject.latitude = position.lat;
-      this.editingProject.longitude = position.lng;
-    });
-
-    this.map.on('click', (e: any) => {
-      this.marker.setLatLng(e.latlng);
-      this.editingProject.latitude = e.latlng.lat;
-      this.editingProject.longitude = e.latlng.lng;
+  reverseGeocode(lat: number, lng: number) {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+      this.ngZone.run(() => {
+        if (status === 'OK' && results && results[0]) {
+          this.editingProject.address = results[0].formatted_address;
+        }
+      });
     });
   }
 
@@ -193,37 +282,40 @@ export class ContractorProjectsComponent implements OnInit {
   searchLocation() {
     if (!this.searchQuery) return;
 
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(this.searchQuery)}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.length > 0) {
-          const result = data[0];
-          this.updateMapLocation(parseFloat(result.lat), parseFloat(result.lon));
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: this.searchQuery }, (results, status) => {
+      this.ngZone.run(() => {
+        if (status === 'OK' && results && results[0]) {
+          const location = results[0].geometry.location;
+          const lat = location.lat();
+          const lng = location.lng();
+          this.updateMarkerPosition(lat, lng);
+          this.editingProject.latitude = lat;
+          this.editingProject.longitude = lng;
+          this.editingProject.address = results[0].formatted_address;
         } else {
           this.toastr.warning('Location not found');
         }
-      })
-      .catch(() => {
-        this.toastr.error('Failed to search location');
       });
+    });
   }
 
   private updateMapLocation(lat: number, lng: number) {
     this.editingProject.latitude = lat;
     this.editingProject.longitude = lng;
-    if (this.map && this.marker) {
-      this.marker.setLatLng([lat, lng]);
-      this.map.setView([lat, lng], 13);
-    }
+    this.updateMarkerPosition(lat, lng);
+    this.reverseGeocode(lat, lng);
   }
 
   saveProject() {
-    if (!this.editingProject.name) return;
+    if (this.isFormInvalid) return;
 
+    this.submitting = true;
     const payload = { ...this.editingProject };
-    // Convert selectedCategories back to comma separated string
-    payload.categories = this.editingProject.selectedCategories ? this.editingProject.selectedCategories.join(',') : '';
+    // Convert selectedCategories to workCategoryIds for backend
+    payload.workCategoryIds = this.editingProject.selectedCategories || [];
     delete (payload as any).selectedCategories;
+    delete (payload as any).categories;
 
     // Set endDate as null as requested for now
     (payload as any).endDate = null;
@@ -235,13 +327,27 @@ export class ContractorProjectsComponent implements OnInit {
       }
 
       if (this.editingProject.id) {
-        this.contractorService.updateProject(this.editingProject.id, payload).subscribe(() => {
-          this.finishSave('Project updated successfully');
+        this.contractorService.updateProject(this.editingProject.id, payload).subscribe({
+          next: () => {
+            this.finishSave('Project updated successfully');
+            this.submitting = false;
+          },
+          error: (err) => {
+            this.toastr.error(err.error?.message || 'Failed to update project');
+            this.submitting = false;
+          }
         });
       }
     } else {
-      this.contractorService.createProject(payload).subscribe(() => {
-        this.finishSave('Project created successfully');
+      this.contractorService.createProject(payload).subscribe({
+        next: () => {
+          this.finishSave('Project created successfully');
+          this.submitting = false;
+        },
+        error: (err) => {
+          this.toastr.error(err.error?.message || 'Failed to create project');
+          this.submitting = false;
+        }
       });
     }
   }

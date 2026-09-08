@@ -82,8 +82,8 @@ export class LeafletMap {
       iconSize: [25, 41],
       iconAnchor: [10, 41],
       popupAnchor: [2, -40],
-      iconUrl: 'assets/images/marker-icon.png',
-      shadowUrl: 'assets/images/marker-shadow.png',
+      iconUrl: '/assets/images/marker-icon.png',
+      shadowUrl: '/assets/images/marker-shadow.png',
     }),
   };
 

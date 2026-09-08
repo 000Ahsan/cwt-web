@@ -1,0 +1,17 @@
+node_modules
+.angular
+dist
+.git
+.github
+.gitignore
+.env
+.env.*
+*.md
+.vscode
+.idea
+coverage
+e2e
+*.log
+.editorconfig
+.eslintrc*
+.prettierrc*

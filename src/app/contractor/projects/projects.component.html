@@ -21,47 +21,204 @@
                             <thead>
                                 <tr>
                                     <th>Logo</th>
-                                    <th>Project Name</th>
+                                    <th>Project Details</th>
                                     <th>Start Date</th>
+                                    <th style="width: 150px;">Progress (Hrs)</th>
                                     <th>Workers</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let project of projects">
-                                    <td>
-                                        @if (project.logo) {
-                                        <img [src]="apiUrl + project.logo" class="img-fluid rounded"
-                                            style="width: 40px; height: 40px; object-fit: cover;">
-                                        } @else {
-                                        <img src="assets/images/dashboard/product-1.png" class="img-fluid rounded"
-                                            style="width: 40px; height: 40px; object-fit: cover;">
-                                        }
-                                    </td>
-                                    <td class="fw-bold">{{ project.name }}</td>
-                                    <td>{{ project.startDate | date:'mediumDate' }}</td>
-                                    <td>{{ project.workers?.length }}</td>
-                                    <td>
-                                        <span class="badge" [ngClass]="project.active ? 'bg-success' : 'bg-secondary'">
-                                            {{ project.active ? 'Active' : 'Archived' }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info text-white me-2"
-                                            (click)="openEditModal(project)">
-                                            <i class="fa fa-edit me-1"></i> Edit
-                                        </button>
-                                        <button class="btn btn-sm btn-danger" (click)="deleteProject(project.id)">
-                                            <i class="fa fa-trash me-1"></i> Delete
-                                        </button>
+                                <tr *ngIf="loading">
+                                    <td colspan="7" class="text-center py-5">
+                                        <div class="loader-box">
+                                            <div class="loader-3"></div>
+                                        </div>
+                                        <p class="mt-2 text-muted">Loading projects...</p>
                                     </td>
                                 </tr>
-                                <tr *ngIf="projects.length === 0">
-                                    <td colspan="5" class="text-center py-4">
-                                        <div class="text-muted">No projects found. Create one to get started!</div>
-                                    </td>
-                                </tr>
+                                <ng-container *ngIf="!loading">
+                                    <ng-container *ngFor="let project of projects">
+                                        <tr class="cursor-pointer" (click)="toggleExpand(project.id!)"
+                                            [class.table-active]="expandedProjectId === project.id">
+                                            <td>
+                                                @if (project.logo) {
+                                                <img [src]="project.logo" class="img-fluid rounded shadow-sm border"
+                                                    style="width: 45px; height: 45px; object-fit: cover;">
+                                                } @else {
+                                                <img src="assets/images/dashboard/product-1.png"
+                                                    class="img-fluid rounded shadow-sm border"
+                                                    style="width: 45px; height: 45px; object-fit: cover;">
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="fw-bold fs-6 mb-0 txt-primary">{{ project.name }}</div>
+                                                <small class="text-muted d-block text-truncate"
+                                                    style="max-width: 280px;"
+                                                    [title]="project.address || 'No address set'">
+                                                    <i class="fa fa-map-marker me-1"></i>{{ project.address || 'No
+                                                    address' }}
+                                                </small>
+                                                <div class="mt-1 d-flex flex-wrap gap-1">
+                                                    @for (cat of project.categories; track cat.id) {
+                                                    <span class="badge bg-light txt-primary border border-primary-light"
+                                                        style="font-size: 10px; font-weight: 500;">
+                                                        {{ cat.name }}
+                                                    </span>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td>{{ project.startDate | date:'mediumDate':'UTC' }}</td>
+                                            <td>
+                                                <div class="d-flex flex-column gap-1">
+                                                    <div class="progress" style="height: 6px;">
+                                                        <div class="progress-bar bg-primary" role="progressbar"
+                                                            [style.width.%]="(project.actualHours! / (project.targetHours || 1)) * 100"
+                                                            [class.bg-danger]="project.actualHours! > (project.targetHours || 0) && project.targetHours! > 0">
+                                                        </div>
+                                                    </div>
+                                                    <small class="text-muted">{{ project.actualHours || 0 }} / {{
+                                                        project.targetHours || 0 }} hrs</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="avatars">
+                                                    <ul class="d-flex list-unstyled m-0">
+                                                        <li *ngFor="let worker of project.workers | slice:0:3"
+                                                            class="me-n2">
+                                                            <img [src]="worker.image ? worker.image : 'assets/images/user/user.png'"
+                                                                class="rounded-circle border border-2 border-white"
+                                                                style="width: 32px; height: 32px; object-fit: cover;"
+                                                                [title]="worker.name">
+                                                        </li>
+                                                        <li *ngIf="project.workers && project.workers.length > 3">
+                                                            <div class="rounded-circle bg-light border border-2 border-white d-flex align-items-center justify-content-center"
+                                                                style="width: 32px; height: 32px; font-size: 10px;">
+                                                                +{{ project.workers.length - 3 }}
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge shadow-sm"
+                                                    [ngClass]="project.active ? 'bg-success' : 'bg-secondary'">
+                                                    {{ project.active ? 'Active' : 'Archived' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex gap-2" (click)="$event.stopPropagation()">
+                                                    <button class="btn p-2" (click)="openEditModal(project)">
+                                                        <i class="fa fa-edit txt-primary"></i>
+                                                    </button>
+                                                    <button class="btn p-2" (click)="deleteProject(project.id!)">
+                                                        <i class="fa fa-trash txt-danger"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <!-- Expansion Row (Accordion) -->
+                                        <tr *ngIf="expandedProjectId === project.id" class="bg-light">
+                                            <td colspan="7" class="p-0 border-0">
+                                                <div class="p-4 bg-white shadow-sm m-3">
+                                                    <div class="row items-center">
+                                                        <div class="col-md-6 border-end">
+                                                            <h6 class="text-uppercase small fw-bold text-muted mb-3">
+                                                                Project
+                                                                Progress</h6>
+                                                            <div class="d-flex align-items-end gap-2 mb-2">
+                                                                <h2 class="mb-0 txt-primary">{{ (project.actualHours! /
+                                                                    (project.targetHours || 1)) * 100 | number:'1.0-0'
+                                                                    }}%
+                                                                </h2>
+                                                            </div>
+                                                            <div class="progress mb-3" style="height: 10px;">
+                                                                <div class="progress-bar" role="progressbar"
+                                                                    [style.width.%]="(project.actualHours! / (project.targetHours || 1)) * 100"
+                                                                    [ngClass]="project.actualHours! > (project.targetHours || 0) ? 'bg-danger' : 'bg-success'">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row g-2">
+                                                                <div class="col-6">
+                                                                    <small class="text-muted d-block">Target
+                                                                        Hours</small>
+                                                                    <span class="fw-bold txt-primary">{{
+                                                                        project.targetHours
+                                                                        || 0 }}
+                                                                        hrs</span>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <small class="text-muted d-block">Hours
+                                                                        Logged</small>
+                                                                    <span class="fw-bold txt-primary"
+                                                                        [class.text-danger]="project.actualHours! > (project.targetHours || 0)">{{
+                                                                        project.actualHours || 0 }} hrs</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 ps-md-4">
+                                                            <h6 class="text-uppercase small fw-bold text-muted mb-3">
+                                                                Worker
+                                                                Contributions</h6>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-sm table-borderless">
+                                                                    <thead class="bg-light small text-muted">
+                                                                        <tr>
+                                                                            <th>Worker</th>
+                                                                            <th>Categories</th>
+                                                                            <th class="text-end">Hours Logged</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let worker of project.workers">
+                                                                            <td>
+                                                                                <div
+                                                                                    class="d-flex align-items-center gap-2">
+                                                                                    <img [src]="worker.image ? worker.image : 'assets/images/user/user.png'"
+                                                                                        class="rounded-circle"
+                                                                                        style="width: 24px; height: 24px; object-fit: cover;">
+                                                                                    <span
+                                                                                        class="small font-weight-bold">{{
+                                                                                        worker.name }}</span>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="d-flex flex-wrap gap-1">
+                                                                                    @for (cat of worker.categories; track cat.id) {
+                                                                                    <span class="badge bg-light txt-secondary border" style="font-size: 9px;">
+                                                                                        {{ cat.name }}
+                                                                                    </span>
+                                                                                    }
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="text-end fw-bold">{{
+                                                                                worker.projectHours || 0 |
+                                                                                number:'1.1-1'
+                                                                                }}h</td>
+                                                                        </tr>
+                                                                        <tr
+                                                                            *ngIf="!project.workers || project.workers.length === 0">
+                                                                            <td colspan="3"
+                                                                                class="text-center py-2 text-muted small italic">
+                                                                                No workers assigned to this project.
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    <tr *ngIf="projects.length === 0">
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="text-muted">No projects found. Create one to get started!</div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
                             </tbody>
                         </table>
                     </div>
@@ -73,7 +230,7 @@
 
 <!-- Project Modal -->
 <div class="modal fade show" *ngIf="showModal" style="display: block; background: rgba(0,0,0,0.5); z-index: 1050;">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title font-white">{{ isEditing ? 'Edit Project' : 'New Project' }}</h5>
@@ -83,28 +240,58 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Project Name</label>
+                            <label class="form-label fw-bold">Project Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" [(ngModel)]="editingProject.name"
                                 placeholder="Enter project name">
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Start Date</label>
-                            <input type="date" class="form-control" [(ngModel)]="editingProject.startDate">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Start Date <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" [(ngModel)]="ngModelStartDate">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Target Hours <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" [(ngModel)]="editingProject.targetHours"
+                                        placeholder="Target hours" min="1">
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Description</label>
-                            <textarea class="form-control" [(ngModel)]="editingProject.description" rows="3"
+                            <label class="form-label fw-bold">Site Address <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fa fa-map-marker"></i></span>
+                                <input type="text" class="form-control" [(ngModel)]="editingProject.address"
+                                    placeholder="Click on the map or search to set address" readonly>
+                            </div>
+                            <small class="text-muted italic">Address is auto-filled by clicking on the map</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" [(ngModel)]="editingProject.description" rows="2"
                                 placeholder="Project details..."></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Categories</label>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input green-switch" type="checkbox" id="locationBoundSwitch"
+                                    [(ngModel)]="editingProject.isLocationBound">
+                                <label class="form-label fw-bold" for="locationBoundSwitch">Is Site Location
+                                    Bound? <span class="text-danger">*</span></label>
+                            </div>
+                            <small class="text-muted italic">If enabled, workers must be on-site to start the
+                                timer.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Categories <span class="text-danger">*</span></label>
                             <ng-select [items]="categoriesList" [multiple]="true" [closeOnSelect]="false"
-                                [searchable]="true" placeholder="Select categories"
+                                [searchable]="true" placeholder="Select categories" bindValue="id" bindLabel="name"
                                 [(ngModel)]="editingProject.selectedCategories">
                             </ng-select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Project Logo (Optional)</label>
+                            <label class="form-label fw-bold">Project Logo</label>
                             <div class="d-flex flex-column gap-2">
                                 <input type="file" #logoInput class="form-control form-control-sm"
                                     (change)="onFileSelected($event)" accept="image/*">
@@ -120,7 +307,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <label class="form-label fw-bold mb-0">Project Location</label>
+                            <label class="form-label fw-bold mb-0">Project Location <span class="text-danger">*</span></label>
                             <button type="button" class="btn btn-xs btn-outline-primary" (click)="getCurrentLocation()">
                                 <i class="fa fa-map-marker me-1"></i> My Location
                             </button>
@@ -132,7 +319,11 @@
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
-                        <div id="map" class="project-map"></div>
+                        <google-map height="300px" width="100%" [options]="mapOptions" (mapClick)="onMapClick($event)">
+                            <map-marker [position]="markerPosition" [options]="markerOptions"
+                                (mapDragend)="onMarkerDragEnd($event)">
+                            </map-marker>
+                        </google-map>
                         <div class="mt-2 small text-muted d-flex justify-content-between">
                             <span>Lat: {{ editingProject.latitude | number:'1.4-4' }}</span>
                             <span>Lng: {{ editingProject.longitude | number:'1.4-4' }}</span>
@@ -141,9 +332,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
-                <button type="button" class="btn btn-primary" (click)="saveProject()" [disabled]="!editingProject.name">
-                    {{ isEditing ? 'Update Project' : 'Save Project' }}
+                <button type="button" class="btn btn-light" (click)="closeModal()"
+                    [disabled]="submitting">Cancel</button>
+                <button type="button" class="btn btn-primary d-flex align-items-center gap-2" (click)="$event.stopPropagation(); saveProject()"
+                    [disabled]="isFormInvalid || submitting">
+                    <span *ngIf="submitting" class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
+                    {{ submitting ? (isEditing ? 'Updating...' : 'Saving...') : (isEditing ? 'Update Project' : 'Save
+                    Project') }}
                 </button>
             </div>
         </div>

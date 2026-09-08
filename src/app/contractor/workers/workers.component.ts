@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, inject, ViewChild, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContractorService } from '../../core/services/contractor.service';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../public/environments/environment';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { CATEGORIES_LIST } from '../../core/models/category.model';
+import { WorkCategoryService } from '../../core/services/work-category.service';
+import { WorkCategory } from '../../core/models/work-category.model';
 
 @Component({
   selector: 'app-contractor-workers',
@@ -27,30 +28,75 @@ import { CATEGORIES_LIST } from '../../core/models/category.model';
     }
   `]
 })
-export class ContractorWorkersComponent implements OnInit {
+export class ContractorWorkersComponent implements OnInit, OnDestroy {
   private contractorService = inject(ContractorService);
   private toastr = inject(ToastrService);
+  private renderer = inject(Renderer2);
+  private workCategoryService = inject(WorkCategoryService);
 
   @ViewChild('imageInput') imageInput!: ElementRef;
 
   apiUrl = environment.apiBaseUrl;
-  showCreateModal = false;
+  private _showCreateModal = false;
+  get showCreateModal() { return this._showCreateModal; }
+  set showCreateModal(value: boolean) {
+    this._showCreateModal = value;
+    if (value) {
+      this.renderer.addClass(document.body, 'modal-open');
+    } else {
+      this.renderer.removeClass(document.body, 'modal-open');
+    }
+  }
+
   editingWorker: any = null;
   workers: any[] = [];
   projects: any[] = [];
-  categoriesList = CATEGORIES_LIST;
+  categoriesList: WorkCategory[] = [];
+  loading = false;
+  submitting = false;
 
-  newWorker: any = { email: '', name: '', password: '', image: '', selectedCategories: [] };
+  newWorker: any = { email: '', phone: '', name: '', password: '', image: '', selectedCategories: [], defaultHourlyRate: null };
+  
+  showAssignModal = false;
+  assigningWorker: any = null;
+  assignmentData = {
+    projectId: '',
+    workCategoryId: '',
+    hourlyRate: 0
+  };
 
   ngOnInit() {
     this.loadData();
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.workCategoryService.getAll().subscribe({
+      next: (data) => this.categoriesList = data,
+      error: () => this.toastr.error('Failed to load categories')
+    });
+  }
+
+  ngOnDestroy() {
+    this.renderer.removeClass(document.body, 'modal-open');
   }
 
   loadData() {
-    this.contractorService.getWorkers().subscribe(workers => {
-      this.workers = workers.map(w => ({ ...w, selectedProjectId: '' }));
+    this.loading = true;
+    this.contractorService.getWorkers().subscribe({
+      next: (workers) => {
+        this.workers = workers.map(w => ({ ...w, selectedProjectId: '', isAssigning: false }));
+        // Only stop loading when projects are also loaded
+      },
+      error: () => this.loading = false
     });
-    this.contractorService.getProjects().subscribe(projects => this.projects = projects);
+    this.contractorService.getProjects().subscribe({
+      next: (projects) => {
+        this.projects = projects;
+        this.loading = false;
+      },
+      error: () => this.loading = false
+    });
   }
 
   onFileSelected(event: any) {
@@ -76,11 +122,13 @@ export class ContractorWorkersComponent implements OnInit {
   }
 
   saveWorker() {
-    if (!this.newWorker.email || !this.newWorker.name) return;
+    if ((!this.newWorker.email && !this.newWorker.phone) || !this.newWorker.name) return;
 
+    this.submitting = true;
     const payload = { ...this.newWorker };
-    payload.categories = this.newWorker.selectedCategories ? this.newWorker.selectedCategories.join(',') : '';
-    delete payload.selectedCategories;
+    payload.workCategoryIds = this.newWorker.selectedCategories || [];
+    delete (payload as any).selectedCategories;
+    delete (payload as any).categories;
 
     if (this.editingWorker) {
       // If editing, only send image if it's new (starts with data:)
@@ -95,8 +143,12 @@ export class ContractorWorkersComponent implements OnInit {
           this.toastr.success('Worker updated successfully');
           this.closeModal();
           this.loadData();
+          this.submitting = false;
         },
-        error: (err) => this.toastr.error(err.error?.message || 'Failed to update worker')
+        error: (err) => {
+          this.toastr.error(err.error?.message || 'Failed to update worker');
+          this.submitting = false;
+        }
       });
     } else {
       this.contractorService.createWorker(payload).subscribe({
@@ -104,8 +156,12 @@ export class ContractorWorkersComponent implements OnInit {
           this.toastr.success('Worker created successfully');
           this.closeModal();
           this.loadData();
+          this.submitting = false;
         },
-        error: (err) => this.toastr.error(err.error?.message || 'Failed to create worker')
+        error: (err) => {
+          this.toastr.error(err.error?.message || 'Failed to create worker');
+          this.submitting = false;
+        }
       });
     }
   }
@@ -114,10 +170,12 @@ export class ContractorWorkersComponent implements OnInit {
     this.editingWorker = worker;
     this.newWorker = {
       email: worker.email,
+      phone: worker.phone,
       name: worker.name,
       password: '',
-      image: worker.image ? this.apiUrl + worker.image : '',
-      selectedCategories: worker.categories ? worker.categories.split(',') : []
+      image: worker.image ? worker.image : '',
+      selectedCategories: worker.categories ? worker.categories.map((c: any) => c.id) : [],
+      defaultHourlyRate: worker.defaultHourlyRate
     };
 
     // Patch the file input name if we have an image
@@ -165,27 +223,100 @@ export class ContractorWorkersComponent implements OnInit {
   closeModal() {
     this.showCreateModal = false;
     this.editingWorker = null;
-    this.newWorker = { email: '', name: '', password: '', image: '', selectedCategories: [] };
+    this.newWorker = { email: '', phone: '', name: '', password: '', image: '', selectedCategories: [], defaultHourlyRate: null };
     if (this.imageInput) {
       this.imageInput.nativeElement.value = '';
     }
   }
 
-  assignWorker(worker: any) {
-    if (!worker.selectedProjectId) return;
+  openAssignModal(worker: any) {
+    this.assigningWorker = worker;
+    this.assignmentData = {
+      projectId: '',
+      workCategoryId: '',
+      hourlyRate: worker.defaultHourlyRate || 0
+    };
+    this.showAssignModal = true;
+    this.renderer.addClass(document.body, 'modal-open');
+  }
 
-    this.contractorService.assignWorkerToProject(worker.selectedProjectId, worker.id).subscribe({
+  closeAssignModal() {
+    this.showAssignModal = false;
+    this.assigningWorker = null;
+    this.renderer.removeClass(document.body, 'modal-open');
+  }
+
+  confirmAssignment() {
+    if (!this.assignmentData.projectId || !this.assignmentData.workCategoryId || this.assignmentData.hourlyRate < 0) {
+      this.toastr.error('Please fill all assignment details correctly');
+      return;
+    }
+
+    // Check if duplicate assignment exists locally
+    const isAlreadyAssigned = this.assigningWorker.assignments?.some(
+      (p: any) => p.id === this.assignmentData.projectId && p.categories?.some((cat: any) => cat.id === this.assignmentData.workCategoryId)
+    );
+
+    if (isAlreadyAssigned) {
+      this.toastr.warning('Worker is already assigned to this project in this category');
+      return;
+    }
+
+    this.submitting = true;
+    this.contractorService.assignWorkerToProject(
+      this.assignmentData.projectId,
+      this.assigningWorker.id,
+      this.assignmentData.workCategoryId,
+      this.assignmentData.hourlyRate
+    ).subscribe({
       next: () => {
-        this.toastr.success(`Project assigned to worker successfully!`);
+        this.toastr.success(`Worker assigned successfully!`);
+        this.closeAssignModal();
         this.loadData();
+        this.submitting = false;
       },
-      error: (err) => this.toastr.error(err.error?.message || 'Failed to assign project')
+      error: (err) => {
+        this.toastr.error(err.error?.message || 'Failed to assign worker');
+        this.submitting = false;
+      }
+    });
+  }
+
+  removeAssignment(workerId: string, projectId: string, workCategoryId: string) {
+    Swal.fire({
+      title: 'Remove Assignment?',
+      text: "Are you sure you want to remove this role from the worker?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.contractorService.unassignWorker(projectId, workerId, workCategoryId).subscribe({
+          next: () => {
+            this.toastr.success('Assignment removed successfully');
+            this.loadData();
+          },
+          error: (err) => {
+            this.toastr.error(err.error?.message || 'Failed to remove assignment');
+          }
+        });
+      }
     });
   }
 
   getUnassignedProjects(worker: any): any[] {
-    const assignments = worker.assignments;
-    const assignedProjectIds = assignments.map((assignment: any) => assignment.projectId);
-    return this.projects.filter(p => !assignedProjectIds.includes(p.id));
+    const assignments = worker.assignments || [];
+    const assignedProjectIds = assignments.map((assignment: any) => assignment.id);
+    return this.projects.filter((p: any) => !assignedProjectIds.includes(p.id));
+  }
+
+  get filteredCategories(): WorkCategory[] {
+    if (!this.assigningWorker || !this.assignmentData.projectId) return [];
+
+    const workerCatIds = new Set(this.assigningWorker.categories?.map((c: any) => c.id) || []);
+    const project = this.projects.find(p => p.id === this.assignmentData.projectId);
+    const projectCatIds = new Set(project?.categories?.map((c: any) => c.id) || []);
+
+    return this.categoriesList.filter(c => workerCatIds.has(c.id) && projectCatIds.has(c.id));
   }
 }

@@ -13,15 +13,13 @@
           </div>
 
           <div class="form-group">
-            <label>Email Address</label>
+            <label>Email Address or Phone</label>
             <div class="input-group">
-              <span class="input-group-text"><app-feather-icons [icon]="'mail'"></app-feather-icons></span>
-              <input class="form-control" type="email" placeholder="email@example.com" formControlName="email" />
+              <span class="input-group-text"><app-feather-icons [icon]="'user'"></app-feather-icons></span>
+              <input class="form-control" type="text" placeholder="email@example.com or 1234567890" formControlName="identifier" />
             </div>
-            <div *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].errors?.['required']"
-              class="text text-danger mt-1">Email is required</div>
-            <div *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].errors?.['email']"
-              class="text text-danger mt-1">Invalid Email</div>
+            <div *ngIf="loginForm.controls['identifier'].touched && loginForm.controls['identifier'].errors?.['required']"
+              class="text text-danger mt-1">Email or Phone is required</div>
           </div>
 
           <div class="form-group">

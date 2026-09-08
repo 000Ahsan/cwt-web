@@ -1,0 +1,10 @@
+.login-card {
+  img.logo {
+    width: auto;
+    max-width: 220px;
+    height: 72px;
+    object-fit: contain;
+    margin: 0 auto var(--space-4, 16px);
+    padding: 0;
+  }
+}

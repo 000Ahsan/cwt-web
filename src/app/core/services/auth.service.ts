@@ -35,10 +35,10 @@ export class AuthService {
 
     private setSession(authResult: AuthResponse) {
         const user = authResult.user;
-        if (user.name) {
+        if (user && typeof user.name === 'string') {
             const parts = user.name.split(' ');
-            user.firstName = parts[0];
-            user.lastName = parts.slice(1).join(' ');
+            user.firstName = parts[0] || '';
+            user.lastName = parts.slice(1).join(' ') || '';
         }
 
         localStorage.setItem('access_token', authResult.access_token);
@@ -53,6 +53,39 @@ export class AuthService {
         localStorage.removeItem('user');
         this.currentUserSubject.next(null);
         this.router.navigate(['/auth/login']);
+    }
+
+    refreshToken(): Observable<any> {
+        const refresh_token = localStorage.getItem('refresh_token');
+        return this.http.post<any>(`${this.apiUrl}/refresh`, { refresh_token }).pipe(
+            tap(response => {
+                if (response.access_token) {
+                    localStorage.setItem('access_token', response.access_token);
+                }
+                if (response.refresh_token) {
+                    localStorage.setItem('refresh_token', response.refresh_token);
+                }
+            })
+        );
+    }
+
+    updateUserProfile(profileData: FormData): Observable<any> {
+        return this.http.patch<any>(`${this.apiUrl}/profile`, profileData).pipe(
+            tap(response => {
+                this.updateCurrentUser(response);
+            })
+        );
+    }
+
+    updateCurrentUser(user: User) {
+        if (user && user.name && typeof user.name === 'string') {
+            const parts = user.name.split(' ');
+            user.firstName = parts[0] || '';
+            user.lastName = parts.slice(1).join(' ') || '';
+        }
+        const currentUser = { ...this.currentUserValue, ...user };
+        localStorage.setItem('user', JSON.stringify(currentUser));
+        this.currentUserSubject.next(currentUser);
     }
 
     isLoggedIn(): boolean {

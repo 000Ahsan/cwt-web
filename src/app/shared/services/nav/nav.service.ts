@@ -78,6 +78,14 @@ export class NavService {
     },
     {
       level: 1,
+      title: 'Categories',
+      icon: 'briefcase',
+      type: 'link',
+      path: '/contractor/categories',
+      role: [UserRole.CONTRACTOR]
+    },
+    {
+      level: 1,
       title: 'Projects',
       icon: 'box',
       type: 'link',
@@ -100,6 +108,30 @@ export class NavService {
       path: '/contractor/logs',
       role: [UserRole.CONTRACTOR]
     },
+    {
+      level: 1,
+      title: 'Attendance',
+      icon: 'clock',
+      type: 'link',
+      path: '/contractor/attendance',
+      role: [UserRole.CONTRACTOR]
+    },
+    {
+      level: 1,
+      title: 'Billing',
+      icon: 'dollar-sign',
+      type: 'link',
+      path: '/contractor/billing',
+      role: [UserRole.CONTRACTOR]
+    },
+    {
+      level: 1,
+      title: 'Profile',
+      icon: 'user',
+      type: 'link',
+      path: '/contractor/user/profile',
+      role: [UserRole.CONTRACTOR]
+    },
 
     {
       level: 1,
@@ -117,6 +149,14 @@ export class NavService {
       path: '/worker/logs',
       role: [UserRole.WORKER]
     },
+    {
+      level: 1,
+      title: 'Profile',
+      icon: 'user',
+      type: 'link',
+      path: '/worker/user/profile',
+      role: [UserRole.WORKER]
+    },
   ];
 
   items = new BehaviorSubject<Menu[]>([]);
@@ -132,7 +172,6 @@ export class NavService {
     const filteredItems = this.MENUITEMS.filter(item => {
       return !item.role || item.role.includes(user.role);
     });
-
     this.items.next(filteredItems);
   }
 }

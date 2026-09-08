@@ -21,9 +21,10 @@
                         </div>
                         <div class="card-body text-center p-t-0">
                             <h3 class="font-light">Welcome Back, {{ user?.name }}!!</h3>
-                            <p>Welcome to the CrewTrack Dashboard. We are glad to have you on board. On this dashboard
+                            <p>Welcome to the FieldHQ Dashboard. We are glad to have you on board. On this dashboard
                                 you can track your projects and workers.</p>
-                            <button class="btn btn-light">Update Profile</button>
+                            <button class="btn btn-light" [routerLink]="['/contractor/user/profile']">Update
+                                Profile</button>
                         </div>
                         <div class="confetti">
                             <div class="confetti-piece"></div>
