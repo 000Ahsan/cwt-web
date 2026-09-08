@@ -38,7 +38,7 @@ export class AuthService {
         return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
             tap(response => {
                 if (!response?.user || !response?.access_token) {
-                    throw new Error(response?.['message'] || 'Invalid login response');
+                    throw new Error(response?.message || 'Invalid login response');
                 }
                 this.setSession(response);
             })
